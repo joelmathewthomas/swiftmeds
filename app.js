@@ -9,6 +9,7 @@ const session = require("express-session");
 
 // Import the 'path' module to handle file paths
 const path = require("path");
+const { connect } = require("http2");
 
 // Create a MySQL connection
 const connection = mysql.createConnection({
@@ -47,34 +48,115 @@ app.post("/auth", function (request, response) {
   // Capture the input fields
   let username = request.body.username;
   let password = request.body.password;
-  // Ensure the input fields exists and are not empty
+
   if (username && password) {
-    // Execute SQL query that'll select the account from the database based on the specified username and password
+    // Execute SQL query to check if the account exists
     connection.query(
-      "SELECT * FROM accounts WHERE username = ? AND password = ?",
-      [username, password],
+      "SELECT * FROM accounts WHERE username = ?",
+      [username],
       function (error, results, fields) {
-        // If there is an issue with the query, output the error
-        if (error) throw error;
+        if (error) {
+          response.status(500).json({
+            success: false,
+            message: "Database error occurred",
+            error: error,
+          });
+          return;
+        }
+
         // If the account exists
         if (results.length > 0) {
-          // Authenticate the user
-          request.session.loggedin = true;
-          request.session.username = username;
-          // Redirect to home page
-          response.json({ success: true });
+          // Execute another SQL query to verify the password
+          connection.query(
+            "SELECT * FROM accounts WHERE username = ? AND password = ?",
+            [username, password],
+            function (error, results, fields) {
+              if (error) {
+                response.status(500).json({
+                  success: false,
+                  message: "Database error occurred",
+                  error: error,
+                });
+                return;
+              }
+
+              // If the password matches
+              if (results.length > 0) {
+                // Set session variables and send success response
+                request.session.loggedin = true;
+                request.session.username = username;
+                response.json({ success: true });
+              } else {
+                // If password doesn't match, send authentication failure response
+                response.status(401).json({
+                  success: false,
+                  message: "Incorrect password.",
+                });
+              }
+              response.end(); // Ensure response is sent after all database operations
+            }
+          );
         } else {
+          // If account doesn't exist, send authentication failure response
           response.status(401).json({
             success: false,
-            message: "Incorrect username or password.",
+            message: "Account does not exist.",
           });
+          response.end(); // Ensure response is sent after all database operations
         }
-        response.end();
       }
     );
   } else {
-    response.send("Please enter Username and Password!");
-    response.end();
+    // If username or password is missing, send appropriate response
+    response.status(400).json({
+      success: false,
+      message: "Please enter Username and Password!",
+    });
+    response.end(); // Ensure response is sent after all database operations
+  }
+});
+
+// http://localhost:3000/register
+app.post("/register", function (request, response) {
+  let username = request.body.username;
+  let email = request.body.email;
+  let password = request.body.password;
+
+  if (username && password) {
+    connection.query(
+      "SELECT * FROM accounts WHERE username = ?",
+      [username, password],
+      function (error, results, fields) {
+        if (error) throw error;
+        if (results.length > 0) {
+          response.status(401).json({
+            success: false,
+            message: "User already exists",
+          });
+        } else {
+          //code for insertion
+          connection.query(
+            "INSERT INTO accounts (username, password, email) VALUES (?, ?, ?)",
+            [username, password, email],
+            function (error, results, fields) {
+              if (error) {
+                response.status(500).json({
+                  success: false,
+                  message: "Error inserting into accounts",
+                  error: error,
+                });
+                return;
+              }
+
+              // Code for successful insertion
+              request.session.loggedin = true;
+              request.session.username = username;
+              response.json({ success: true });
+            }
+          );
+        }
+      }
+    );
   }
 });
 

@@ -4,8 +4,8 @@ document
     event.preventDefault(); // Prevent default form submission
 
     // Get username and password from the form
-    var username = document.getElementById("username").value;
-    var password = document.getElementById("password").value;
+    var username = document.getElementById("login-username").value;
+    var password = document.getElementById("login-password").value;
 
     // Send a POST request to the server
     fetch("/auth", {
