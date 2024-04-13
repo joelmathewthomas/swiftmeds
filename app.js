@@ -178,3 +178,13 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+// http://localhost:3000/contact
+app.get("/contact", function (request, response) {
+  response.sendFile(path.join(__dirname + "/contact.html"));
+});
+
+// http://localhost:3000/services
+app.get("/services", function (request, response) {
+  response.sendFile(path.join(__dirname + "/services.html"));
+});

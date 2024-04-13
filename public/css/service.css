@@ -1,0 +1,179 @@
+@import url("https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+:root {
+  --black: black;
+  --purple: purple;
+  --dark-moderate-violet: #663399;
+  --light-color: #666;
+  --box-shadow: 2px 2px 12px grey;
+}
+
+* {
+  font-family: "andika";
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  text-transform: none;
+  transition: all 0.2s linear;
+}
+
+html {
+  font-size: 62.5%;
+  overflow-x: hidden;
+  scroll-padding-top: 7rem;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #fff;
+}
+
+/*header*/
+
+.header {
+  height: 100px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  border: 1px solid;
+  justify-content: space-between;
+  padding: 2rem 9%;
+  background: #fff;
+  z-index: 1000;
+  box-shadow: var(--box-shadow);
+}
+
+.header .logo img {
+  margin-top: 10px;
+  height: 100px;
+  width: 65%;
+  display: inline-block;
+}
+
+.header .headbar a {
+  font-size: 1.7rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  color: var(--light-colour);
+}
+
+.header .headbar a:hover {
+  color: #fff;
+  background: linear-gradient(120deg, #1668e4 40%, #663399);
+}
+
+.header .menubtn {
+  margin-right: 60px;
+}
+
+.header .menubtn button {
+  padding: 10px 45px;
+  text-align: center;
+  font-size: 14px;
+  color: #fff;
+  border: none;
+  background-image: linear-gradient(to right, #649bff, #0070fa, #649bff);
+  border-radius: 10px;
+}
+
+/*header*/
+
+/*about*/
+
+section {
+  padding-top: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #eee;
+}
+
+section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+}
+
+.container {
+  position: relative;
+  min-width: 1100px;
+  min-height: 550px;
+  display: flex;
+  z-index: 1000;
+}
+.container .about {
+  position: absolute;
+  padding: 70px 50px;
+  margin-left: 100px;
+  width: calc(100% - 150px);
+  height: 100%;
+  background: #fff;
+  box-shadow: 0 50px 50px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+}
+
+.container .about-form {
+  position: absolute;
+  top: 40px;
+  width: 350px;
+  height: calc(100% - 80px);
+  background: linear-gradient(120deg, #00bfff 40%, #663399);
+  margin-left: -170px;
+  z-index: 1;
+  padding: 40px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+}
+
+.container .about h3 {
+  font-size: 3.5rem;
+  line-height: 1.8;
+  color: var(--black);
+  padding-bottom: 5%;
+}
+
+.container .about p {
+  font-size: 1.5rem;
+  line-height: 1.8;
+  color: var(--light-color);
+  padding: 1rem 0;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.btn {
+  border: 1px solid var(--black);
+  display: inline-block;
+  margin-top: 1rem;
+  margin-left: 27%;
+  margin-right: 30%;
+  position: absolute;
+  padding: 0.8rem 3rem;
+  font-size: 1.7rem;
+  border-radius: 0.5rem;
+  color: var(--black);
+  cursor: pointer;
+  background: none;
+}
+
+.btn:hover {
+  background: linear-gradient(120deg, #fab2ff 40%, #663399);
+  color: #fff;
+}
+
+.container .about span {
+  color: var(--dark-moderate-violet);
+  font-weight: bold;
+}
+/*about*/
