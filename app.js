@@ -269,11 +269,6 @@ app.post("/dashboardCreateuser", function (request, response) {
   let email = request.body.email;
   let type = request.body.type;
 
-  console.log(username);
-  console.log(password);
-  console.log(email);
-  console.log(type);
-
   if (username && password && type) {
     connection.query(
       "SELECT * FROM accounts WHERE username = ?",
@@ -284,32 +279,31 @@ app.post("/dashboardCreateuser", function (request, response) {
           console.log("error");
         }
         if (results.length > 0) {
-          /*response.status(401).json({
+          response.status(401).json({
             success: false,
             message: "User already exists",
-          });*/
-          console.log("user exists");
-        }
-      }
-    );
-  } else {
-    connection.query(
-      "INSERT INTO accounts (username, password, email, type) VALUES (?, ?, ?, ?)",
-      [username, password, email, type],
-      function (error) {
-        /*if (error) {
-          response.status(500).json({
-            success: false,
-            message: "Error inserting into accounts",
-            error: error,
           });
-        }*/
-        if (error) {
-          console.log(error);
         } else {
-          console.log("success");
+          connection.query(
+            "INSERT INTO accounts (username, password, email, type) VALUES (?, ?, ?, ?)",
+            [username, password, email, type],
+            function (error) {
+              if (error) {
+                response.status(500).json({
+                  success: false,
+                  message: "Error inserting into accounts",
+                  error: error,
+                });
+              }
+              if (error) {
+                console.log(error);
+              } else {
+                console.log("success");
+              }
+              return;
+            }
+          );
         }
-        return;
       }
     );
   }
