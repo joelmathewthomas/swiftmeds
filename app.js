@@ -188,3 +188,8 @@ app.get("/contact", function (request, response) {
 app.get("/aboutus", function (request, response) {
   response.sendFile(path.join(__dirname + "/aboutus.html"));
 });
+
+// http://localhost:3000/dashboard
+app.get("/dashboard", function (request, response) {
+  response.sendFile(path.join(__dirname + "/dashboard.html"));
+});
