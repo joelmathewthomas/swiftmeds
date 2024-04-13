@@ -19,3 +19,24 @@ btnPopup.addEventListener("click", () => {
 iconClose.addEventListener("click", () => {
   wrapper.classList.remove("active-popup");
 });
+
+document
+  .getElementById("contact-link")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+    window.location.href = "/contact";
+  });
+
+document
+  .getElementById("aboutus-link")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+    window.location.href = "/aboutus";
+  });
+
+document
+  .getElementById("home-link")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+    window.location.href = "/home";
+  });
