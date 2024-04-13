@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/dashboard-style.css" />
+  </head>
+  <body>
+    <div id="dashboard-container">
+      <h1>Admin Dashboard</h1>
+      <div id="dashboard-lists-container">
+        <div id="dashboard-doctors-list" class="dashboard-list">
+          <h2>Doctors</h2>
+          <ul>
+            <li id="dashboard-doctor-id-1">Doctor ID 1</li>
+            <li id="dashboard-doctor-id-2">Doctor ID 2</li>
+            <!-- Add more doctor IDs here -->
+          </ul>
+        </div>
+        <div id="dashboard-patients-list" class="dashboard-list">
+          <h2>Patients</h2>
+          <ul>
+            <li id="dashboard-patient-id-1">Patient ID 1</li>
+            <li id="dashboard-patient-id-2">Patient ID 2</li>
+            <!-- Add more patient IDs here -->
+          </ul>
+        </div>
+      </div>
+      <button id="dashboard-create-user-button">Create User</button>
+      <div id="dashboard-create-user-popup" class="dashboard-popup">
+        <h2>Create User</h2>
+        <form action="#" id="dashboard-create-user-form">
+          <div class="input-container">
+            <label for="dashboard-username">Username:</label>
+            <input
+              type="text"
+              id="dashboard-username"
+              name="username"
+              required
+            />
+          </div>
+          <div class="input-container">
+            <label for="dashboard-password">Password:</label>
+            <input
+              type="password"
+              id="dashboard-password"
+              name="password"
+              required
+            />
+          </div>
+          <div class="input-container">
+            <label for="dashboard-type">User Type:</label>
+            <select id="dashboard-type" name="type">
+              <option value="doctor">Doctor</option>
+              <option value="patient">Patient</option>
+            </select>
+          </div>
+          <div class="input-btn">
+            <button type="submit">Create</button>
+            <button id="dashboard-close-popup-button">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="/scripts/dashboard-create-user.js"></script>
+  </body>
+</html>

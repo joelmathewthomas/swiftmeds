@@ -1,0 +1,84 @@
+#dashboard-container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#dashboard-container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+#dashboard-lists-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dashboard-list {
+  width: calc(50% - 10px); /* Divide available space into two columns */
+}
+
+.dashboard-list h2 {
+  margin-bottom: 10px;
+}
+
+.dashboard-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.dashboard-list li {
+  margin-bottom: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#dashboard-create-user-button {
+  display: block;
+  margin: 20px auto;
+}
+
+.dashboard-popup {
+  display: none;
+  flex-direction: column; /* Arrange items vertically */
+  align-items: center; /* Center items horizontally */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+#dashboard-create-user-popup button {
+  margin-top: 10px;
+  align-self: flex-start; /* Align button to the start of the column */
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.input-container label {
+  margin-right: 10px;
+}
+
+#dashboard-create-user-popup button {
+  margin-top: 10px;
+  align-self: flex-start; /* Align button to the start of the column */
+}
+
+#dashboard-create-user-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
