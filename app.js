@@ -184,7 +184,7 @@ app.get("/contact", function (request, response) {
   response.sendFile(path.join(__dirname + "/contact.html"));
 });
 
-// http://localhost:3000/services
-app.get("/services", function (request, response) {
-  response.sendFile(path.join(__dirname + "/services.html"));
+// http://localhost:3000/aboutus
+app.get("/aboutus", function (request, response) {
+  response.sendFile(path.join(__dirname + "/aboutus.html"));
 });
