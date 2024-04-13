@@ -193,3 +193,37 @@ app.get("/aboutus", function (request, response) {
 app.get("/dashboard", function (request, response) {
   response.sendFile(path.join(__dirname + "/dashboard.html"));
 });
+
+// http://localhost:3000/getDoctors
+app.get("/getDoctors", function (request, response) {
+  connection.query(
+    "SELECT username from accounts where type=?",
+    ["doctor"],
+    function (error, results, fields) {
+      if (error) {
+        response.status(500).json({
+          success: false,
+          message: "Database error occured",
+          error: error,
+        });
+        return;
+      }
+
+      if (results.length === 0) {
+        console.log("No doctor accounts found");
+        response.status(200).json({
+          success: true,
+          message: "No doctor accounts found",
+          doctors: [], // Empty array to indicate no doctors found
+        });
+      } else {
+        // Send the results back to the client
+        response.status(200).json({
+          success: true,
+          message: "Doctor accounts found",
+          doctors: results, // Sending the array of doctor usernames
+        });
+      }
+    }
+  );
+});

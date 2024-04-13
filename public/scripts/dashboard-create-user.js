@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 
   createUserButton.addEventListener("click", function () {
-    createUserPopup.style.display = "block";
+    createUserPopup.style.display = "flex";
   });
 
   closePopupButton.addEventListener("click", function () {
