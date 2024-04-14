@@ -274,10 +274,7 @@ app.post("/dashboardCreateuser", function (request, response) {
       "SELECT * FROM accounts WHERE username = ?",
       [username],
       function (error, results) {
-        //        if (error) throw error;
-        if (error) {
-          console.log("error");
-        }
+        if (error) throw error;
         if (results.length > 0) {
           response.status(401).json({
             success: false,
@@ -294,11 +291,8 @@ app.post("/dashboardCreateuser", function (request, response) {
                   message: "Error inserting into accounts",
                   error: error,
                 });
-              }
-              if (error) {
-                console.log(error);
               } else {
-                console.log("success");
+                response.json({ success: true });
               }
               return;
             }
