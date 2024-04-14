@@ -42,6 +42,13 @@ document
       .then((data) => {
         if (data.success) {
           window.location.href = "/dashboard";
+        } else {
+          document.getElementById("dashboard-popup-create").textContent =
+            data.message;
+          setTimeout(function () {
+            document.getElementById("dashboard-popup-create").textContent =
+              "Create";
+          }, 2000);
         }
       })
       .catch((error) => {
