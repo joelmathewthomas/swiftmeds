@@ -21,7 +21,13 @@ document
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          window.location.href = "/home";
+          document.getElementById("register-button").textContent =
+            "Registration Successful. Please Log in";
+
+          // Delay reverting the text content back to "Login" after 2 seconds
+          setTimeout(function () {
+            window.location.href = "/";
+          }, 2000);
         } else {
           document.getElementById("register-button").textContent = data.message;
 
