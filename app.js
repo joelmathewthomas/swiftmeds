@@ -168,8 +168,6 @@ app.post("/register", function (request, response) {
               }
 
               // Code for successful insertion
-              request.session.loggedin = true;
-              request.session.username = username;
               response.json({ success: true });
             }
           );
