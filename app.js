@@ -14,6 +14,7 @@ const { connect } = require("http2");
 // Create a MySQL connection
 const connection = mysql.createConnection({
   // Database host
+
   host: "localhost",
   // Database username
   user: "swiftmeds",
@@ -293,6 +294,44 @@ app.post("/dashboardCreateuser", function (request, response) {
                 });
               } else {
                 response.json({ success: true });
+              }
+              return;
+            }
+          );
+        }
+      }
+    );
+  }
+});
+
+// http://localhost:3000/dashboardDeleteuser
+app.post("/dashboardDeleteuser", function (request, response) {
+  let username = request.body.usermame;
+
+  if (username) {
+    connection.query(
+      "SELECT FROM accounts WHERE username=?",
+      [username],
+      function (error, results) {
+        if (error) {
+          throw error;
+        }
+        if (results.length == 0) {
+          response.status(401).json({
+            success: false,
+            message: "User does not exist",
+          });
+        } else {
+          connection.query(
+            "DELETE FROM accounts WHERE username=?",
+            [username],
+            function (error) {
+              if (error) {
+                throw error;
+              } else {
+                response.status(501).json({
+                  success: true,
+                });
               }
               return;
             }
