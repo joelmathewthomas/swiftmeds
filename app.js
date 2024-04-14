@@ -278,36 +278,50 @@ app.get("/getDoctors", function (request, response) {
 
 // http://localhost:3000/getPatients
 app.get("/getPatients", function (request, response) {
-  connection.query(
-    "SELECT username from accounts where type=?",
-    ["patient"],
-    function (error, results, fields) {
-      if (error) {
-        response.status(500).json({
-          success: false,
-          message: "Database error occured",
-          error: error,
-        });
-        return;
-      }
+  if (request.session.loggedin) {
+    if (request.session.type == "admin") {
+      connection.query(
+        "SELECT username from accounts where type=?",
+        ["patient"],
+        function (error, results, fields) {
+          if (error) {
+            response.status(500).json({
+              success: false,
+              message: "Database error occured",
+              error: error,
+            });
+            return;
+          }
 
-      if (results.length === 0) {
-        console.log("No patient accounts found");
-        response.status(200).json({
-          success: true,
-          message: "No patient accounts found",
-          patients: [], // Empty array to indicate no patients found
-        });
-      } else {
-        // Send the results back to the client
-        response.status(200).json({
-          success: true,
-          message: "patient accounts found",
-          patients: results, // Sending the array of patient usernames
-        });
-      }
+          if (results.length === 0) {
+            console.log("No patient accounts found");
+            response.status(200).json({
+              success: true,
+              message: "No patient accounts found",
+              patients: [], // Empty array to indicate no patients found
+            });
+          } else {
+            // Send the results back to the client
+            response.status(200).json({
+              success: true,
+              message: "Patient accounts found",
+              patients: results, // Sending the array of patient usernames
+            });
+          }
+        }
+      );
+    } else {
+      response.json({
+        success: false,
+        message: "Not Authorized",
+      });
     }
-  );
+  } else {
+    response.json({
+      success: false,
+      message: "Please log in",
+    });
+  }
 });
 
 // http://localhost:3000/dashboardCreateuser
