@@ -263,16 +263,10 @@ app.get("/getDoctors", function (request, response) {
         }
       );
     } else {
-      response.json({
-        success: false,
-        message: "Not Authorized",
-      });
+      response.send("Not Authorized");
     }
   } else {
-    response.json({
-      success: false,
-      message: "Please log in",
-    });
+    response.send("Please Login to view dashboard");
   }
 });
 
@@ -311,16 +305,10 @@ app.get("/getPatients", function (request, response) {
         }
       );
     } else {
-      response.json({
-        success: false,
-        message: "Not Authorized",
-      });
+      response.send("Not Authorized");
     }
   } else {
-    response.json({
-      success: false,
-      message: "Please log in",
-    });
+    response.send("Please Login to view dashboard");
   }
 });
 
