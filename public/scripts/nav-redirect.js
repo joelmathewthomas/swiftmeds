@@ -17,13 +17,13 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("home-link")
     .addEventListener("click", function (event) {
       event.preventDefault();
-      window.location.href = "/home";
+      window.location.href = "/";
     });
 
   document
     .getElementById("login-link")
     .addEventListener("click", function (event) {
       event.preventDefault();
-      window.location.href = "/";
+      window.location.href = "/login";
     });
 });
