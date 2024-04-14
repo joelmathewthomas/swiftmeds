@@ -2,29 +2,38 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SWIFTMEDS</title>
-    <link rel="stylesheet" href="/css/stylenew.css" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Contact page</title>
 
-    <!--Google fonts-->
+    <!--link for css file-->
+    <link rel="stylesheet" href="/css/stylenew.css" type="text/css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400;1,700&display=swap"
       rel="stylesheet"
     />
+    <!--library-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <!--library-->
   </head>
 
   <body>
     <header class="header">
-      <a href="#"><img src="/static/logo.png" class="logo" alt="" /></a>
-      <!--navigation bar-->
+      <a href="#" class="logo">
+        <img src="/static/logo.png  " />
+      </a>
+      <!--nav bar-->
+
       <nav class="headbar">
         <a id="home-link">Home</a>
-        <a id="aboutus-link">About</a>
+        <a id="aboutus-link">About Us</a>
         <a>Doctors</a>
-        <a id="medicine-link">Medicine</a>
-        <a id="contact-link">Contact</a>
-        <a id="btn-login-username" class="btnlogin-popup">Login</a>
+        <a>Medicine</a>
+        <a id="contact-link" id="contact-link">Contact</a>
+        <a id="login-link">Login</a>
       </nav>
 
       <!--navigation bar-->
@@ -42,112 +51,13 @@
 
         <button>Make An appointments</button>
       </div>
-
       <div class="right">
         <img src="/static/wall.png" alt="" />
       </div>
     </section>
 
-    <div class="wrapper">
-      <span class="icon-close"><ion-icon name="close"></ion-icon></span>
-      <div class="form-box login">
-        <h2>Login</h2>
-        <form id="login-form">
-          <div class="input-box">
-            <span class="icon"><ion-icon name="person"></ion-icon></span>
-            <input
-              type="username"
-              name="username"
-              id="login-username"
-              required
-            />
-            <label>Username</label>
-          </div>
-          <div class="input-box">
-            <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-            <input
-              type="password"
-              name="password"
-              id="login-password"
-              required
-            />
-            <label>Password</label>
-          </div>
-          <!-- TO BE IMPLEMENTED
-            <div class="remember-forgot">
-            <label
-              ><input
-                type="checkbox"
-                name="remember-forgot"
-                id="remember-forgot"
-              />Remember me</label
-            >
-            <a href="#">Forgot Password</a>
-          </div>-->
-          <button type="submit" class="btn btn-loginsubmit" id="login-button">
-            Login
-          </button>
-          <div class="login-register">
-            <p>
-              Don't have an account?
-              <a href="#" class="register-link">Register</a>
-            </p>
-          </div>
-        </form>
-      </div>
+    <script src="/scripts/nav-redirect.js"></script>
 
-      <div class="form-box register">
-        <h2>Registration</h2>
-        <form id="register-form">
-          <div class="input-box">
-            <span class="icon"><ion-icon name="person"></ion-icon></span>
-            <input
-              type="username"
-              name="username"
-              id="register-username"
-              required
-            />
-            <label>Username</label>
-          </div>
-
-          <div class="input-box">
-            <span class="icon"><ion-icon name="mail"></ion-icon></span>
-            <input type="email" name="email" id="register-email" required />
-            <label>Email</label>
-          </div>
-
-          <div class="input-box">
-            <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-            <input
-              type="password"
-              name="password"
-              id="register-password"
-              required
-            />
-            <label>Password</label>
-          </div>
-          <!-- TO BE IMPLEMENTED
-            <div class="remember-forgot">
-            <label
-              ><input type="checkbox" />I agree to the terms & conditions</label
-            >
-          </div>-->
-          <button type="submit" class="btn" id="register-button">
-            Register
-          </button>
-          <div class="login-register">
-            <p>
-              Already have an account?
-              <a href="#" class="login-link">Login</a>
-            </p>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <script src="/scripts/loginformtransform.js"></script>
-    <script src="/scripts/loginerrordisplay.js"></script>
-    <script src="/scripts/registererrordisplay.js"></script>
     <script
       type="module"
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
