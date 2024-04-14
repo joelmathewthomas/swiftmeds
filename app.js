@@ -86,6 +86,7 @@ app.post("/auth", function (request, response) {
                 // Set session variables and send success response
                 request.session.loggedin = true;
                 request.session.username = username;
+                request.session.type = "admin";
                 response.json({ success: true });
               } else {
                 // If password doesn't match, send authentication failure response
@@ -158,6 +159,20 @@ app.post("/register", function (request, response) {
         }
       }
     );
+  }
+});
+
+// http://localhost:3000/getSessionData
+app.get("/getSessionData", function (request, response) {
+  if (request.session.loggedin) {
+    response.json({
+      success: true,
+      loggedin: request.session.loggedin,
+      username: request.session.username,
+      type: request.session.type,
+    });
+  } else {
+    response.json({ success: false, loggedin: request.session.loggedin });
   }
 });
 
