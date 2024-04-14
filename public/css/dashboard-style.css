@@ -37,11 +37,6 @@
   border-radius: 5px;
 }
 
-#dashboard-create-user-button {
-  display: block;
-  margin: 20px auto;
-}
-
 .dashboard-popup {
   display: none;
   flex-direction: column; /* Arrange items vertically */
@@ -86,4 +81,13 @@ select {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.dashboard-create-delete-btn {
+  display: flex; /* Ensures the buttons are displayed inline */
+  justify-content: center; /* Centers the buttons horizontally */
+}
+
+.dashboard-create-delete-btn button {
+  margin: 10px;
 }
