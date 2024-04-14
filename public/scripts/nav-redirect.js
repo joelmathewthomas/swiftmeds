@@ -27,3 +27,10 @@ document.addEventListener("DOMContentLoaded", function () {
       window.location.href = "/login";
     });
 });
+
+document
+  .getElementById("medicine-link")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+    window.location.href = "/medicine";
+  });
