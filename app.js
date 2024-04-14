@@ -188,7 +188,6 @@ app.get("/getSessionData", function (request, response) {
       username: request.session.username,
       type: request.session.type,
     });
-    console.log("gsd type is", request.session.type);
   } else {
     response.json({ success: false, loggedin: request.session.loggedin });
   }
@@ -225,7 +224,15 @@ app.get("/aboutus", function (request, response) {
 
 // http://localhost:3000/dashboard
 app.get("/dashboard", function (request, response) {
-  response.sendFile(path.join(__dirname + "/dashboard.html"));
+  if (request.session.loggedin) {
+    if (request.session.type == "admin") {
+      response.sendFile(path.join(__dirname + "/dashboard.html"));
+    } else {
+      response.send("Not Authorized");
+    }
+  } else {
+    response.send("Please Login to view dashboard");
+  }
 });
 
 // http://localhost:3000/getDoctors
@@ -266,7 +273,7 @@ app.get("/getDoctors", function (request, response) {
       response.send("Not Authorized");
     }
   } else {
-    response.send("Please Login to view dashboard");
+    response.send("Not Authorized");
   }
 });
 
@@ -308,7 +315,7 @@ app.get("/getPatients", function (request, response) {
       response.send("Not Authorized");
     }
   } else {
-    response.send("Please Login to view dashboard");
+    response.send("Not Authorized");
   }
 });
 
