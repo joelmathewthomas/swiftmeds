@@ -20,8 +20,7 @@ document
   .addEventListener("submit", function (event) {
     event.preventDefault();
 
-    var username = document.getElementById("dashboard-delete-username");
-
+    var username = document.getElementById("dashboard-delete-username").value;
     fetch("/dashboardDeleteuser", {
       method: "POST",
       headers: {

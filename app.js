@@ -306,11 +306,10 @@ app.post("/dashboardCreateuser", function (request, response) {
 
 // http://localhost:3000/dashboardDeleteuser
 app.post("/dashboardDeleteuser", function (request, response) {
-  let username = request.body.usermame;
-
+  let username = request.body.username;
   if (username) {
     connection.query(
-      "SELECT FROM accounts WHERE username=?",
+      "SELECT username FROM accounts WHERE username=?",
       [username],
       function (error, results) {
         if (error) {
