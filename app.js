@@ -86,8 +86,25 @@ app.post("/auth", function (request, response) {
                 // Set session variables and send success response
                 request.session.loggedin = true;
                 request.session.username = username;
-                request.session.type = "admin";
-                response.json({ success: true });
+                connection.query(
+                  "SELECT type from accounts where username = ?",
+                  [username],
+                  function (error, results) {
+                    if (error) {
+                      response.json({
+                        success: false,
+                        message: "Database error occured",
+                        error: error,
+                      });
+                    } else {
+                      const user = results[0];
+                      request.session.type = user.type;
+                      response.json({ success: true });
+                    }
+                    return;
+                  }
+                );
+                return;
               } else {
                 // If password doesn't match, send authentication failure response
                 response.status(401).json({
@@ -171,6 +188,7 @@ app.get("/getSessionData", function (request, response) {
       username: request.session.username,
       type: request.session.type,
     });
+    console.log("gsd type is", request.session.type);
   } else {
     response.json({ success: false, loggedin: request.session.loggedin });
   }
@@ -212,36 +230,50 @@ app.get("/dashboard", function (request, response) {
 
 // http://localhost:3000/getDoctors
 app.get("/getDoctors", function (request, response) {
-  connection.query(
-    "SELECT username from accounts where type=?",
-    ["doctor"],
-    function (error, results, fields) {
-      if (error) {
-        response.status(500).json({
-          success: false,
-          message: "Database error occured",
-          error: error,
-        });
-        return;
-      }
+  if (request.session.loggedin) {
+    if (request.session.type == "admin") {
+      connection.query(
+        "SELECT username from accounts where type=?",
+        ["doctor"],
+        function (error, results, fields) {
+          if (error) {
+            response.status(500).json({
+              success: false,
+              message: "Database error occured",
+              error: error,
+            });
+            return;
+          }
 
-      if (results.length === 0) {
-        console.log("No doctor accounts found");
-        response.status(200).json({
-          success: true,
-          message: "No doctor accounts found",
-          doctors: [], // Empty array to indicate no doctors found
-        });
-      } else {
-        // Send the results back to the client
-        response.status(200).json({
-          success: true,
-          message: "Doctor accounts found",
-          doctors: results, // Sending the array of doctor usernames
-        });
-      }
+          if (results.length === 0) {
+            console.log("No doctor accounts found");
+            response.status(200).json({
+              success: true,
+              message: "No doctor accounts found",
+              doctors: [], // Empty array to indicate no doctors found
+            });
+          } else {
+            // Send the results back to the client
+            response.status(200).json({
+              success: true,
+              message: "Doctor accounts found",
+              doctors: results, // Sending the array of doctor usernames
+            });
+          }
+        }
+      );
+    } else {
+      response.json({
+        success: false,
+        message: "Not Authorized",
+      });
     }
-  );
+  } else {
+    response.json({
+      success: false,
+      message: "Please log in",
+    });
+  }
 });
 
 // http://localhost:3000/getPatients
