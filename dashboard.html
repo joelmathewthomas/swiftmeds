@@ -63,12 +63,32 @@
         </form>
       </div>
 
+      <div id="dashboard-delete-user-popup" class="dashboard-delete-popup">
+        <h2>Delete User</h2>
+        <form action="#" id="dashboard-delete-user-form">
+          <div class="input-container">
+            <label for="dashboard-username">Username:</label>
+            <input
+              type="text"
+              id="dashboard-delete-username"
+              name="username"
+              required
+            />
+          </div>
+          <div class="delete-popup-button">
+            <button id="dashboard-popup-delete" type="submit">Delete</button>
+            <button id="dashboard-delete-close-popup-button">Cancel</button>
+          </div>
+        </form>
+      </div>
+
       <div class="dashboard-create-delete-btn">
         <button id="dashboard-create-user-button">Create User</button>
         <button id="dashboard-delete-user-button">Delete User</button>
       </div>
     </div>
     <script src="/scripts/dashboard-create-user.js"></script>
+    <script src="/scripts/dashboard-delete-user.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/scripts/getDoctors.js"></script>
     <script src="/scripts/getPatients.js"></script>
