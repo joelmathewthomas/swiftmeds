@@ -16,7 +16,7 @@
 
   <body>
     <header class="header">
-      <a href="#"><img src="img/logo.png" class="logo" alt="" /></a>
+      <a href="#"><img src="/static/logo.png" class="logo" alt="" /></a>
       <!--navigation bar-->
       <nav class="headbar">
         <a id="home-link">Home</a>
@@ -24,7 +24,7 @@
         <a>Doctors</a>
         <a id="medicine-link">Medicine</a>
         <a id="contact-link">Contact</a>
-        <a id="btn-login-username">Login</a>
+        <a id="btn-login-username" class="btnlogin-popup">Login</a>
       </nav>
 
       <!--navigation bar-->
@@ -44,11 +44,118 @@
       </div>
 
       <div class="right">
-        <img src="img/wall.png" alt="" />
+        <img src="/static/wall.png" alt="" />
       </div>
     </section>
 
-    <script src="/scripts/nav-redirect.js"></script>
+    <div class="wrapper">
+      <span class="icon-close"><ion-icon name="close"></ion-icon></span>
+      <div class="form-box login">
+        <h2>Login</h2>
+        <form id="login-form">
+          <div class="input-box">
+            <span class="icon"><ion-icon name="person"></ion-icon></span>
+            <input
+              type="username"
+              name="username"
+              id="login-username"
+              required
+            />
+            <label>Username</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+            <input
+              type="password"
+              name="password"
+              id="login-password"
+              required
+            />
+            <label>Password</label>
+          </div>
+          <!-- TO BE IMPLEMENTED
+            <div class="remember-forgot">
+            <label
+              ><input
+                type="checkbox"
+                name="remember-forgot"
+                id="remember-forgot"
+              />Remember me</label
+            >
+            <a href="#">Forgot Password</a>
+          </div>-->
+          <button type="submit" class="btn btn-loginsubmit" id="login-button">
+            Login
+          </button>
+          <div class="login-register">
+            <p>
+              Don't have an account?
+              <a href="#" class="register-link">Register</a>
+            </p>
+          </div>
+        </form>
+      </div>
+
+      <div class="form-box register">
+        <h2>Registration</h2>
+        <form id="register-form">
+          <div class="input-box">
+            <span class="icon"><ion-icon name="person"></ion-icon></span>
+            <input
+              type="username"
+              name="username"
+              id="register-username"
+              required
+            />
+            <label>Username</label>
+          </div>
+
+          <div class="input-box">
+            <span class="icon"><ion-icon name="mail"></ion-icon></span>
+            <input type="email" name="email" id="register-email" required />
+            <label>Email</label>
+          </div>
+
+          <div class="input-box">
+            <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+            <input
+              type="password"
+              name="password"
+              id="register-password"
+              required
+            />
+            <label>Password</label>
+          </div>
+          <!-- TO BE IMPLEMENTED
+            <div class="remember-forgot">
+            <label
+              ><input type="checkbox" />I agree to the terms & conditions</label
+            >
+          </div>-->
+          <button type="submit" class="btn" id="register-button">
+            Register
+          </button>
+          <div class="login-register">
+            <p>
+              Already have an account?
+              <a href="#" class="login-link">Login</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="/scripts/loginformtransform.js"></script>
+    <script src="/scripts/loginerrordisplay.js"></script>
+    <script src="/scripts/registererrordisplay.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
     <!--main-->
   </body>
 </html>

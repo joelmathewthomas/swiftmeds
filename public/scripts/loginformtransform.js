@@ -41,9 +41,10 @@ document
     window.location.href = "/home";
   });
 
-document
+/*document
   .getElementById("dashboard-link")
   .addEventListener("click", function (event) {
     event.preventDefault();
     window.location.href = "/dashboard";
   });
+*/
