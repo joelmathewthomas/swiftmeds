@@ -64,12 +64,17 @@
 
 .input-container {
   display: flex;
-  align-items: center;
   margin-bottom: 10px;
 }
 
 .input-container label {
   margin-right: 10px;
+  width: 100px;
+}
+
+.input-container input,
+select {
+  width: 150px;
 }
 
 #dashboard-create-user-popup button {
