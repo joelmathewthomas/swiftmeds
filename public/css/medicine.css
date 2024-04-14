@@ -52,7 +52,7 @@ body {
 .header .logo img {
   margin-top: 10px;
   height: 100px;
-  width: 65%;
+  width: 100%;
   display: inline-block;
 }
 
@@ -84,7 +84,7 @@ body {
 
 .header .icon div {
   cursor: pointer;
-  margin-left: 5rem;
+  margin-left: 2rem;
   height: 4.5rem;
   width: 4.5rem;
   line-height: 4.5rem;

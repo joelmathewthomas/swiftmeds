@@ -215,6 +215,11 @@ app.get("/contact", function (request, response) {
   response.sendFile(path.join(__dirname + "/contact.html"));
 });
 
+// http://localhost:3000/medicine
+app.get("/medicine", function (request, response) {
+  response.sendFile(path.join(__dirname + "/medicine.html"));
+});
+
 // http://localhost:3000/aboutus
 app.get("/aboutus", function (request, response) {
   response.sendFile(path.join(__dirname + "/aboutus.html"));
