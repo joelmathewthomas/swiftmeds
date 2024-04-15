@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
           slideImg.className = "slide-img";
 
           const img = document.createElement("img");
-          img.src = `/static/${medicine.img}`;
+          img.src = `/static/medicines/${medicine.img}`;
           const imageurl = "";
           slideImg.appendChild(img);
 
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
           typeLink.href = "#";
           typeLink.textContent = medicine.name;
           const typeSpan = document.createElement("span");
-          typeSpan.textContext = `${medicine.quantity}`;
+          typeSpan.innerHTML = `Available ${medicine.quantity} nos`;
           type.appendChild(typeLink);
           type.appendChild(typeSpan);
 
