@@ -12,9 +12,9 @@ const path = require("path");
 const { connect } = require("http2");
 
 // Create a MySQL connection
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
   // Database host
-
+  connectionLimit: 10,
   host: "localhost",
   // Database username
   user: "swiftmeds",
