@@ -41,7 +41,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // http://localhost:3000/
 app.get("/", function (request, response) {
   // Render login template
-  response.sendFile(path.join(__dirname + "/indexnew.html"));
+  response.sendFile(path.join(__dirname + "/index.html"));
 });
 
 // http://localhost:3000/auth
