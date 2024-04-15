@@ -429,7 +429,7 @@ app.get("/getMedicines", function (request, response) {
       if (error) {
         response.status(500).json({ success: false, error: error });
       } else {
-        response.json({ medicines: results });
+        response.json({ success: true, medicines: results });
       }
     });
   } else {
