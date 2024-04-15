@@ -51,7 +51,7 @@ body {
 .header .logo img {
   margin-top: 10px;
   height: 100px;
-  width: 65%;
+  width: 100%;
   display: inline-block;
 }
 
@@ -229,3 +229,46 @@ i:hover {
   padding-bottom: 1.5%;
 }
 /*location*/
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: var(--light-colour);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Apply the same styling as other links in the nav */
+.header .headbar a {
+  font-size: 1.7rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  color: var(--light-colour);
+}
+
+.header .headbar a:hover {
+  color: #fff;
+  background: linear-gradient(120deg, #1668e4 40%, #663399);
+}

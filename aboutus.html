@@ -3,11 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device=width,initial-scale" />
-    <title>Service</title>
+    <title>About Us</title>
 
     <!--link for css file-->
     <link rel="stylesheet" type="text/css" href="/css/aboutus.css" />
     <!--link for css file-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
 
     <!--google font-->
     <link
@@ -29,15 +34,23 @@
         <a id="home-link">Home</a>
         <a id="aboutus-link">About Us</a>
         <a>Doctors</a>
-        <a>Medicine</a>
-        <a id="contact-link">Contact</a>
-        <a id="login-link">Login</a>
+        <a id="medicine-link">Medicine</a>
+        <a id="contact-link" id="contact-link">Contact</a>
+        <div class="dropdown">
+          <a id="login-link" class="dropbtn"
+            >Login <i class="fa fa-caret-down"></i
+          ></a>
+          <div class="dropdown-content">
+            <a id="dashboard-link">Dashboard</a>
+            <a id="logout-link">Logout</a>
+          </div>
+        </div>
       </nav>
 
       <!--nav bar-->
 
       <div class="menubtn">
-        <button>helpline</button>
+        <button>Helpline</button>
       </div>
     </header>
 
@@ -68,6 +81,7 @@
     </section>
 
     <script src="/scripts/nav-redirect.js"></script>
+    <script src="/scripts/get-username.js"></script>
     <!--about-->
   </body>
 </html>

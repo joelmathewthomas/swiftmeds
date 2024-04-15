@@ -53,7 +53,7 @@ app.post("/auth", function (request, response) {
   if (username && password) {
     // Execute SQL query to check if the account exists
     connection.query(
-      "SELECT * FROM accounts WHERE username = ?",
+      "SELECT * FROM accounts WHERE BINARY username = ?",
       [username],
       function (error, results, fields) {
         if (error) {
@@ -69,7 +69,7 @@ app.post("/auth", function (request, response) {
         if (results.length > 0) {
           // Execute another SQL query to verify the password
           connection.query(
-            "SELECT * FROM accounts WHERE username = ? AND password = ?",
+            "SELECT * FROM accounts WHERE BINARY username = ? AND BINARY password = ?",
             [username, password],
             function (error, results, fields) {
               if (error) {
@@ -87,7 +87,7 @@ app.post("/auth", function (request, response) {
                 request.session.loggedin = true;
                 request.session.username = username;
                 connection.query(
-                  "SELECT type from accounts where username = ?",
+                  "SELECT type from accounts where BINARY username = ?",
                   [username],
                   function (error, results) {
                     if (error) {
@@ -143,7 +143,7 @@ app.post("/register", function (request, response) {
 
   if (username && password) {
     connection.query(
-      "SELECT * FROM accounts WHERE username = ?",
+      "SELECT * FROM accounts WHERE BINARY username = ?",
       [username, password],
       function (error, results, fields) {
         if (error) throw error;
@@ -206,13 +206,23 @@ app.get("/home", function (request, response) {
 
 // Start the server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, "192.168.1.254", () => {
   console.log(`Server is running on port ${PORT}`);
+});
+
+// http://localhost:3000/login
+app.get("/login", function (request, response) {
+  response.sendFile(path.join(__dirname + "/login.html"));
 });
 
 // http://localhost:3000/contact
 app.get("/contact", function (request, response) {
   response.sendFile(path.join(__dirname + "/contact.html"));
+});
+
+// http://localhost:3000/medicine
+app.get("/medicine", function (request, response) {
+  response.sendFile(path.join(__dirname + "/medicine.html"));
 });
 
 // http://localhost:3000/aboutus
@@ -230,6 +240,22 @@ app.get("/dashboard", function (request, response) {
     }
   } else {
     response.send("Please Login to view dashboard");
+  }
+});
+
+// http://localhost:3000/logout
+app.get("/logout", function (request, response) {
+  if (request.session.loggedin) {
+    request.session.loggedin = false;
+    request.session.username = "";
+    request.session.type = "";
+    response.json({
+      success: true,
+    });
+  } else {
+    response.json({
+      success: false,
+    });
   }
 });
 

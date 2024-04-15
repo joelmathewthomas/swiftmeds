@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Contact page</title>
+    <title>Contact</title>
 
     <!--link for css file-->
     <link rel="stylesheet" href="/css/contact.css" type="text/css" />
@@ -22,15 +22,24 @@
 
   <body>
     <header class="header">
-      <a href="#"><img src="/static/logo1.png" class="logo" alt="" /></a>
-      <!--navigation bar-->
+      <a href="#" class="logo">
+        <img src="/static/logo.png  " />
+      </a>
+      <!--nav bar-->
+
       <nav class="headbar">
         <a id="home-link">Home</a>
         <a id="aboutus-link">About Us</a>
         <a>Doctors</a>
-        <a>Medicine</a>
-        <a id="contact-link">Contact</a>
-        <a id="login-link">Login</a>
+        <a id="medicine-link">Medicine</a>
+        <a id="contact-link" id="contact-link">Contact</a>
+        <div class="dropdown">
+          <a id="login-link" class="dropbtn">Login <i class="fa fa-caret-down"></i></a>
+          <div class="dropdown-content">
+            <a id="dashboard-link">Dashboard</a>
+            <a id="logout-link">Logout</a>
+          </div>
+        </div>
       </nav>
 
       <!--navigation bar-->
@@ -129,6 +138,7 @@
       
       <!--location-->
     <script src="/scripts/nav-redirect.js"></script>
+    <script src="/scripts/get-username.js"></script>
     </body>
   </html>
   

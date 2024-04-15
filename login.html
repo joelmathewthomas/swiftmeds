@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login</title>
+
+    <!--link for css file-->
+    <link rel="stylesheet" type="text/css" href="/css/login.css" />
+    <!--link for css file-->
+
+    <!--library-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <!--library-->
+    <!--google font-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Andika&display=swap"
+      rel="stylesheet"
+    />
+    <!--google font-->
+  </head>
+  <body>
+    <!--header-->
+
+    <header class="header">
+      <a href="#" class="logo">
+        <img src="/static/logo.png  " />
+      </a>
+      <!--nav bar-->
+
+      <nav class="headbar">
+        <a id="home-link">Home</a>
+        <a id="aboutus-link">About Us</a>
+        <a>Doctors</a>
+        <a id="medicine-link">Medicine</a>
+        <a id="contact-link" id="contact-link">Contact</a>
+        <div class="dropdown">
+          <a id="login-link" class="dropbtn"
+            >Login <i class="fa fa-caret-down"></i
+          ></a>
+          <div class="dropdown-content">
+            <<a id="dashboard-link">Dashboard</a>
+            <a id="logout-link">Logout</a>
+          </div>
+        </div>
+      </nav>
+
+      <!--nav bar-->
+      <div class="menubtn">
+        <button>helpline</button>
+      </div>
+    </header>
+    <!--header-->
+    <!--form-->
+
+    <div class="container" id="container">
+      <!--sign up-->
+      <div class="form sign-Up-container">
+        <form id="register-form">
+          <h1>Create An Account</h1>
+
+          <!--input-field-->
+          <div class="input-field">
+            <i class="fa fa-user"></i>
+            <input id="register-username" type="text" placeholder="Username" />
+          </div>
+
+          <div class="input-field">
+            <i class="fa fa-envelope"></i>
+            <input id="register-email" type="email" placeholder="Email" />
+          </div>
+
+          <div class="input-field">
+            <i class="fa fa-lock"></i>
+            <input
+              id="register-password"
+              type="password "
+              placeholder="Password"
+            />
+          </div>
+          <!--input-field-->
+          <button type="submit" id="register-button">Sign Up</button>
+        </form>
+      </div>
+      <!--sign up-->
+
+      <!--sign in-->
+      <div class="form sign-In-container">
+        <form id="login-form">
+          <h1>Login</h1>
+
+          <!--input-field-->
+          <div class="input-field">
+            <i class="fa fa-user"></i>
+            <input id="login-username" type="text" placeholder="Username" />
+          </div>
+
+          <div class="input-field">
+            <i class="fa fa-lock"></i>
+            <input id="login-password" type="password" placeholder="Password" />
+          </div>
+          <!--input-field-->
+          <a href="#">Forgot your password</a>
+          <button id="login-button" type="submit">Sign In</button>
+        </form>
+      </div>
+      <!--sign in-->
+      <!--overlay-->
+      <div class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel overlay-left">
+            <h1>WELCOME BACK</h1>
+            <p>
+              To keep connected with us please login with your personal info
+            </p>
+            <img
+              src="/static/s1.png"
+              style="height: 25rem; width: 30rem; padding-top: 5%"
+            />
+            <button class="btn" id="signIn">Sign In</button>
+          </div>
+
+          <div class="overlay-panel overlay-right">
+            <h1>HELLO USER!</h1>
+            <p>Enter your personal details and start your journey with us</p>
+            <img src="/static/s3.png" style="height: 25rem; width: 30rem" />
+            <button class="btn" id="signUp">Sign Up</button>
+          </div>
+        </div>
+      </div>
+      <!--overlay-->
+    </div>
+    <!--form-->
+    <script>
+      const signUpButton = document.getElementById("signUp");
+      const signInButton = document.getElementById("signIn");
+      const container = document.getElementById("container");
+
+      signUpButton.addEventListener("click", () => {
+        container.classList.add("right-panel-active");
+      });
+      signInButton.addEventListener("click", () => {
+        container.classList.remove("right-panel-active");
+      });
+    </script>
+    <script src="/scripts/nav-redirect.js"></script>
+    <script src="/scripts/loginerrordisplay.js"></script>
+    <script src="/scripts/registererrordisplay.js"></script>
+    <script src="/scripts/get-username.js"></script>
+    "
+  </body>
+</html>
