@@ -86,22 +86,22 @@
 
       <!--sign in-->
       <div class="form sign-In-container">
-        <form action="#">
+        <form id="login-form">
           <h1>Login</h1>
 
           <!--input-field-->
           <div class="input-field">
             <i class="fa fa-user"></i>
-            <input type="text" placeholder="Username" />
+            <input id="login-username" type="text" placeholder="Username" />
           </div>
 
           <div class="input-field">
             <i class="fa fa-lock"></i>
-            <input type="password" placeholder="Password" />
+            <input id="login-password" type="password" placeholder="Password" />
           </div>
           <!--input-field-->
           <a href="#">Forgot your password</a>
-          <button>Sign In</button>
+          <button id="login-button" type="submit">Sign In</button>
         </form>
       </div>
       <!--sign in-->
@@ -144,5 +144,7 @@
       });
     </script>
     <script src="/scripts/nav-redirect.js"></script>
+    <script src="/scripts/loginerrordisplay.js"></script>
+    "
   </body>
 </html>
