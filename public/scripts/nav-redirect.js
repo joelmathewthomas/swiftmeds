@@ -34,3 +34,10 @@ document
     event.preventDefault();
     window.location.href = "/medicine";
   });
+
+document
+  .getElementById("dashboard-link")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+    window.location.href = "/dashboard";
+  });
