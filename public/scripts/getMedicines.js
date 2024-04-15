@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
           typeLink.href = "#";
           typeLink.textContent = medicine.name;
           const typeSpan = document.createElement("span");
-          typeSpan.textContext = "${medicine.quantity}";
+          typeSpan.textContext = `${medicine.quantity}`;
           console.log("Quantity is ", medicine.quantity);
           type.appendChild(typeLink);
           type.appendChild(typeSpan);
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const price = document.createElement("a");
           price.className = "price";
           price.href = "#";
-          price.textContent = "Rs${medicine.price}";
+          price.textContent = `Rs${medicine.price}`;
           console.log("Price is ", medicine.price);
 
           detailBox.appendChild(type);
