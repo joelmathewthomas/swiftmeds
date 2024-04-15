@@ -21,8 +21,7 @@ document
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          document.getElementById("register-button").textContent =
-            "Registration Successful. Please Log in";
+          document.getElementById("register-button").textContent = "Success";
 
           // Delay reverting the text content back to "Login" after 2 seconds
           setTimeout(function () {

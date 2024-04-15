@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device=width,initial-scale" />
+    <title>Medicines</title>
+
+    <!--link for css file-->
+    <link rel="stylesheet" type="text/css" href="/css/medicine.css" />
+    <!--link for css file-->
+
+    <!--google font-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <!--google font-->
+
+    <!--library-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!--library-->
+  </head>
+  <body>
+    <!--header-->
+
+    <header class="header">
+      <a href="#" class="logo">
+        <img src="/static/logo.png  " />
+      </a>
+      <!--nav bar-->
+
+      <nav class="headbar">
+        <a id="home-link">Home</a>
+        <a id="aboutus-link">About Us</a>
+        <a>Doctors</a>
+        <a id="medicine-link">Medicine</a>
+        <a id="contact-link" id="contact-link">Contact</a>
+        <div class="dropdown">
+          <a id="login-link" class="dropbtn"
+            >Login <i class="fa fa-caret-down"></i
+          ></a>
+          <div class="dropdown-content">
+            <a id="dashboard-link">Dashboard</a>
+            <a id="logout-link">Logout</a>
+          </div>
+        </div>
+      </nav>
+
+      <!--nav bar-->
+      <!-- Not needed no
+      <div class="menubtn">
+        <button>helpline</button>
+      </div>-->
+
+      <!--Icons-->
+      <div class="icon">
+        <div class="fa fa-search" id="search-btn"></div>
+        <div class="fa fa-shopping-cart" id="cart-btn"></div>
+        <div class="fa fa-upload" id="up-btn"></div>
+      </div>
+      <!--Icons-->
+
+      <form class="search-form">
+        <input type="search" id="search-box" placeholder="Search" />
+        <label for="search-box" class="fa fa-search"></label>
+      </form>
+
+      <div class="shopping-cart">
+        <div class="box">
+          <img src="/static/m10.png" />
+          <i class="fa fa-trash"></i>
+          <div class="content">
+            <h3>Immunity tablet 60's</h3>
+            <span class="price">$6.79</span>
+          </div>
+        </div>
+        <div class="box">
+          <img src="/static/m2.png" />
+          <i class="fa fa-trash"></i>
+          <div class="content">
+            <h3>Sunscreem</h3>
+            <span class="price">$5.99</span>
+          </div>
+        </div>
+        <div class="box">
+          <img src="/static/m4.png" />
+          <i class="fa fa-trash"></i>
+          <div class="content">
+            <h3>Moisturizer Cream</h3>
+            <span class="price">$10.99</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="upload-form">
+        <input class="default-btn" type="file" hidden />
+        <div class="btn">
+          <button onclick="active()" class="custom-btn">
+            Upload prescription
+          </button>
+        </div>
+        <div class="file-name">No file chosen</div>
+      </div>
+    </header>
+
+    <!--Meicine Section 2-->
+
+    <section class="bottom" id="bottom">
+      <div class="container">
+        <h1 class="heading">Medicine</h1>
+        <hr />
+      </div>
+
+      <!--Box container-->
+
+      <div class="box-container">
+        <!--1-->
+
+        <!--box-->
+        <div class="box">
+          <div class="slide-img">
+            <img src="/static/m7.png" />
+            <!--overlay-->
+            <div class="overlay">
+              <!--learn btn-->
+              <p>
+                It is one of its kin hygiene product that kills 99.99% germs. It
+                also keeps your hands soft and moisturised
+              </p>
+
+              <a href="#" class="learn-btn">Learn More</a>
+            </div>
+            <!--overlay-->
+          </div>
+
+          <!--rating stars-->
+          <div class="stars">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half"></i>
+          </div>
+
+          <!--Detail box-->
+
+          <div class="detail-box">
+            <!--type-->
+            <div class="type">
+              <a href="#">Hand Sanitizer 500ml</a>
+              <span>new arrival</span>
+            </div>
+            <!--type-->
+
+            <!--Price-->
+            <a href="#" class="price">$20</a>
+            <!--Price-->
+          </div>
+          <!--order & add to cart button-->
+          <a href="#" class="my-button" title="b-title">Order Now</a>
+          <a href="#" class="my-button" title="b-title">Add to Cart</a>
+          <!--order & add to cart button-->
+
+          <!--Detail box-->
+        </div>
+
+        <!--2-->
+
+        <!--box-->
+        <div class="box">
+          <div class="slide-img">
+            <img src="/static/m3.png" />
+            <!--overlay-->
+            <div class="overlay">
+              <!--learn btn-->
+              <p>
+                Advanced formula facilitates deep cleansing to help make your
+                scalp fight dandruff and itchiiness.
+              </p>
+
+              <a href="#" class="learn-btn">Learn More</a>
+            </div>
+            <!--overlay-->
+          </div>
+
+          <!--rating stars-->
+          <div class="stars">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half"></i>
+          </div>
+
+          <!--Detail box-->
+
+          <div class="detail-box">
+            <!--type-->
+            <div class="type">
+              <a href="#">Shampoo & Connditioner 180ml</a>
+              <span>new arrival</span>
+            </div>
+            <!--type-->
+
+            <!--Price-->
+            <a href="#" class="price">$30</a>
+            <!--Price-->
+          </div>
+          <!--order & add to cart button-->
+          <a href="#" class="my-button" title="b-title">Order Now</a>
+          <a href="#" class="my-button" title="b-title">Add to Cart</a>
+          <!--order & add to cart button-->
+
+          <!--Detail box-->
+        </div>
+        <!--3-->
+
+        <!--box-->
+        <div class="box">
+          <div class="slide-img">
+            <img src="/static/m4.png" />
+            <!--overlay-->
+            <div class="overlay">
+              <!--learn btn-->
+              <p>
+                Keratolytic qualities of moisturex cream can smoothe rough,
+                scally skin. It makes the skin healthy,fully protected skin and
+                shiny.
+              </p>
+
+              <a href="#" class="learn-btn">Learn More</a>
+            </div>
+            <!--overlay-->
+          </div>
+
+          <!--rating stars-->
+          <div class="stars">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half"></i>
+          </div>
+
+          <!--Detail box-->
+
+          <div class="detail-box">
+            <!--type-->
+            <div class="type">
+              <a href="#">Moisturizing Cream 100gm</a>
+              <span>new arrival</span>
+            </div>
+            <!--type-->
+
+            <!--Price-->
+            <a href="#" class="price">$20</a>
+            <!--Price-->
+          </div>
+          <!--order & add to cart button-->
+          <a href="#" class="my-button" title="b-title">Order Now</a>
+          <a href="#" class="my-button" title="b-title">Add to Cart</a>
+          <!--order & add to cart button-->
+
+          <!--Detail box-->
+        </div>
+        <!--4-->
+
+        <!--box-->
+        <div class="box">
+          <div class="slide-img">
+            <img src="/static/m5.png" />
+            <!--overlay-->
+            <div class="overlay">
+              <!--learn btn-->
+              <p>
+                Providde protection against germs, It has triclosan that helps
+                to keep your boddy clean and protected.
+              </p>
+
+              <a href="#" class="learn-btn">Learn More</a>
+            </div>
+            <!--overlay-->
+          </div>
+
+          <!--rating stars-->
+          <div class="stars">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half"></i>
+          </div>
+
+          <!--Detail box-->
+
+          <div class="detail-box">
+            <!--type-->
+            <div class="type">
+              <a href="#">Anti Bacterial Soap 75gm</a>
+              <span>new arrival</span>
+            </div>
+            <!--type-->
+
+            <!--Price-->
+            <a href="#" class="price">$20</a>
+            <!--Price-->
+          </div>
+          <!--order & add to cart button-->
+          <a href="#" class="my-button" title="b-title">Order Now</a>
+          <a href="#" class="my-button" title="b-title">Add to Cart</a>
+          <!--order & add to cart button-->
+
+          <!--Detail box-->
+        </div>
+      </div>
+
+      <!--Box container-->
+    </section>
+
+    <!--Meicine Section-->
+
+    <!--Meicine Section-->
+
+    <section class="top" id="top">
+      <div class="container">
+        <h1 class="heading">WELLNESS</h1>
+        <hr />
+      </div>
+
+      <!--Box container-->
+
+      <div class="box-container">
+        <!--1-->
+
+        <!--box-->
+        <div class="box">
+          <div class="slide-img">
+            <img src="/static/m1.png" />
+            <!--overlay-->
+            <div class="overlay">
+              <!--learn btn-->
+              <p>
+                It is one of its kin hygiene product that kills 99.99% germs. It
+                also keeps your hands soft and moisturised
+              </p>
+
+              <a href="#" class="learn-btn">Learn More</a>
+            </div>
+            <!--overlay-->
+          </div>
+
+          <!--rating stars-->
+          <div class="stars">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half"></i>
+          </div>
+
+          <!--Detail box-->
+
+          <div class="detail-box">
+            <!--type-->
+            <div class="type">
+              <a href="#">Hand Sanitizer 500ml</a>
+              <span>new arrival</span>
+            </div>
+            <!--type-->
+
+            <!--Price-->
+            <a href="#" class="price">$20</a>
+            <!--Price-->
+          </div>
+          <!--order & add to cart button-->
+          <a href="#" class="my-button" title="b-title">Order Now</a>
+          <a href="#" class="my-button" title="b-title">Add to Cart</a>
+          <!--order & add to cart button-->
+
+          <!--Detail box-->
+        </div>
+
+        <!--2-->
+
+        <!--box-->
+        <div class="box">
+          <div class="slide-img">
+            <img src="/static/m2.png" />
+            <!--overlay-->
+            <div class="overlay">
+              <!--learn btn-->
+              <p>
+                Advanced formula facilitates deep cleansing to help make your
+                scalp fight dandruff and itchiiness.
+              </p>
+
+              <a href="#" class="learn-btn">Learn More</a>
+            </div>
+            <!--overlay-->
+          </div>
+
+          <!--rating stars-->
+          <div class="stars">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half"></i>
+          </div>
+
+          <!--Detail box-->
+
+          <div class="detail-box">
+            <!--type-->
+            <div class="type">
+              <a href="#">Shampoo & Connditioner 180ml</a>
+              <span>new arrival</span>
+            </div>
+            <!--type-->
+
+            <!--Price-->
+            <a href="#" class="price">$30</a>
+            <!--Price-->
+          </div>
+          <!--order & add to cart button-->
+          <a href="#" class="my-button" title="b-title">Order Now</a>
+          <a href="#" class="my-button" title="b-title">Add to Cart</a>
+          <!--order & add to cart button-->
+
+          <!--Detail box-->
+        </div>
+        <!--3-->
+
+        <!--box-->
+        <div class="box">
+          <div class="slide-img">
+            <img src="/static/m6.png" />
+            <!--overlay-->
+            <div class="overlay">
+              <!--learn btn-->
+              <p>
+                Keratolytic qualities of moisturex cream can smoothe rough,
+                scally skin. It makes the skin healthy,fully protected skin and
+                shiny.
+              </p>
+
+              <a href="#" class="learn-btn">Learn More</a>
+            </div>
+            <!--overlay-->
+          </div>
+
+          <!--rating stars-->
+          <div class="stars">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half"></i>
+          </div>
+
+          <!--Detail box-->
+
+          <div class="detail-box">
+            <!--type-->
+            <div class="type">
+              <a href="#">Moisturizing Cream 100gm</a>
+              <span>new arrival</span>
+            </div>
+            <!--type-->
+
+            <!--Price-->
+            <a href="#" class="price">$20</a>
+            <!--Price-->
+          </div>
+          <!--order & add to cart button-->
+          <a href="#" class="my-button" title="b-title">Order Now</a>
+          <a href="#" class="my-button" title="b-title">Add to Cart</a>
+          <!--order & add to cart button-->
+
+          <!--Detail box-->
+        </div>
+        <!--4-->
+
+        <!--box-->
+        <div class="box">
+          <div class="slide-img">
+            <img src="/static/m11.png" />
+            <!--overlay-->
+            <div class="overlay">
+              <!--learn btn-->
+              <p>
+                Providde protection against germs, It has triclosan that helps
+                to keep your boddy clean and protected.
+              </p>
+
+              <a href="#" class="learn-btn">Learn More</a>
+            </div>
+            <!--overlay-->
+          </div>
+
+          <!--rating stars-->
+          <div class="stars">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half"></i>
+          </div>
+
+          <!--Detail box-->
+
+          <div class="detail-box">
+            <!--type-->
+            <div class="type">
+              <a href="#">Anti Bacterial Soap 75gm</a>
+              <span>new arrival</span>
+            </div>
+            <!--type-->
+
+            <!--Price-->
+            <a href="#" class="price">$20</a>
+            <!--Price-->
+          </div>
+          <!--order & add to cart button-->
+          <a href="#" class="my-button" title="b-title">Order Now</a>
+          <a href="#" class="my-button" title="b-title">Add to Cart</a>
+          <!--order & add to cart button-->
+
+          <!--Detail box-->
+        </div>
+      </div>
+
+      <!--Box container-->
+    </section>
+
+    <!--Meicine Section 2-->
+    <!--link for js file-->
+    <script src="/scripts/nav-redirect.js"></script>
+    <script src="/scripts/get-username.js"></script>
+  </body>
+</html>

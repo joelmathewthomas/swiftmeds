@@ -1,0 +1,479 @@
+@import url("https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+:root {
+  --black: black;
+  --purple: purple;
+  --dark-moderate-violet: #663399;
+  --dark-blue: #1668e4;
+  --light-color: #666;
+  --box-shadow: 2px 2px 12px grey;
+}
+
+* {
+  font-family: "andika";
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  text-transform: none;
+  transition: all 0.2s linear;
+}
+
+html {
+  font-size: 62.5%;
+  overflow-x: hidden;
+  scroll-padding-top: 7rem;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #fff;
+}
+
+/*header*/
+
+.header {
+  height: 100px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  border: 1px solid;
+  justify-content: space-between;
+  padding: 2rem 9%;
+  background: #fff;
+  z-index: 1000;
+  box-shadow: var(--box-shadow);
+}
+
+.header .logo img {
+  margin-top: 10px;
+  height: 100px;
+  width: 100%;
+  display: inline-block;
+}
+
+.header .headbar a {
+  font-size: 1.7rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  color: var(--light-colour);
+}
+
+.header .headbar a:hover {
+  color: #fff;
+  background: linear-gradient(120deg, #1668e4 40%, #663399);
+}
+
+.header .menubtn {
+  margin-right: 60px;
+}
+
+.header .menubtn button {
+  padding: 10px 45px;
+  text-align: center;
+  font-size: 14px;
+  color: #fff;
+  border: none;
+  background-image: linear-gradient(to right, #649bff, #0070fa, #649bff);
+  border-radius: 10px;
+}
+
+.header .icon div {
+  cursor: pointer;
+  margin-left: 2rem;
+  height: 4.5rem;
+  width: 4.5rem;
+  line-height: 4.5rem;
+  text-align: center;
+  font-size: 2rem;
+  color: var(--black);
+  border-radius: 50%;
+  background: #eee;
+}
+
+.header .icon div:hover {
+  color: #fff;
+  background: linear-gradient(120deg, #1668e4 40%, #663399);
+}
+
+.header .search-form {
+  border: 1px solid;
+  position: absolute;
+  top: 110%;
+  right: -110%;
+  width: 50rem;
+  height: 5rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  box-shadow: var(--box-shadow);
+}
+.header .search-form.active {
+  right: 2rem;
+}
+
+.header .search-form input {
+  height: 100%;
+  width: 100%;
+  background: none;
+  text-transform: none;
+  font-size: 1.6rem;
+  color: var(--black);
+  padding: 0 1.5rem;
+}
+
+.header .search-form label {
+  font-size: 2.2rem;
+  padding-right: 1.5rem;
+  color: var(--black);
+  cursor: pointer;
+}
+
+.header .search-form label:hover {
+  color: var(--dark-moderate-violet);
+}
+
+.header .shopping-cart {
+  position: absolute;
+  top: 110%;
+  right: -110%;
+  width: 35rem;
+  padding: 1rem;
+  box-shadow: var(--box-shadow);
+  background: #fff;
+  border-radius: 0.5rem;
+}
+
+.header .shopping-cart.active {
+  right: 2rem;
+  transition: -4s linear;
+}
+.header .shopping-cart .box {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  margin: 1rem 0;
+}
+
+.header .shopping-cart .box img {
+  height: 10rem;
+  width: 8rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  padding-left: 2rem;
+}
+
+.header .shopping-cart .box .fa-trash {
+  font-size: 2rem;
+  position: absolute;
+  top: 50%;
+  left: 30rem;
+  cursor: pointer;
+  color: var(--light-color);
+  transform: translateY(-50%);
+}
+
+.header .shopping-cart .box .fa-trash:hover {
+  color: var(--dark-moderate-violet);
+}
+
+.header .shopping-cart .box .content h3 {
+  color: var(--black);
+  font-size: 1.7rem;
+  padding-bottom: 1rem;
+}
+
+.header .shopping-cart .box .content span {
+  color: var(--light-color);
+  font-size: 1.6rem;
+  padding-bottom: 1rem;
+}
+
+.header .upload-form {
+  border: 1px solid;
+  position: absolute;
+  top: 110%;
+  right: -110%;
+  width: 50rem;
+  height: 5rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  box-shadow: var(--box-shadow);
+}
+
+.header .upload-form.active {
+  right: 2rem;
+}
+
+.header .upload-form .btn {
+  height: 50px;
+  width: 200px;
+}
+
+.header .upload-form .btn button {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(120deg, #1668e4 40%, #663399);
+  color: #fff;
+  border-radius: 5px;
+  font-size: 18px;
+  letter-spacing: 1px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.header .upload-form .btn button:hover {
+  background: var(--dark-moderate-violet);
+}
+
+.header .upload-form .file-name {
+  position: relative;
+  font-size: 18px;
+  padding: 8px;
+  border-radius: 5px;
+  margin-left: 15px;
+  user-select: none;
+}
+
+/*Medicine section*/
+
+.top .container .heading {
+  padding-top: 0%;
+  color: #5969c2;
+  text-align: center;
+  font-size: 2.5rem;
+}
+
+.top .container hr {
+  display: block;
+  margin-top: 0.5rem;
+  margin-left: 30px;
+  margin-right: 30px;
+  border-style: inset;
+  border-width: 3px;
+}
+
+.box-container {
+  padding: 6rem;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  gap: 1.5rem;
+}
+
+.box {
+  width: 300px;
+  box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.slide-img {
+  height: 350px;
+  position: relative;
+  background: #eee;
+}
+
+.slide-img img {
+  padding-top: 20%;
+  padding-left: 5%;
+  width: 100%;
+  height: 80%;
+}
+
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(219, 112, 147, 0.6);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.overlay p {
+  text-align: center;
+  font-size: 1.5rem;
+  padding-bottom: 5%;
+  color: #fff;
+}
+
+.learn-btn {
+  width: 160px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  color: #252525;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-family: "andika";
+  border-radius: 20px;
+  box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.2);
+}
+
+.learn-btn:hover {
+  color: #ffffff;
+  background: var(--dark-moderate-violet);
+  transition: all ease 0.3s;
+}
+
+.overlay {
+  visibility: hidden;
+}
+
+.slide-img:hover .overlay {
+  visibility: visible;
+  animation: fade 0.5s;
+}
+
+.detail-box {
+  width: 100%;
+  display: flex;
+  font-size: 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  font-family: "andika";
+}
+
+.type {
+  display: flex;
+  flex-direction: column;
+}
+
+.type a {
+  color: #222222;
+  margin: 5px 0px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding-right: 8px;
+}
+
+.type span {
+  color: rgba(26, 26, 26, 0.5);
+}
+
+.price {
+  color: #333333;
+  font-weight: 600;
+  font-size: 1.5rem;
+  font-family: "andika";
+  letter-spacing: 0.5px;
+}
+
+.stars {
+  padding-left: 35%;
+}
+
+.stars i {
+  font-size: 1.7rem;
+  color: var(--dark-moderate-violet);
+  padding: 0.5rem 0;
+}
+
+.my-button {
+  display: inline-block;
+  margin: 5px;
+  background: var(--dark-blue);
+  color: #333;
+  font-size: 1.5rem;
+  font-family: "georgia", serif;
+  font-style: italic;
+  border-radius: 50px;
+  padding: 8px 16px;
+  -moz-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  margin-left: 10%;
+}
+
+.my-button:hover {
+  color: #c1e1e0;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.bottom .container .heading {
+  padding-top: 8%;
+  color: #5969c2;
+  text-align: center;
+  font-size: 2.5rem;
+}
+
+.bottom .container hr {
+  display: block;
+  margin-top: 0.5rem;
+  margin-left: 30px;
+  margin-right: 30px;
+  border-style: inset;
+  border-width: 3px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: var(--light-colour);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Apply the same styling as other links in the nav */
+.header .headbar a {
+  font-size: 1.7rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  color: var(--light-colour);
+}
+
+.header .headbar a:hover {
+  color: #fff;
+  background: linear-gradient(120deg, #1668e4 40%, #663399);
+}
