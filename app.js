@@ -206,7 +206,7 @@ app.get("/home", function (request, response) {
 
 // Start the server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, "192.168.1.254", () => {
+app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
