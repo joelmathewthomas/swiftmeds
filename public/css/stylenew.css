@@ -1,10 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Andika&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 :root {
   --black: black;
+  --purple: purple;
+  --dark-moderate-violet: #663399;
   --light-color: #666;
   --box-shadow: 2px 2px 12px grey;
-  --border: 2rem solid rgba(0, 0, 0.1);
 }
 
 * {
@@ -27,15 +27,9 @@ html {
 }
 
 body {
-  background: #eee;
-  padding-top: 10%;
-  align-items: center;
-  flex-direction: column;
-  margin: -20px 0 50px;
-  justify-content: center;
-  min-height: 100vh;
-  display: flex;
+  background: #fff;
 }
+
 /*header*/
 
 .header {
@@ -53,26 +47,31 @@ body {
   z-index: 1000;
   box-shadow: var(--box-shadow);
 }
+
 .header .logo img {
   margin-top: 10px;
-  height: 100%;
-  width: 65%;
+  height: 100px;
+  width: 100%;
   display: inline-block;
 }
+
 .header .headbar a {
   font-size: 1.7rem;
   border-radius: 0.5rem;
   padding: 0.5rem 1.5rem;
-  color: var(--light-color);
+  color: var(--light-colour);
 }
+
 .header .headbar a:hover {
   color: #fff;
-  background: linear-gradient(120deg, #fab2ff 40%, #663399);
+  background: linear-gradient(120deg, #1668e4 40%, #663399);
 }
+
 .header .menubtn {
   margin-right: 60px;
 }
-header .menubtn button {
+
+.header .menubtn button {
   padding: 10px 45px;
   text-align: center;
   font-size: 14px;
@@ -81,6 +80,7 @@ header .menubtn button {
   background-image: linear-gradient(to right, #649bff, #0070fa, #649bff);
   border-radius: 10px;
 }
+
 /*header*/
 
 .main {
