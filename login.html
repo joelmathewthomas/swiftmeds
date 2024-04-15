@@ -60,26 +60,30 @@
     <div class="container" id="container">
       <!--sign up-->
       <div class="form sign-Up-container">
-        <form action="#">
+        <form id="register-form">
           <h1>Create An Account</h1>
 
           <!--input-field-->
           <div class="input-field">
             <i class="fa fa-user"></i>
-            <input type="text" placeholder="Username" />
+            <input id="register-username" type="text" placeholder="Username" />
           </div>
 
           <div class="input-field">
             <i class="fa fa-envelope"></i>
-            <input type="email" placeholder="Email" />
+            <input id="register-email" type="email" placeholder="Email" />
           </div>
 
           <div class="input-field">
             <i class="fa fa-lock"></i>
-            <input type="password " placeholder="Password" />
+            <input
+              id="register-password"
+              type="password "
+              placeholder="Password"
+            />
           </div>
           <!--input-field-->
-          <button>Sign Up</button>
+          <button type="submit" id="register-button">Sign Up</button>
         </form>
       </div>
       <!--sign up-->
@@ -145,6 +149,7 @@
     </script>
     <script src="/scripts/nav-redirect.js"></script>
     <script src="/scripts/loginerrordisplay.js"></script>
+    <script src="/scripts/registererrordisplay.js"></script>
     "
   </body>
 </html>
