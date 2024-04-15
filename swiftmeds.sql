@@ -77,6 +77,7 @@ CREATE TABLE `medicine` (
   `name` varchar(255) NOT NULL,
   `quantity` int(11) NOT NULL,
   `price` decimal(10,2) NOT NULL,
+  `img` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -88,10 +89,10 @@ CREATE TABLE `medicine` (
 LOCK TABLES `medicine` WRITE;
 /*!40000 ALTER TABLE `medicine` DISABLE KEYS */;
 INSERT INTO `medicine` VALUES
-(1,'Hand Sanitizer 500ml',10,100.00),
-(2,'Shampoo & Conditioner 180ml',11,200.00),
-(3,'Moisturizing Cream 100gm',5,150.00),
-(4,'Anti Bacterial Soap',7,25.00);
+(1,'Hand Sanitizer 500ml',10,100.00,'handsanitizer500ml.png'),
+(2,'Shampoo & Conditioner 180ml',11,200.00,'shampoo&conditioner180ml.png'),
+(3,'Moisturizing Cream 100gm',5,150.00,'moisturizingcream100gm.png'),
+(4,'Anti Bacterial Soap',7,25.00,'antibacterialsoap.png');
 /*!40000 ALTER TABLE `medicine` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -104,4 +105,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-16  0:22:39
+-- Dump completed on 2024-04-16  0:30:34
