@@ -41,3 +41,18 @@ document
     event.preventDefault();
     window.location.href = "/dashboard";
   });
+
+document
+  .getElementById("logout-link")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+    fetch("/logout")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          window.location.href = "/";
+        } else {
+          window.location.href = "/";
+        }
+      });
+  });

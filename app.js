@@ -243,6 +243,22 @@ app.get("/dashboard", function (request, response) {
   }
 });
 
+// http://localhost:3000/logout
+app.get("/logout", function (request, response) {
+  if (request.session.loggedin) {
+    request.session.loggedin = false;
+    request.session.username = "";
+    request.session.type = "";
+    response.json({
+      success: true,
+    });
+  } else {
+    response.json({
+      success: false,
+    });
+  }
+});
+
 // http://localhost:3000/getDoctors
 app.get("/getDoctors", function (request, response) {
   if (request.session.loggedin) {
