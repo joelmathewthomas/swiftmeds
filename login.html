@@ -28,16 +28,25 @@
 
     <header class="header">
       <a href="#" class="logo">
-        <img src="/static/logo.png" />
+        <img src="/static/logo.png  " />
       </a>
       <!--nav bar-->
+
       <nav class="headbar">
-        <a href="index.html">Home</a>
-        <a href="login.html">Login</a>
-        <a href="doc.html">Doctor</a>
-        <a href="med.html">Medicine</a>
-        <a href="service.html">Service</a>
-        <a href="contact.html">Contact</a>
+        <a id="home-link">Home</a>
+        <a id="aboutus-link">About Us</a>
+        <a>Doctors</a>
+        <a id="medicine-link">Medicine</a>
+        <a id="contact-link" id="contact-link">Contact</a>
+        <div class="dropdown">
+          <a id="login-link" class="dropbtn"
+            >Login <i class="fa fa-caret-down"></i
+          ></a>
+          <div class="dropdown-content">
+            <a href="#">Dashboard</a>
+            <a href="#">Logout</a>
+          </div>
+        </div>
       </nav>
 
       <!--nav bar-->
@@ -162,5 +171,6 @@
         container.classList.remove("right-panel-active");
       });
     </script>
+    <script src="/scripts/nav-redirect.js"></script>
   </body>
 </html>
