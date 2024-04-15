@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        console.log("/getMedicince response success");
         const medicineContainer = document.getElementById("medicine-container");
         data.medicines.forEach((medicine) => {
           const box = document.createElement("div");
@@ -15,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
           const img = document.createElement("img");
           img.src = `/static/${medicine.img}`;
           const imageurl = "";
-          console.log("Image url is ", medicine.img);
           slideImg.appendChild(img);
 
           const detailBox = document.createElement("div");
@@ -28,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
           typeLink.textContent = medicine.name;
           const typeSpan = document.createElement("span");
           typeSpan.textContext = `${medicine.quantity}`;
-          console.log("Quantity is ", medicine.quantity);
           type.appendChild(typeLink);
           type.appendChild(typeSpan);
 
@@ -36,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
           price.className = "price";
           price.href = "#";
           price.textContent = `Rs${medicine.price}`;
-          console.log("Price is ", medicine.price);
 
           detailBox.appendChild(type);
           detailBox.appendChild(price);
