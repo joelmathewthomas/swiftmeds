@@ -420,3 +420,20 @@ app.post("/dashboardDeleteuser", function (request, response) {
     );
   }
 });
+
+// https://localhost:3000/getMedicines
+app.get("/getMedicines", function (request, response) {
+  if (request.session.loggedin) {
+    //Fetch Medicine
+    connection.query("SELECT * FROM medicine", function (error, results) {
+      if (error) {
+        response.status(500).json({ success: false, error: error });
+      } else {
+        response.json({ medicines: results });
+      }
+    });
+  } else {
+    // send error message
+    response.send("Not Authorized");
+  }
+});
