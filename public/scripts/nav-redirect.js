@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
   document
-    .getElementById("contact-link")
+    .getElementById("services-link")
     .addEventListener("click", function (event) {
       event.preventDefault();
-      window.location.href = "/contact";
+      window.location.href = "/services";
     });
 
   document
