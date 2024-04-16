@@ -161,7 +161,7 @@ body {
   align-items: center;
   gap: 1rem;
   position: relative;
-  margin: 1rem 0;
+  margin: 1rem 1.5rem;
 }
 
 .header .shopping-cart .box img {
