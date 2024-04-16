@@ -69,4 +69,40 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Error updating cart:", error);
       });
   });
+
+  document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("remove-link")) {
+      event.preventDefault();
+      const itemName = event.target.parentElement
+        .querySelector("h3")
+        .textContent.trim();
+
+      removeFromCart(itemName);
+
+      // Remove the box from the UI
+      event.target.closest(".box").remove();
+    }
+  });
+
+  function removeFromCart(itemName) {
+    // Send a POST request to the server to remove the item from the cart
+    fetch("/deletefromcart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: itemName }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          // Handle success if needed
+        } else {
+          console.error("Failed to remove item from cart");
+        }
+      })
+      .catch((error) => {
+        console.error("Error removing item from cart:", error);
+      });
+  }
 });
