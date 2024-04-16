@@ -4,7 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
     .then((response) => response.json())
     .then((data) => {
       if (data.loggedin) {
-        document.getElementById("login-link").textContent = data.username;
+        document.getElementById(
+          "login-link"
+        ).innerHTML = `<i class="fa-solid fa-user"></i> ${data.username}`;
       } else {
       }
     })
