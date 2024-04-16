@@ -9,7 +9,8 @@ const session = require("express-session");
 
 // Import the 'path' module to handle file paths
 const path = require("path");
-const { connect } = require("http2");
+
+const async = require("async");
 
 // Create a MySQL connection
 const connection = mysql.createPool({
@@ -438,6 +439,49 @@ app.post("/addtocart", function (request, response) {
 
     request.session.cart.push(name);
     response.json({ success: true });
+  } else {
+    response.sendFile(path.join(__dirname + "/notauthorized.html"));
+  }
+});
+
+// http://localhost:3000/updatecart
+app.get("/updatecart", function (request, response) {
+  const cartItems = request.session.cart;
+  const cartData = [];
+  if (request.session.loggedin) {
+    async.eachSeries(
+      cartItems,
+      (item, callback) => {
+        connection.query(
+          "SELECT img,price FROM medicine WHERE name = ?",
+          [item],
+          (error, results) => {
+            if (error) {
+              console.error("Error fetching image URL and item price: ", error);
+              return callback(error);
+            }
+            if (results.length > 0) {
+              cartData.push({
+                name: item,
+                img: results[0].img,
+                price: results[0].price,
+              });
+            }
+            callback();
+          }
+        );
+      },
+      (error) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ success: false, message: "Failed to update cart" });
+        }
+        // Send the response only after all items are processed
+        response.json({ success: true, cart: cartData });
+        console.log("cart data is :", cartData);
+      }
+    );
   } else {
     response.sendFile(path.join(__dirname + "/notauthorized.html"));
   }
