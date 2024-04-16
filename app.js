@@ -191,19 +191,6 @@ app.get("/getSessionData", function (request, response) {
   }
 });
 
-// http://localhost:3000/home
-app.get("/home", function (request, response) {
-  // If the user is loggedin
-  if (request.session.loggedin) {
-    // Output username
-    response.send("Welcome back, " + request.session.username + "!");
-  } else {
-    // Not logged in
-    response.send("Please login to view this page!");
-  }
-  response.end();
-});
-
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
@@ -222,7 +209,11 @@ app.get("/contact", function (request, response) {
 
 // http://localhost:3000/medicine
 app.get("/medicine", function (request, response) {
-  response.sendFile(path.join(__dirname + "/medicine.html"));
+  if (request.session.loggedin) {
+    response.sendFile(path.join(__dirname + "/medicine.html"));
+  } else {
+    response.sendFile(path.join(__dirname + "/plslogin.html"));
+  }
 });
 
 // http://localhost:3000/aboutus
@@ -236,10 +227,10 @@ app.get("/dashboard", function (request, response) {
     if (request.session.type == "admin") {
       response.sendFile(path.join(__dirname + "/dashboard.html"));
     } else {
-      response.send("Not Authorized");
+      response.sendFile(path.join(__dirname + "/notauthorized.html"));
     }
   } else {
-    response.send("Please Login to view dashboard");
+    response.sendFile(path.join(__dirname + "/plslogin.html"));
   }
 });
 
@@ -294,10 +285,10 @@ app.get("/getDoctors", function (request, response) {
         }
       );
     } else {
-      response.send("Not Authorized");
+      response.sendFile(path.join(__dirname + "/notauthorized.html"));
     }
   } else {
-    response.send("Not Authorized");
+    response.sendFile(path.join(__dirname + "/notauthorized.html"));
   }
 });
 
@@ -336,10 +327,10 @@ app.get("/getPatients", function (request, response) {
         }
       );
     } else {
-      response.send("Not Authorized");
+      response.sendFile(path.join(__dirname + "/notauthorized.html"));
     }
   } else {
-    response.send("Not Authorized");
+    response.sendFile(path.join(__dirname + "/notauthorized.html"));
   }
 });
 
@@ -434,6 +425,6 @@ app.get("/getMedicines", function (request, response) {
     });
   } else {
     // send error message
-    response.send("Not Authorized");
+    response.sendFile(path.join(__dirname + "/notauthorized.html"));
   }
 });
