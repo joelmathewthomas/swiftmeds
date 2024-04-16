@@ -4,13 +4,11 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          console.log("data is ", data);
           const shoppingCart = document.getElementById("shopping-cart");
           const cart = document.querySelector(".shopping-cart");
           cart.innerHTML = " ";
 
           data.cart.forEach((item) => {
-            console.log("looping");
             const box = document.createElement("div");
             box.className = "box";
 
@@ -32,7 +30,6 @@ document.addEventListener("DOMContentLoaded", function () {
             box.appendChild(img);
             box.appendChild(content);
             shoppingCart.appendChild(box);
-            console.log("box is: ", box);
           });
         } else {
           console.error("Failed to update cart: ", data.message);

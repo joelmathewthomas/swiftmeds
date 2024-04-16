@@ -449,39 +449,52 @@ app.get("/updatecart", function (request, response) {
   const cartItems = request.session.cart;
   const cartData = [];
   if (request.session.loggedin) {
-    async.eachSeries(
-      cartItems,
-      (item, callback) => {
-        connection.query(
-          "SELECT img,price FROM medicine WHERE name = ?",
-          [item],
-          (error, results) => {
-            if (error) {
-              console.error("Error fetching image URL and item price: ", error);
-              return callback(error);
+    if (cartItems.length !== 0) {
+      async.eachSeries(
+        cartItems,
+        (item, callback) => {
+          connection.query(
+            "SELECT img,price FROM medicine WHERE name = ?",
+            [item],
+            (error, results) => {
+              if (error) {
+                console.error(
+                  "Error fetching image URL and item price: ",
+                  error
+                );
+                return callback(error);
+              }
+              if (results.length > 0) {
+                cartData.push({
+                  name: item,
+                  img: results[0].img,
+                  price: results[0].price,
+                });
+              }
+              callback();
             }
-            if (results.length > 0) {
-              cartData.push({
-                name: item,
-                img: results[0].img,
-                price: results[0].price,
-              });
-            }
-            callback();
+          );
+        },
+        (error) => {
+          if (error) {
+            return response
+              .status(500)
+              .json({ success: false, message: "Failed to update cart" });
           }
-        );
-      },
-      (error) => {
-        if (error) {
-          return response
-            .status(500)
-            .json({ success: false, message: "Failed to update cart" });
+          // Send the response only after all items are processed
+          response.json({ success: true, cart: cartData });
         }
-        // Send the response only after all items are processed
-        response.json({ success: true, cart: cartData });
-        console.log("cart data is :", cartData);
-      }
-    );
+      );
+    } else {
+      const emptyCart = [];
+      emptyCart.push({
+        name: "Empty",
+        img: "antibacterialsoap.png",
+        price: "0",
+      });
+      console.log(emptyCart);
+      response.json({ success: true, cart: emptyCart });
+    }
   } else {
     response.sendFile(path.join(__dirname + "/notauthorized.html"));
   }
