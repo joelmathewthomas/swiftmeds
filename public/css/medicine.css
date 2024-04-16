@@ -148,6 +148,8 @@ body {
   box-shadow: var(--box-shadow);
   background: #fff;
   border-radius: 0.5rem;
+  max-height: 60vh; /* Limit the height to 60% of the viewport height */
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 .header .shopping-cart.active {
