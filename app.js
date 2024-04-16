@@ -414,7 +414,7 @@ app.post("/dashboardDeleteuser", function (request, response) {
   }
 });
 
-// https://localhost:3000/getMedicines
+// http://localhost:3000/getMedicines
 app.get("/getMedicines", function (request, response) {
   if (request.session.loggedin) {
     //Fetch Medicine
@@ -427,6 +427,19 @@ app.get("/getMedicines", function (request, response) {
     });
   } else {
     // send error message
+    response.sendFile(path.join(__dirname + "/notauthorized.html"));
+  }
+});
+
+// http://localhost:3000/addtocart
+app.post("/addtocart", function (request, response) {
+  if (request.session.loggedin) {
+    const { name } = request.body;
+
+    request.session.cart.push(name);
+    console.log(request.session.cart);
+    response.json({ success: true });
+  } else {
     response.sendFile(path.join(__dirname + "/notauthorized.html"));
   }
 });
