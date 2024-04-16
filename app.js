@@ -99,6 +99,7 @@ app.post("/auth", function (request, response) {
                     } else {
                       const user = results[0];
                       request.session.type = user.type;
+                      request.session.cart = [];
                       response.json({ success: true });
                     }
                     return;
@@ -185,6 +186,7 @@ app.get("/getSessionData", function (request, response) {
       loggedin: request.session.loggedin,
       username: request.session.username,
       type: request.session.type,
+      cart: request.session.cart,
     });
   } else {
     response.json({ success: false, loggedin: request.session.loggedin });
