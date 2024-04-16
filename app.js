@@ -437,7 +437,6 @@ app.post("/addtocart", function (request, response) {
     const { name } = request.body;
 
     request.session.cart.push(name);
-    console.log(request.session.cart);
     response.json({ success: true });
   } else {
     response.sendFile(path.join(__dirname + "/notauthorized.html"));
