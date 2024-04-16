@@ -6,21 +6,31 @@ document.addEventListener("click", function (event) {
     event.preventDefault();
     const medicineName =
       event.target.parentElement.querySelector(".type a").textContent;
-    addToCart(medicineName);
 
-    // Change text content to "Added"
-    event.target.textContent = "Added";
+    // Call addToCart and handle the Promise
+    addToCart(medicineName)
+      .then((isExist) => {
+        if (!isExist) {
+          // Change text content to "Added"
+          event.target.textContent = "Added";
+        } else {
+          event.target.textContent = "Exists";
+        }
 
-    // Revert text content back to "Add to Cart" after 2 seconds
-    setTimeout(function () {
-      event.target.textContent = "Add to Cart";
-    }, 2000);
+        // Revert text content back to "Add to Cart" after 2 seconds
+        setTimeout(function () {
+          event.target.textContent = "Add to Cart";
+        }, 2000);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   }
 });
 
 function addToCart(medicineName) {
   // Send a POST request to the server
-  fetch("/addtocart", {
+  return fetch("/addtocart", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -30,8 +40,11 @@ function addToCart(medicineName) {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-      } else {
+        console.log("Hello");
+        return false;
+      } else if (!data.success) {
         console.error("Failed to add medicine to cart");
+        return true;
       }
     })
     .catch((error) => {
