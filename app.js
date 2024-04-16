@@ -492,8 +492,29 @@ app.get("/updatecart", function (request, response) {
         img: "antibacterialsoap.png",
         price: "0",
       });
-      console.log(emptyCart);
       response.json({ success: true, cart: emptyCart });
+    }
+  } else {
+    response.sendFile(path.join(__dirname + "/notauthorized.html"));
+  }
+});
+
+// http://localhost:3000/deletefromcart
+app.post("/deletefromcart", function (request, response) {
+  if (request.session.loggedin) {
+    const itemName = request.body.name;
+
+    const cartItems = request.session.cart;
+    const index = cartItems.indexOf(itemName);
+    if (index !== -1) {
+      cartItems.splice(index, 1);
+      // Update the session cart with the modified cartItems array
+      request.session.cart = cartItems;
+      response.json({ success: true, message: "Item removed from cart" });
+    } else {
+      response
+        .status(404)
+        .json({ success: false, message: "Item not found in cart" });
     }
   } else {
     response.sendFile(path.join(__dirname + "/notauthorized.html"));
