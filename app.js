@@ -437,10 +437,19 @@ app.post("/addtocart", function (request, response) {
   if (request.session.loggedin) {
     const { name } = request.body;
 
+    // Check if the item already exists in the cart
+    if (request.session.cart.includes(name)) {
+      return response.json({
+        success: false,
+      });
+    }
+
+    // Add the item to the cart
     request.session.cart.push(name);
-    response.json({ success: true });
+
+    return response.json({ success: true });
   } else {
-    response.sendFile(path.join(__dirname + "/notauthorized.html"));
+    return response.sendFile(path.join(__dirname + "/notauthorized.html"));
   }
 });
 
