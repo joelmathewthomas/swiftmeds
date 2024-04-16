@@ -479,3 +479,8 @@ body {
   color: #fff;
   background: linear-gradient(120deg, #1668e4 40%, #663399);
 }
+
+.remove-link {
+  font-size: 14px; /* Adjust the font size as needed */
+  margin-left: 50px;
+}
