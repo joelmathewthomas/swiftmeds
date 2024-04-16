@@ -224,6 +224,11 @@ app.get("/aboutus", function (request, response) {
   response.sendFile(path.join(__dirname + "/aboutus.html"));
 });
 
+// http://localhost:3000/services
+app.get("/services", function (request, response) {
+  response.sendFile(path.join(__dirname + "/services.html"));
+});
+
 // http://localhost:3000/dashboard
 app.get("/dashboard", function (request, response) {
   if (request.session.loggedin) {
