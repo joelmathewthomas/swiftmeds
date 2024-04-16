@@ -83,3 +83,7 @@ document.getElementById("do-search-btn").addEventListener("click", function () {
       console.error("Error fetching medicine data:", error);
     });
 });
+
+document.getElementById("search-cancel").addEventListener("click", function () {
+  location.reload();
+});
