@@ -529,3 +529,25 @@ app.post("/deletefromcart", function (request, response) {
     response.sendFile(path.join(__dirname + "/notauthorized.html"));
   }
 });
+
+// http://localhost:3000/searchmedicines
+app.post("/searchmedicines", function (request, response) {
+  if (request.session.loggedin) {
+    //Fetch Medicine
+    const name = request.body.name;
+    connection.query(
+      "SELECT * FROM medicine WHERE name LIKE ?",
+      [`%${name}%`],
+      function (error, results) {
+        if (error) {
+          response.status(500).json({ success: false, error: error });
+        } else {
+          response.json({ success: true, medicines: results });
+        }
+      }
+    );
+  } else {
+    // send error message
+    response.sendFile(path.join(__dirname + "/notauthorized.html"));
+  }
+});
