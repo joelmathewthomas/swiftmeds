@@ -18,7 +18,7 @@ document
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          window.location.href = "/"; // Redirect to /home on successful login
+          window.location.href = "/"; // Redirect to / on successful login
         } else {
           // Display error message
           // Change the text content of the button element
