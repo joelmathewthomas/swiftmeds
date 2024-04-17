@@ -4,6 +4,12 @@ const mysql = require("mysql");
 // Import the 'express' module to create a web server
 const express = require("express");
 
+// Import http module
+const http = require("http");
+
+// Import socket.io
+const { Server } = require("socket.io");
+
 // Import the 'express-session' module to manage user sessions
 const session = require("express-session");
 
@@ -27,6 +33,28 @@ const connection = mysql.createPool({
 
 //Initialize express
 const app = express();
+
+const server = http.createServer(app);
+const io = new Server(server);
+const port = 3000;
+
+// Handle Socket.IO events
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  // Example of handling a custom event
+  socket.on("chat message", (msg) => {
+    console.log("message: " + msg);
+    // Broadcast the message to all connected clients
+    io.emit("chat message", msg);
+  });
+
+  // Handle disconnection
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
+  });
+});
+
 app.use(
   session({
     secret: "a248afd4e47050851c870a4223d27146eebc5fc2d07da83c9d741af0ff641ae7",
@@ -37,7 +65,11 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
-//app.use(express.static("public"));
+
+// Start the server
+server.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 // http://localhost:3000/
 app.get("/", function (request, response) {
@@ -192,12 +224,6 @@ app.get("/getSessionData", function (request, response) {
   } else {
     response.json({ success: false, loggedin: request.session.loggedin });
   }
-});
-
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
 });
 
 // http://localhost:3000/login
