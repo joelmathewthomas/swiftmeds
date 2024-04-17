@@ -49,6 +49,20 @@ io.on("connection", (socket) => {
     console.log("handling setUsername , username is ", username);
   });
 
+  // privateMessage
+  socket.on("privateMessage", ({ recipient, message }) => {
+    // Check if the recipient is connected
+    if (users[recipient]) {
+      // Retrieve the recipient's socket ID
+      const recipientSocketId = users[recipient].id; // Assuming users[recipient] contains the socket instance
+      // Send the message only to the recipient's socket
+      io.to(recipientSocketId).emit("privateMessage", { message });
+      console.log("delivering to ", recipient, "message: ", message);
+    } else {
+      // Handle case when recipient is not connected
+      socket.emit("errorMessage", "Recipient is not connected");
+    }
+  });
   // Handling sendmsg
   socket.on("sendmsg", (message) => {
     console.log("message: " + message);
