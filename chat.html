@@ -107,12 +107,13 @@
           <div class="msg-bottom">
             <div class="input-group">
               <input
+                id="messagebox"
                 type="text"
                 class="form-control"
                 placeholder="Write message..."
               />
 
-              <span class="input-group-text send-icon">
+              <span id="send-button" class="input-group-text send-icon">
                 <i class="bi bi-send"></i>
               </span>
             </div>
@@ -121,4 +122,24 @@
       </div>
     </div>
   </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    let socket = io();
+
+    let sendbtn = document.getElementById("send-button");
+    let msgbox = document.getElementById("messagebox");
+
+    sendbtn.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      if (msgbox.value) {
+        socket.emit("sendmsg", msgbox.value);
+        msgbox.value = "";
+      }
+    });
+
+    socket.on("displaymessage", (message) => {
+      console.log("Message is :", message);
+    });
+  </script>
 </html>
