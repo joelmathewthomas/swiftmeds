@@ -37,10 +37,17 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 const port = 3000;
+const users = {};
 
 // Handle Socket.IO events
 io.on("connection", (socket) => {
   console.log("A user connected");
+
+  // set user socket
+  socket.on("setUsername", (username) => {
+    users[username] = socket;
+    console.log("handling setUsername , username is ", username);
+  });
 
   // Handling sendmsg
   socket.on("sendmsg", (message) => {

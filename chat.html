@@ -125,6 +125,18 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     let socket = io();
+    let username = "";
+
+    fetch("/getSessionData")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.loggedin) {
+          username = data.username;
+          socket.emit("setUsername", username);
+        } else {
+        }
+      })
+      .catch((error) => console.error("Error fetching session data:", error));
 
     let sendbtn = document.getElementById("send-button");
     let msgbox = document.getElementById("messagebox");
