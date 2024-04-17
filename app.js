@@ -9,12 +9,13 @@ const session = require("express-session");
 
 // Import the 'path' module to handle file paths
 const path = require("path");
-const { connect } = require("http2");
+
+const async = require("async");
 
 // Create a MySQL connection
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
   // Database host
-
+  connectionLimit: 10,
   host: "localhost",
   // Database username
   user: "swiftmeds",
@@ -99,6 +100,7 @@ app.post("/auth", function (request, response) {
                     } else {
                       const user = results[0];
                       request.session.type = user.type;
+                      request.session.cart = [];
                       response.json({ success: true });
                     }
                     return;
@@ -185,23 +187,11 @@ app.get("/getSessionData", function (request, response) {
       loggedin: request.session.loggedin,
       username: request.session.username,
       type: request.session.type,
+      cart: request.session.cart,
     });
   } else {
     response.json({ success: false, loggedin: request.session.loggedin });
   }
-});
-
-// http://localhost:3000/home
-app.get("/home", function (request, response) {
-  // If the user is loggedin
-  if (request.session.loggedin) {
-    // Output username
-    response.send("Welcome back, " + request.session.username + "!");
-  } else {
-    // Not logged in
-    response.send("Please login to view this page!");
-  }
-  response.end();
 });
 
 // Start the server
@@ -222,12 +212,21 @@ app.get("/contact", function (request, response) {
 
 // http://localhost:3000/medicine
 app.get("/medicine", function (request, response) {
-  response.sendFile(path.join(__dirname + "/medicine.html"));
+  if (request.session.loggedin) {
+    response.sendFile(path.join(__dirname + "/medicine.html"));
+  } else {
+    response.sendFile(path.join(__dirname + "/plslogin.html"));
+  }
 });
 
 // http://localhost:3000/aboutus
 app.get("/aboutus", function (request, response) {
   response.sendFile(path.join(__dirname + "/aboutus.html"));
+});
+
+// http://localhost:3000/services
+app.get("/services", function (request, response) {
+  response.sendFile(path.join(__dirname + "/services.html"));
 });
 
 // http://localhost:3000/dashboard
@@ -236,10 +235,10 @@ app.get("/dashboard", function (request, response) {
     if (request.session.type == "admin") {
       response.sendFile(path.join(__dirname + "/dashboard.html"));
     } else {
-      response.send("Not Authorized");
+      response.sendFile(path.join(__dirname + "/notauthorized.html"));
     }
   } else {
-    response.send("Please Login to view dashboard");
+    response.sendFile(path.join(__dirname + "/plslogin.html"));
   }
 });
 
@@ -294,10 +293,10 @@ app.get("/getDoctors", function (request, response) {
         }
       );
     } else {
-      response.send("Not Authorized");
+      response.sendFile(path.join(__dirname + "/notauthorized.html"));
     }
   } else {
-    response.send("Not Authorized");
+    response.sendFile(path.join(__dirname + "/notauthorized.html"));
   }
 });
 
@@ -336,10 +335,10 @@ app.get("/getPatients", function (request, response) {
         }
       );
     } else {
-      response.send("Not Authorized");
+      response.sendFile(path.join(__dirname + "/notauthorized.html"));
     }
   } else {
-    response.send("Not Authorized");
+    response.sendFile(path.join(__dirname + "/notauthorized.html"));
   }
 });
 
@@ -418,5 +417,142 @@ app.post("/dashboardDeleteuser", function (request, response) {
         }
       }
     );
+  }
+});
+
+// http://localhost:3000/getMedicines
+app.get("/getMedicines", function (request, response) {
+  if (request.session.loggedin) {
+    //Fetch Medicine
+    connection.query("SELECT * FROM medicine", function (error, results) {
+      if (error) {
+        response.status(500).json({ success: false, error: error });
+      } else {
+        response.json({ success: true, medicines: results });
+      }
+    });
+  } else {
+    // send error message
+    response.sendFile(path.join(__dirname + "/notauthorized.html"));
+  }
+});
+
+// http://localhost:3000/addtocart
+app.post("/addtocart", function (request, response) {
+  if (request.session.loggedin) {
+    const { name } = request.body;
+
+    // Check if the item already exists in the cart
+    if (request.session.cart.includes(name)) {
+      return response.json({
+        success: false,
+      });
+    }
+
+    // Add the item to the cart
+    request.session.cart.push(name);
+
+    return response.json({ success: true });
+  } else {
+    return response.sendFile(path.join(__dirname + "/notauthorized.html"));
+  }
+});
+
+// http://localhost:3000/updatecart
+app.get("/updatecart", function (request, response) {
+  const cartItems = request.session.cart;
+  const cartData = [];
+  if (request.session.loggedin) {
+    if (cartItems.length !== 0) {
+      async.eachSeries(
+        cartItems,
+        (item, callback) => {
+          connection.query(
+            "SELECT img,price FROM medicine WHERE name = ?",
+            [item],
+            (error, results) => {
+              if (error) {
+                console.error(
+                  "Error fetching image URL and item price: ",
+                  error
+                );
+                return callback(error);
+              }
+              if (results.length > 0) {
+                cartData.push({
+                  name: item,
+                  img: results[0].img,
+                  price: results[0].price,
+                });
+              }
+              callback();
+            }
+          );
+        },
+        (error) => {
+          if (error) {
+            return response
+              .status(500)
+              .json({ success: false, message: "Failed to update cart" });
+          }
+          // Send the response only after all items are processed
+          response.json({ success: true, cart: cartData });
+        }
+      );
+    } else {
+      const emptyCart = [];
+      emptyCart.push({
+        name: "Empty",
+        img: "antibacterialsoap.png",
+        price: "0",
+      });
+      response.json({ success: true, cart: emptyCart });
+    }
+  } else {
+    response.sendFile(path.join(__dirname + "/notauthorized.html"));
+  }
+});
+
+// http://localhost:3000/deletefromcart
+app.post("/deletefromcart", function (request, response) {
+  if (request.session.loggedin) {
+    const itemName = request.body.name;
+
+    const cartItems = request.session.cart;
+    const index = cartItems.indexOf(itemName);
+    if (index !== -1) {
+      cartItems.splice(index, 1);
+      // Update the session cart with the modified cartItems array
+      request.session.cart = cartItems;
+      response.json({ success: true, message: "Item removed from cart" });
+    } else {
+      response
+        .status(404)
+        .json({ success: false, message: "Item not found in cart" });
+    }
+  } else {
+    response.sendFile(path.join(__dirname + "/notauthorized.html"));
+  }
+});
+
+// http://localhost:3000/searchmedicines
+app.post("/searchmedicines", function (request, response) {
+  if (request.session.loggedin) {
+    //Fetch Medicine
+    const name = request.body.name;
+    connection.query(
+      "SELECT * FROM medicine WHERE name LIKE ?",
+      [`%${name}%`],
+      function (error, results) {
+        if (error) {
+          response.status(500).json({ success: false, error: error });
+        } else {
+          response.json({ success: true, medicines: results });
+        }
+      }
+    );
+  } else {
+    // send error message
+    response.sendFile(path.join(__dirname + "/notauthorized.html"));
   }
 });

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Not Authorized</title>
+    <link rel="icon" type="image/png" href="/static/logo.png" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+      :root {
+        --black: black;
+        --purple: purple;
+        --dark-moderate-violet: #663399;
+        --light-color: #666;
+        --box-shadow: 2px 2px 12px grey;
+      }
+
+      * {
+        font-family: "andika";
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        border: none;
+        outline: none;
+        text-decoration: none;
+        text-transform: none;
+        transition: all 0.2s linear;
+      }
+
+      html {
+        font-size: 62.5%;
+        overflow-x: hidden;
+        scroll-padding-top: 7rem;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      /*header*/
+
+      .header {
+        height: 100px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        border: 1px solid;
+        justify-content: space-between;
+        padding: 2rem 9%;
+        background: #fff;
+        z-index: 1000;
+        box-shadow: var(--box-shadow);
+      }
+
+      .header .logo img {
+        margin-top: 10px;
+        height: 65px;
+        width: 100%;
+        display: inline-block;
+      }
+
+      .header .headbar a {
+        font-size: 1.7rem;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1.5rem;
+        color: var(--light-colour);
+      }
+
+      .header .headbar a:hover {
+        color: #fff;
+        background: linear-gradient(120deg, #1668e4 40%, #663399);
+      }
+
+      .header .menubtn {
+        margin-right: 60px;
+      }
+
+      .header .menubtn button {
+        padding: 10px 45px;
+        text-align: center;
+        font-size: 14px;
+        color: #fff;
+        border: none;
+        background-image: linear-gradient(to right, #649bff, #0070fa, #649bff);
+        border-radius: 10px;
+      }
+
+      /*header*/
+
+      .main {
+        width: 100%;
+        display: flex;
+      }
+
+      .main .left {
+        padding-left: 70px;
+        text-align: center;
+        line-height: 1.6;
+      }
+
+      .main .left h2 {
+        padding-top: 46%;
+        font-size: 15px;
+        text-transform: capitalize;
+        color: var(--light-colour);
+        margin-top: 100px;
+      }
+
+      .main .left h1 {
+        font-size: 42px;
+        text-transform: capitalize;
+        font-weight: 700;
+        margin: 15px 0;
+      }
+
+      .main .left p {
+        margin-bottom: 20px;
+        font-size: 15px;
+        color: var(--light-colour);
+      }
+
+      .main .left button {
+        padding-top: 12px;
+        padding: 15px 45px;
+        text-align: center;
+        font-size: 14px;
+        color: #fff;
+        border: 1px solid;
+        box-shadow: var(--box-shadow);
+        background-image: linear-gradient(to right, #649bff, #0070fa, #649bff);
+        border-radius: 10px;
+      }
+
+      .main .right img {
+        width: 130%;
+        height: 113%;
+        display: flex;
+      }
+
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        z-index: 1;
+      }
+
+      .dropdown-content a {
+        color: var(--light-colour);
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #f1f1f1;
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      /* Apply the same styling as other links in the nav */
+      .header .headbar a {
+        font-size: 1.7rem;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1.5rem;
+        color: var(--light-colour);
+      }
+
+      .header .headbar a:hover {
+        color: #fff;
+        background: linear-gradient(120deg, #1668e4 40%, #663399);
+      }
+
+      .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(100vh - 100px); /* 100px is the height of the header */
+      }
+
+      .center-message {
+        border: 1px solid #ccc;
+        box-shadow: var(--box-shadow);
+        padding: 103px;
+        border-radius: 50px;
+      }
+
+      .center-message p {
+        text-align: center;
+        font-size: 33px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <a href="#" class="logo">
+        <img src="/static/logo.png" />
+      </a>
+      <!--nav bar-->
+
+      <nav class="headbar">
+        <a id="home-link">Home</a>
+        <a id="aboutus-link">About Us</a>
+        <a>Doctors</a>
+        <a id="medicine-link">Medicine</a>
+        <a id="services-link">Services</a>
+        <div class="dropdown">
+          <a id="login-link" class="dropbtn"
+            >Login <i class="fa fa-caret-down"></i
+          ></a>
+          <div class="dropdown-content">
+            <a id="dashboard-link">Dashboard</a>
+            <a id="logout-link">Logout</a>
+          </div>
+        </div>
+      </nav>
+
+      <!--nav bar-->
+      <div class="menubtn">
+        <button>Consult</button>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="center-message">
+        <p>You're not authorized to view this page</p>
+      </div>
+    </div>
+
+    <script src="/scripts/nav-redirect.js"></script>
+    <script src="/scripts/get-username.js"></script>
+
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
+</html>
