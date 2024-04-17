@@ -582,3 +582,13 @@ app.post("/searchmedicines", function (request, response) {
     response.sendFile(path.join(__dirname + "/notauthorized.html"));
   }
 });
+
+// http://localhost:3000/chat
+app.get("/chat", function (request, response) {
+  if (request.session.loggedin) {
+    response.sendFile(path.join(__dirname + "/chat.html"));
+  } else {
+    // send error message
+    response.sendFile(path.join(__dirname + "/notauthorized.html"));
+  }
+});
