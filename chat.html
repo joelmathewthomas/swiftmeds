@@ -116,6 +116,10 @@
               <span id="send-button" class="input-group-text send-icon">
                 <i class="bi bi-send"></i>
               </span>
+              <input id="pmsgrv" type="text" class ="form-control" placeholder="to whom"/>
+              <span id="privatemsg-button" class="input-group-text send-icon">
+                 prvmsg </i>
+              </span>
             </div>
           </div>
         </div>
@@ -140,6 +144,7 @@
 
     let sendbtn = document.getElementById("send-button");
     let msgbox = document.getElementById("messagebox");
+    let pmbox = document.getElementById("pmsgrv");
 
     sendbtn.addEventListener("click", (event) => {
       event.preventDefault();
@@ -153,5 +158,21 @@
     socket.on("displaymessage", (message) => {
       console.log("Message is :", message);
     });
+
+    document.getElementById("privatemsg-button").addEventListener("click",(event)=>{
+      event.preventDefault();
+
+      if(pmbox.value){
+        if(msgbox.value){
+          socket.emit("privateMessage",({recipient:pmbox.value, message:msgbox.value}));
+          console.log("Emitting message: ", msgbox.value);
+        }
+      }
+    })
+
+    socket.on("privateMessage", ({ message })=>{
+      console.log('Recived Message : ', message);
+    })
+
   </script>
 </html>
