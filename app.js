@@ -42,11 +42,11 @@ const port = 3000;
 io.on("connection", (socket) => {
   console.log("A user connected");
 
-  // Example of handling a custom event
-  socket.on("chat message", (msg) => {
-    console.log("message: " + msg);
+  // Handling sendmsg
+  socket.on("sendmsg", (message) => {
+    console.log("message: " + message);
     // Broadcast the message to all connected clients
-    io.emit("chat message", msg);
+    io.emit("displaymessage", message);
   });
 
   // Handle disconnection
@@ -67,7 +67,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Start the server
-server.listen(port, () => {
+server.listen(port, "192.168.1.254", () => {
   console.log(`Server is running on port ${port}`);
 });
 
