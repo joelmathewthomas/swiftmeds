@@ -166,7 +166,7 @@
 
       socket.on("chatwithdoctor", ({ doctor }) => {
         // Set chatWith variable to the doctor's name
-        const chatWith = doctor;
+        chatWith = doctor;
 
         // Log that the user is chatting with the doctor
         console.log("Chatting with:", chatWith);
@@ -184,6 +184,33 @@
           // Code to be executed after 2 seconds
           console.log("Two seconds have passed!");
         }, 2100);
+      });
+
+      socket.on("sendclicked", ({ sender, recipient, message }) => {
+        const recipientSocketId = users[recipient]?.id;
+        if (recipientSocketId) {
+          io.to(recipientSocketId).emit("receivemsg", { message: message });
+        } else {
+          const senderSocketId = users[sender]?.id;
+          if (senderSocketId) {
+            io.to(senderSocketId).emit(
+              "disconnected",
+              "User disconnected. Going back"
+            );
+            setTimeout(() => {
+              io.to(senderSocketId).emit("reload");
+            }, 2000); // Emit reload event after 2 seconds
+          }
+        }
+      });
+
+      socket.on("receivemsg", ({ message }) => {
+        displayReceivedMsg(message);
+      });
+
+      socket.on("disconnected", (message) => {
+        chatWith = "";
+        showNotification(message);
       });
 
       socket.on("notify", (message) => {
@@ -216,25 +243,9 @@
               ).style.display = "block";
             }
           });
-
-        // Handle quit chat button click
-        document
-          .getElementById("quitChatButton")
-          .addEventListener("click", function () {
-            // Hide chat container
-            document.getElementById("chatContainer").style.display = "none";
-            // Show appropriate container based on user type
-            if (data.type === "doctor") {
-              document.getElementById("appointmentContainer").style.display =
-                "block";
-            } else if (data.type === "patient") {
-              document.getElementById(
-                "availableDoctorsContainer"
-              ).style.display = "block";
-            }
-          });
       });
 
+      // Display Notification
       function showNotification(message) {
         const notificationBox = document.getElementById("notificationBox");
         const notificationText = document.getElementById("notificationText");
@@ -244,10 +255,27 @@
           notificationBox.style.display = "none";
         }, 5000); // Hide after 5 seconds
       }
+
+      function displaySentMsg(message) {
+        const chatMessages = document.getElementById("chatMessages");
+        const sentMsgDiv = document.createElement("div");
+        sentMsgDiv.textContent = message;
+        sentMsgDiv.classList.add("sent-message");
+        chatMessages.appendChild(sentMsgDiv);
+      }
+
+      function displayReceivedMsg(message) {
+        const chatMessages = document.getElementById("chatMessages");
+        const receivedMsgDiv = document.createElement("div");
+        receivedMsgDiv.textContent = message;
+        receivedMsgDiv.classList.add("received-message");
+        chatMessages.appendChild(receivedMsgDiv);
+      }
     </script>
     <script src="/scripts/consultdoctors.js"></script>
     <script src="/scripts/appointments.js"></script>
     <script src="/scripts/acceptappointment-script.js"></script>
     <script src="/scripts/rejectappointment-script.js"></script>
+    <script src="/scripts/sendmsg.js"></script>
   </body>
 </html>

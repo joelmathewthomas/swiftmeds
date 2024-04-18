@@ -81,6 +81,32 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("sendclicked", ({ sender, recipient, message }) => {
+    console.log("recieved event sentclicked from ", sender);
+    const recipientSocketId = users[recipient]?.id;
+    if (recipientSocketId) {
+      io.to(recipientSocketId).emit("receivemsg", { message: message });
+      console.log(
+        "successfulylly send event receivemsg to ",
+        recipient,
+        recipientSocketId,
+        " message: ",
+        message
+      );
+    } else {
+      const senderSocketId = users[sender]?.id;
+      if (senderSocketId) {
+        io.to(senderSocketId).emit(
+          "disconnected",
+          "User disconnected. Going back"
+        );
+        setTimeout(() => {
+          io.to(senderSocketId).emit("reload");
+        }, 2000); // Emit reload event after 2 seconds
+      }
+    }
+  });
+
   // old
   // privateMessage
   socket.on("privateMessage", ({ recipient, message }) => {
@@ -706,7 +732,7 @@ app.post("/removeAppointment", function (request, response) {
       // Remove the appointment
       request.session.appointments.splice(index, 1);
       console.log("removed appointment");
-      const patientSocketId = undefined;
+      var patientSocketId = undefined;
       // Notify the patient
       if (users[patientName]) {
         patientSocketId = users[patientName].id;
