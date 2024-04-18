@@ -1,0 +1,22 @@
+document.addEventListener("DOMContentLoaded", function () {
+  const sendMessageButton = document.getElementById("sendMessageButton");
+  const messageInput = document.getElementById("messageInput");
+
+  sendMessageButton.addEventListener("click", function () {
+    const message = messageInput.value;
+    const chatName = "Alice"; // Replace with the chatName or retrieve it from your application logic
+
+    if (message !== "") {
+      socket.emit("sendclicked", {
+        sender: username,
+        recipient: chatWith,
+        message: message,
+      });
+      console.log("did socketemit sendclicked ", username, chatWith, message);
+      // Display the sent message
+      displaySentMsg(message);
+      // Clear the input field after sending the message
+      messageInput.value = "";
+    }
+  });
+});
