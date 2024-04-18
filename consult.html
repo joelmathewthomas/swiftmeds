@@ -37,6 +37,35 @@
         color: #fff; /* White text color */
         font-size: 14px;
       }
+
+      .chat-messages {
+        overflow-y: scroll; /* Enable vertical scrolling */
+        max-height: 300px; /* Limit the height of the chat container */
+      }
+
+      .sent-message {
+        background-color: #2196f3; /* Blue background for sent messages */
+        color: #fff; /* White text color for sent messages */
+        padding: 8px 12px; /* Padding for sent messages */
+        margin-bottom: 8px; /* Margin bottom for sent messages */
+        border-radius: 15px 15px 0 15px; /* Rounded corners, top-right, bottom-left, and bottom-right for sent messages */
+        float: right; /* Align sent messages to the right */
+        clear: both; /* Clear floating elements */
+      }
+
+      .received-message {
+        background-color: #f1f1f1; /* Light gray background for received messages */
+        color: #333; /* Dark text color for received messages */
+        padding: 8px 12px; /* Padding for received messages */
+        margin-bottom: 8px; /* Margin bottom for received messages */
+        border-radius: 15px 15px 15px 0; /* Rounded corners, top-right, top-left, and bottom-left for received messages */
+        float: left; /* Align received messages to the left */
+        clear: both; /* Clear floating elements */
+      }
+
+      .input-field {
+        margin-top: 20px; /* Margin top for the input field */
+      }
     </style>
   </head>
   <body>
@@ -65,6 +94,8 @@
       <h4>Chat</h4>
       <div id="chatMessages" class="chat-messages">
         <!-- Chat messages will be displayed here -->
+        <div class="sent-message">This is a sent message</div>
+        <div class="received-message">This is a received message</div>
       </div>
       <div class="input-field">
         <input id="messageInput" type="text" class="validate" />
@@ -76,13 +107,14 @@
         >
           Send
         </button>
+        <button
+          id="closeChatButton"
+          class="btn waves-effect waves-light red"
+          type="button"
+        >
+          Close Chat
+        </button>
       </div>
-      <a
-        id="quitChatButton"
-        class="btn-floating btn-large waves-effect waves-light red"
-        style="position: absolute; top: 10px; right: 10px"
-        ><i class="material-icons">close</i></a
-      >
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
