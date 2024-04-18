@@ -80,6 +80,23 @@
         console.log(
           `Received updateappointments event for patient ${patientName}`
         );
+
+        fetch("/addAppointment", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ patientName: patientName }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data.message);
+            location.reload();
+          })
+          .catch((error) => {
+            console.error("Error adding appointment:", error);
+          });
+
         // Update the doctor's request.session.appointments here
       });
     </script>
