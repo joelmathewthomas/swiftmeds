@@ -49,6 +49,7 @@
     <div id="appointmentContainer" class="container" style="display: none">
       <h4>Appointments</h4>
       <ul class="collection">
+        <li class="collection-item">No Appointments</li>
         <!-- Add more appointments as needed -->
       </ul>
     </div>
@@ -87,6 +88,8 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       let socket = io();
+      let username = "";
+      let chatWith = "";
 
       fetch("/getSessionData")
         .then((response) => response.json())
@@ -114,13 +117,36 @@
           .then((response) => response.json())
           .then((data) => {
             console.log(data.message);
-            location.reload();
+            if (
+              document.getElementById("appointmentContainer").style.display !==
+              "none"
+            ) {
+              location.reload();
+            }
+            showNotification("You have new appointments");
           })
           .catch((error) => {
             console.error("Error adding appointment:", error);
           });
 
         // Update the doctor's request.session.appointments here
+      });
+
+      socket.on("chatwithdoctor", ({ doctor }) => {
+        // Set chatWith variable to the doctor's name
+        const chatWith = doctor;
+
+        // Log that the user is chatting with the doctor
+        console.log("Chatting with:", chatWith);
+
+        // Notify the user
+        socket.emit("notify", "You will be redirected to chat");
+
+        // Hide the available doctors container
+        $("#availableDoctorsContainer").css("display", "none");
+
+        // Show the chat container
+        $("#chatContainer").css("display", "block");
       });
 
       socket.on("notify", (message) => {
@@ -143,34 +169,6 @@
                 "availableDoctorsContainer"
               ).style.display = "block";
             }
-          });
-
-        // Handle accept appointment button click
-        document
-          .querySelectorAll(".acceptappointment")
-          .forEach(function (button) {
-            button.addEventListener("click", function () {
-              // Hide appointment container
-              document.querySelector(".appointmentContainer").style.display =
-                "none";
-              // Show chat container
-              document.querySelector(".chatContainer").style.display = "block";
-            });
-          });
-
-        // Handle reject appointment button click
-        document
-          .querySelectorAll(".rejectappointment")
-          .forEach(function (button) {
-            button.addEventListener("click", function () {
-              // Hide appointment container
-              document.querySelector(".appointmentContainer").style.display =
-                "none";
-              // Show available doctors container
-              document.querySelector(
-                ".availableDoctorsContainer"
-              ).style.display = "block";
-            });
           });
 
         // Handle quit chat button click
@@ -203,5 +201,6 @@
     </script>
     <script src="/scripts/consultdoctors.js"></script>
     <script src="/scripts/appointments.js"></script>
+    <script src="/scripts/acceptappointment-script.js"></script>
   </body>
 </html>
