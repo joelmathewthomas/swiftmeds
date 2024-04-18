@@ -174,7 +174,7 @@ app.post("/auth", function (request, response) {
                       const user = results[0];
                       request.session.type = user.type;
                       request.session.cart = [];
-                      request.session.appointments = ["Alice", "John"];
+                      request.session.appointments = [];
                       response.json({ success: true });
                     }
                     return;
@@ -634,5 +634,29 @@ app.get("/chat", function (request, response) {
   } else {
     // send error message
     response.sendFile(path.join(__dirname + "/notauthorized.html"));
+  }
+});
+
+// http://localhost:3000/addAppointment
+app.post("/addAppointment", (request, response) => {
+  const patientName = request.body.patientName;
+  console.log("Received request to add appointment for patient:", patientName);
+
+  // Check if patientName already exists in appointments array
+  if (!request.session.appointments.includes(patientName)) {
+    // Patient name doesn't exist, push it to the array
+    request.session.appointments.push(patientName);
+    console.log(`Added appointment for patient: ${patientName}`);
+    response.json({
+      success: true,
+      message: `Appointment added for patient: ${patientName}`,
+    });
+  } else {
+    // Patient name already exists, log and send response
+    console.log(`Appointment for patient ${patientName} already exists`);
+    response.json({
+      success: false,
+      message: `Appointment for patient ${patientName} already exists`,
+    });
   }
 });
