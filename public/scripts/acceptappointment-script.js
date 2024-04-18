@@ -31,13 +31,18 @@ $(document).on("click", ".acceptappointment", function () {
         console.log("Chatting with ", chatWith);
 
         // Notify the patient
-        socket.emit("notify", "You will be redirected to chat");
+        showNotification("You will be redirected to chat");
 
-        // Hide appointment container
-        $("#appointmentContainer").hide();
+        // Using setTimeout to create a delay of 2000 milliseconds (2 seconds)
+        setTimeout(function () {
+          // Hide appointment container
+          $("#appointmentContainer").hide();
 
-        // Show chat container
-        $("#chatContainer").show();
+          // Show chat container
+          $("#chatContainer").show();
+          // Code to be executed after 2 seconds
+          console.log("Two seconds have passed!");
+        }, 2100);
       } else {
         console.error("Failed to remove appointment:", data.message);
       }
