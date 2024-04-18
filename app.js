@@ -242,6 +242,7 @@ app.get("/getSessionData", function (request, response) {
       type: request.session.type,
       cart: request.session.cart,
     });
+    console.log(request.session.username, "requested session data");
   } else {
     response.json({ success: false, loggedin: request.session.loggedin });
   }
@@ -308,7 +309,7 @@ app.get("/logout", function (request, response) {
 // http://localhost:3000/getDoctors
 app.get("/getDoctors", function (request, response) {
   if (request.session.loggedin) {
-    if (request.session.type == "admin") {
+    if (request.session.type) {
       connection.query(
         "SELECT username from accounts where type=?",
         ["doctor"],
