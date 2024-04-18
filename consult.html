@@ -140,17 +140,31 @@
         console.log("Chatting with:", chatWith);
 
         // Notify the user
-        socket.emit("notify", "You will be redirected to chat");
+        showNotification("You will be redirected to chat");
 
-        // Hide the available doctors container
-        $("#availableDoctorsContainer").css("display", "none");
+        // Using setTimeout to create a delay of 2000 milliseconds (2 seconds)
+        setTimeout(function () {
+          // Hide the available doctors container
+          $("#availableDoctorsContainer").css("display", "none");
 
-        // Show the chat container
-        $("#chatContainer").css("display", "block");
+          // Show the chat container
+          $("#chatContainer").css("display", "block");
+          // Code to be executed after 2 seconds
+          console.log("Two seconds have passed!");
+        }, 2100);
       });
 
       socket.on("notify", (message) => {
         showNotification(message);
+      });
+
+      socket.on("reload", () => {
+        setTimeout(function () {
+          showNotification("Reloading");
+        }, 2000);
+        setTimeout(function () {
+          location.reload();
+        }, 2000);
       });
     </script>
     <script>

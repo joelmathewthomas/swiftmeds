@@ -719,6 +719,11 @@ app.post("/removeAppointment", function (request, response) {
       response.json({ success: true });
     } else {
       // Appointment not found
+      io.to(users[doctorName].id).emit(
+        "notify",
+        `${patientName} is not online`
+      );
+      io.to(users[doctorName].id).emit("reload");
       response.json({ success: false, message: "Appointment not found" });
     }
   } else {
