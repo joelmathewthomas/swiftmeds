@@ -682,3 +682,47 @@ app.post("/addAppointment", (request, response) => {
     });
   }
 });
+
+app.post("/removeAppointment", function (request, response) {
+  console.log("reached /removeAppointment");
+  const doctorName = request.body.doctorName;
+  const patientName = request.body.patientName;
+  const mode = request.body.mode;
+
+  if (mode === "accept") {
+    console.log("mode is accept");
+    // Check if the appointment exists
+    const index = request.session.appointments.indexOf(patientName);
+    console.log(
+      "'doctor is ",
+      doctorName,
+      "patient is ",
+      patientName,
+      "mode is",
+      mode
+    );
+    if (index !== -1) {
+      // Remove the appointment
+      request.session.appointments.splice(index, 1);
+      console.log("removed appointment");
+
+      // Notify the patient
+      const patientSocketId = users[patientName].id;
+      if (patientSocketId) {
+        io.to(patientSocketId).emit("chatwithdoctor", { doctor: doctorName });
+        console.log("successfully emitted chatwithdoctor");
+      } else {
+        console.error("Patient socket not found");
+      }
+
+      // Send success response
+      response.json({ success: true });
+    } else {
+      // Appointment not found
+      response.json({ success: false, message: "Appointment not found" });
+    }
+  } else {
+    // Invalid mode
+    response.json({ success: false, message: "Invalid mode" });
+  }
+});

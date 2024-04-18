@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "btn",
             "acceptappointment"
           );
-          acceptButton.textContent = "Accept";
+          acceptButton.textContent = " Accept";
 
           // Create reject button
           const rejectButton = document.createElement("a");
