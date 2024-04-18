@@ -28,21 +28,13 @@
       <ul class="collection">
         <li class="collection-item">
           Patient 1
-          <a id="acceptAppointmentButton" class="waves-effect waves-light btn"
-            >Accept</a
-          >
-          <a id="rejectAppointmentButton" class="waves-effect waves-light btn"
-            >Reject</a
-          >
+          <a class="waves-effect waves-light btn acceptappointment">Accept</a>
+          <a class="waves-effect waves-light btn rejectappointment">Reject</a>
         </li>
         <li class="collection-item">
           Patient 2
-          <a id="acceptAppointmentButton" class="waves-effect waves-light btn"
-            >Accept</a
-          >
-          <a id="rejectAppointmentButton" class="waves-effect waves-light btn"
-            >Reject</a
-          >
+          <a class="waves-effect waves-light btn acceptappointment">Accept</a>
+          <a class="waves-effect waves-light btn rejectappointment">Reject</a>
         </li>
         <!-- Add more appointments as needed -->
       </ul>
@@ -53,15 +45,11 @@
       <ul class="collection">
         <li class="collection-item">
           Doctor 1
-          <a id="consultDoctorButton" class="waves-effect waves-light btn"
-            >Consult</a
-          >
+          <a class="waves-effect waves-light btn consultbtn">Consult</a>
         </li>
         <li class="collection-item">
           Doctor 2
-          <a id="consultDoctorButton" class="waves-effect waves-light btn"
-            >Consult</a
-          >
+          <a class="waves-effect waves-light btn consultbtn">Consult</a>
         </li>
         <!-- Add more doctors as needed -->
       </ul>
@@ -91,6 +79,10 @@
       >
     </div>
 
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      let socket = io();
+    </script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         // Fetch session data from /getSessionData endpoint
@@ -111,25 +103,30 @@
 
         // Handle accept appointment button click
         document
-          .getElementById("acceptAppointmentButton")
-          .addEventListener("click", function () {
-            // Hide appointment container
-            document.getElementById("appointmentContainer").style.display =
-              "none";
-            // Show chat container
-            document.getElementById("chatContainer").style.display = "block";
+          .querySelectorAll(".acceptappointment")
+          .forEach(function (button) {
+            button.addEventListener("click", function () {
+              // Hide appointment container
+              document.querySelector(".appointmentContainer").style.display =
+                "none";
+              // Show chat container
+              document.querySelector(".chatContainer").style.display = "block";
+            });
           });
 
         // Handle reject appointment button click
         document
-          .getElementById("rejectAppointmentButton")
-          .addEventListener("click", function () {
-            // Hide appointment container
-            document.getElementById("appointmentContainer").style.display =
-              "none";
-            // Show available doctors container
-            document.getElementById("availableDoctorsContainer").style.display =
-              "block";
+          .querySelectorAll(".rejectappointment")
+          .forEach(function (button) {
+            button.addEventListener("click", function () {
+              // Hide appointment container
+              document.querySelector(".appointmentContainer").style.display =
+                "none";
+              // Show available doctors container
+              document.querySelector(
+                ".availableDoctorsContainer"
+              ).style.display = "block";
+            });
           });
 
         // Handle quit chat button click

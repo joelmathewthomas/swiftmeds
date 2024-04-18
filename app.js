@@ -49,6 +49,13 @@ io.on("connection", (socket) => {
     console.log("handling setUsername , username is ", username);
   });
 
+  // consultdoctor
+  socket.on("consultdoctor", (doctorName, patientName) => {
+    console.log(
+      `Recieved Appointment: Doctor: ${doctorName}, Patient: ${patientName}`
+    );
+  });
+
   // privateMessage
   socket.on("privateMessage", ({ recipient, message }) => {
     // Check if the recipient is connected
