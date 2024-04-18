@@ -706,14 +706,21 @@ app.post("/removeAppointment", function (request, response) {
       // Remove the appointment
       request.session.appointments.splice(index, 1);
       console.log("removed appointment");
-
+      const patientSocketId = undefined;
       // Notify the patient
-      const patientSocketId = users[patientName].id;
+      if (users[patientName]) {
+        patientSocketId = users[patientName].id;
+      }
       if (patientSocketId) {
         io.to(patientSocketId).emit("chatwithdoctor", { doctor: doctorName });
         console.log("successfully emitted chatwithdoctor");
       } else {
         console.error("Patient socket not found");
+        response.json({ success: false, message: "Patient not online" });
+        io.to(users[doctorName]?.id).emit(
+          "notify",
+          `${patientName} is not online`
+        );
       }
 
       // Send success response
@@ -750,7 +757,11 @@ app.post("/removeAppointment", function (request, response) {
       response.json({ success: true });
     } else {
       // Appointment not found
-      io.to(users[doctorName]?.id).emit("reload");
+
+      io.to(users[doctorName]?.id).emit("notify", "Appointment not found");
+      setTimeout(() => {
+        io.to(users[doctorName]?.id).emit("reload");
+      }, 2100);
       response.json({ success: false, message: "Appointment not found" });
     }
   }
