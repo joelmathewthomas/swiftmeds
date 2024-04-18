@@ -61,11 +61,24 @@ io.on("connection", (socket) => {
     // Split the doctor variable by whitespace and take the first part as the name
     const doctorNameParts = doctor.split(" ");
     const doctorName = doctorNameParts[0].trim();
-
-    // Find the doctor's socket instance and emit event to update appointments
-    const doctorSocket = users[doctorName].id;
-    io.to(doctorSocket).emit("updateappointments", patient);
-    console.log(`Emitted "updateappointments" to ${doctorName}`);
+    const patientSocket = users[patient].id;
+    // Check if the doctor is connected
+    if (users.hasOwnProperty(doctorName)) {
+      // Find the doctor's socket instance and emit event to update appointments
+      const doctorSocket = users[doctorName].id;
+      io.to(doctorSocket).emit("updateappointments", patient);
+      io.to(patientSocket).emit(
+        "notify",
+        `Appointment Successful. You will be redirected to chatbox when the ${doctorName} is ready to chat`
+      );
+      console.log(`Emitted "updateappointments" to ${doctorName}`);
+    } else {
+      // If the doctor is not connected, emit a notification to the patient
+      io.to(patientSocket).emit("notify", `${doctorName} is not online`);
+      console.log(
+        `Emitted notification to ${patient} that ${doctorName} is not online`
+      );
+    }
   });
 
   // old
@@ -90,9 +103,18 @@ io.on("connection", (socket) => {
     io.emit("displaymessage", message);
   });
 
-  // Handle disconnection
+  // Handle user disconnection
   socket.on("disconnect", () => {
-    console.log("User disconnected");
+    // Find the username associated with the disconnected socket
+    const disconnectedUser = Object.keys(users).find(
+      (key) => users[key].id === socket.id
+    );
+
+    // If a matching username is found, remove it from the users object
+    if (disconnectedUser) {
+      delete users[disconnectedUser];
+      console.log(`User ${disconnectedUser} disconnected`);
+    }
   });
 });
 

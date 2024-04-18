@@ -21,8 +21,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <!-- Import jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+      .notification-box {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #2bbbad; /* Teal green color */
+        border: 1px solid #1b5e20; /* Darker shade of green */
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .notification-text {
+        color: #fff; /* White text color */
+        font-size: 14px;
+      }
+    </style>
   </head>
   <body>
+    <div id="notificationBox" class="notification-box" style="display: none">
+      <span id="notificationText" class="notification-text"
+        >I am a notification</span
+      >
+    </div>
+
     <div id="appointmentContainer" class="container" style="display: none">
       <h4>Appointments</h4>
       <ul class="collection">
@@ -99,6 +122,10 @@
 
         // Update the doctor's request.session.appointments here
       });
+
+      socket.on("notify", (message) => {
+        showNotification(message);
+      });
     </script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -163,6 +190,16 @@
             }
           });
       });
+
+      function showNotification(message) {
+        const notificationBox = document.getElementById("notificationBox");
+        const notificationText = document.getElementById("notificationText");
+        notificationText.textContent = message;
+        notificationBox.style.display = "block";
+        setTimeout(() => {
+          notificationBox.style.display = "none";
+        }, 5000); // Hide after 5 seconds
+      }
     </script>
     <script src="/scripts/consultdoctors.js"></script>
     <script src="/scripts/appointments.js"></script>
