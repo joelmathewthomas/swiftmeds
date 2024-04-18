@@ -46,16 +46,29 @@ io.on("connection", (socket) => {
   // set user socket
   socket.on("setUsername", (username) => {
     users[username] = socket;
-    console.log("handling setUsername , username is ", username);
-  });
-
-  // consultdoctor
-  socket.on("consultdoctor", (doctorName, patientName) => {
     console.log(
-      `Recieved Appointment: Doctor: ${doctorName}, Patient: ${patientName}`
+      "handling setUsername , username is ",
+      username,
+      ": ",
+      users[username].id
     );
   });
 
+  // consultdoctor
+  socket.on("consultdoctor", ({ doctor, patient }) => {
+    console.log(`Received Appointment: Doctor: ${doctor}, Patient: ${patient}`);
+
+    // Split the doctor variable by whitespace and take the first part as the name
+    const doctorNameParts = doctor.split(" ");
+    const doctorName = doctorNameParts[0].trim();
+
+    // Find the doctor's socket instance and emit event to update appointments
+    const doctorSocket = users[doctorName].id;
+    io.to(doctorSocket).emit("updateappointments", patient);
+    console.log(`Emitted "updateappointments" to ${doctorName}`);
+  });
+
+  // old
   // privateMessage
   socket.on("privateMessage", ({ recipient, message }) => {
     // Check if the recipient is connected

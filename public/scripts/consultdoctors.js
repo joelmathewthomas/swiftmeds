@@ -26,8 +26,8 @@ $(document).ready(function () {
               // Add event listener to the consult buttons
               $(".consultbtn").click(function () {
                 // Get the doctor's name from the list item text
-                const doctorName = $(this).parent().text().trim();
-
+                const doctor = $(this).parent().text().trim();
+                const doctorName = `${doctor}`;
                 // Fetch session data to get the patient's name
                 fetch("/getSessionData")
                   .then((response) => response.json())
@@ -35,7 +35,10 @@ $(document).ready(function () {
                     if (data.username) {
                       const patientName = data.username;
                       // Emit a socket event to consult the doctor
-                      socket.emit("consultdoctor", doctorName, patientName);
+                      socket.emit("consultdoctor", {
+                        doctor: doctorName,
+                        patient: patientName,
+                      });
                     } else {
                       console.error(
                         "Failed to fetch patient name from session data"

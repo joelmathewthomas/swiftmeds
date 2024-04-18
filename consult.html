@@ -64,6 +64,24 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       let socket = io();
+
+      fetch("/getSessionData")
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.loggedin) {
+            username = data.username;
+            socket.emit("setUsername", username);
+          } else {
+          }
+        })
+        .catch((error) => console.error("Error fetching session data:", error));
+
+      socket.on("updateappointments", (patientName) => {
+        console.log(
+          `Received updateappointments event for patient ${patientName}`
+        );
+        // Update the doctor's request.session.appointments here
+      });
     </script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
