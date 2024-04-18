@@ -161,6 +161,7 @@ app.post("/auth", function (request, response) {
                       const user = results[0];
                       request.session.type = user.type;
                       request.session.cart = [];
+                      request.session.appointments = ["Alice", "John"];
                       response.json({ success: true });
                     }
                     return;
@@ -248,6 +249,7 @@ app.get("/getSessionData", function (request, response) {
       username: request.session.username,
       type: request.session.type,
       cart: request.session.cart,
+      appointments: request.session.appointments,
     });
     console.log(request.session.username, "requested session data");
   } else {
