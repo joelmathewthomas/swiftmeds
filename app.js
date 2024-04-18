@@ -683,6 +683,7 @@ app.post("/addAppointment", (request, response) => {
   }
 });
 
+// http://localhost:3000/removeAppointment
 app.post("/removeAppointment", function (request, response) {
   console.log("reached /removeAppointment");
   const doctorName = request.body.doctorName;
@@ -719,15 +720,38 @@ app.post("/removeAppointment", function (request, response) {
       response.json({ success: true });
     } else {
       // Appointment not found
-      io.to(users[doctorName].id).emit(
+      io.to(users[doctorName]?.id).emit(
         "notify",
         `${patientName} is not online`
       );
-      io.to(users[doctorName].id).emit("reload");
+      io.to(users[doctorName]?.id).emit("reload");
       response.json({ success: false, message: "Appointment not found" });
     }
-  } else {
-    // Invalid mode
-    response.json({ success: false, message: "Invalid mode" });
+  } else if (mode === "reject") {
+    // Reject mode
+    // Check if appointment exists
+    const index = request.session.appointments.indexOf(patientName);
+    console.log(
+      "'doctor is ",
+      doctorName,
+      "patient is ",
+      patientName,
+      "mode is",
+      mode
+    );
+    if (index !== -1) {
+      // Remove the appointment
+      request.session.appointments.splice(index, 1);
+      console.log("removed appointment");
+      io.to(users[patientName]?.id).emit(
+        "notify",
+        "Your appointment was rejected"
+      );
+      response.json({ success: true });
+    } else {
+      // Appointment not found
+      io.to(users[doctorName]?.id).emit("reload");
+      response.json({ success: false, message: "Appointment not found" });
+    }
   }
 });
