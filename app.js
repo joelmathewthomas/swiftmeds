@@ -607,7 +607,7 @@ app.post("/searchmedicines", function (request, response) {
 // http://localhost:3000/chat
 app.get("/chat", function (request, response) {
   if (request.session.loggedin) {
-    response.sendFile(path.join(__dirname + "/chat.html"));
+    response.sendFile(path.join(__dirname + "/consult.html"));
   } else {
     // send error message
     response.sendFile(path.join(__dirname + "/notauthorized.html"));
