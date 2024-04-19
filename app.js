@@ -118,6 +118,11 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on("patientbusy", ({ doctor }) => {
+    doctorSocketId = users[doctor]?.id;
+    io.to(doctorSocketId).emit("patientinappointment");
+  });
+
   // Handle user disconnection
   socket.on("disconnect", () => {
     // Find the username associated with the disconnected socket
