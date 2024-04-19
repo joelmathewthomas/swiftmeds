@@ -103,6 +103,11 @@
         float: right;
         top: -6px;
       }
+
+      .input-field label {
+        margin-left: 2%;
+        margin-top: 2;
+      }
     </style>
   </head>
   <body>
@@ -184,13 +189,16 @@
           .then((response) => response.json())
           .then((data) => {
             console.log(data.message);
-            if (
-              document.getElementById("appointmentContainer").style.display !==
-              "none"
-            ) {
-              location.reload();
-            }
+
             showNotification("You have new appointments");
+            setTimeout(function () {
+              if (
+                document.getElementById("appointmentContainer").style
+                  .display !== "none"
+              ) {
+                location.reload();
+              }
+            }, 2100);
           })
           .catch((error) => {
             console.error("Error adding appointment:", error);
