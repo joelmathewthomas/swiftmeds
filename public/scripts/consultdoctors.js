@@ -1,30 +1,31 @@
 $(document).ready(function () {
   // Fetch session data to determine user type
-  fetch("/getSessionData")
+  fetch("/getsessiondata")
     .then((response) => response.json())
     .then((data) => {
       if (data.type === "patient") {
-        // Fetch the list of doctors from the server
-        fetch("/getDoctors")
+        // fetch the list of doctors from the server
+        fetch("/getdoctors")
           .then((response) => response.json())
           .then((data) => {
             if (data.success) {
-              // Clear existing doctor list
+              // clear existing doctor list
               $("#availableDoctorsContainer .collection").empty();
 
-              // Iterate through the array of doctors and append them to the list
+              // iterate through the array of doctors and append them to the list
               data.doctors.forEach((doctor) => {
-                // Create a list item for each doctor with a consult button
+                // create a list item for each doctor with a consult button
                 const listItem = `
-                    <li class="collection-item">${doctor.username}
-                      <a class="waves-effect waves-light btn consultbtn">Consult</a>
+                    <li class="collection-item">
+                      ${doctor.username}
+                      <a class="waves-effect waves-light btn consultbtn-right">Consult</a>
                     </li>`;
-                // Append the list item to the container
+                // append the list item to the container
                 $("#availableDoctorsContainer .collection").append(listItem);
               });
 
               // Add event listener to the consult buttons
-              $(".consultbtn").click(function () {
+              $(".consultbtn-right").click(function () {
                 // Get the doctor's name from the list item text
                 const doctor = $(this).parent().text().trim();
                 const doctorName = `${doctor}`;
