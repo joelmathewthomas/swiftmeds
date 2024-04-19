@@ -282,6 +282,7 @@
         sentMsgDiv.textContent = message;
         sentMsgDiv.classList.add("sent-message");
         chatMessages.appendChild(sentMsgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
       }
 
       function displayReceivedMsg(message) {
@@ -290,6 +291,7 @@
         receivedMsgDiv.textContent = message;
         receivedMsgDiv.classList.add("received-message");
         chatMessages.appendChild(receivedMsgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
       }
     </script>
     <script src="/scripts/consultdoctors.js"></script>
