@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat Page</title>
+    <!-- Import Material-UI styles -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <!-- Import Material-UI JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Import jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+      .notification-box {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #2bbbad; /* Teal green color */
+        border: 1px solid #1b5e20; /* Darker shade of green */
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .notification-text {
+        color: #fff; /* White text color */
+        font-size: 14px;
+      }
+
+      #chatContainer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #chatContainer h4 {
+        margin-top: 20px;
+      }
+
+      .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      .input-field {
+        margin-top: auto;
+        padding: 20px;
+      }
+
+      .sent-message {
+        background-color: #2196f3; /* Blue background for sent messages */
+        color: #fff; /* White text color for sent messages */
+        padding: 8px 12px; /* Padding for sent messages */
+        margin-bottom: 8px; /* Margin bottom for sent messages */
+        border-radius: 15px 15px 0 15px; /* Rounded corners, top-right, bottom-left, and bottom-right for sent messages */
+        float: right; /* Align sent messages to the right */
+        clear: both; /* Clear floating elements */
+      }
+
+      .received-message {
+        background-color: #f1f1f1; /* Light gray background for received messages */
+        color: #333; /* Dark text color for received messages */
+        padding: 8px 12px; /* Padding for received messages */
+        margin-bottom: 8px; /* Margin bottom for received messages */
+        border-radius: 15px 15px 15px 0; /* Rounded corners, top-right, top-left, and bottom-left for received messages */
+        float: left; /* Align received messages to the left */
+        clear: both; /* Clear floating elements */
+      }
+
+      .input-field {
+        margin-top: 20px; /* Margin top for the input field */
+      }
+
+      .consultbtn-right {
+        display: inline-flex;
+        float: right;
+        top: -7px;
+      }
+      .acceptappointment {
+        float: right;
+        top: -6px;
+        margin-right: 5px;
+      }
+      .rejectappointment {
+        float: right;
+        top: -6px;
+      }
+
+      .input-field label {
+        margin-left: 2%;
+        margin-top: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="notificationBox" class="notification-box" style="display: none">
+      <span id="notificationText" class="notification-text"
+        >I am a notification</span
+      >
+    </div>
+
+    <div id="appointmentContainer" class="container" style="display: none">
+      <h4>Appointments</h4>
+      <ul class="collection">
+        <li class="collection-item">No Appointments</li>
+        <!-- Add more appointments as needed -->
+      </ul>
+    </div>
+
+    <div id="availableDoctorsContainer" class="container" style="display: none">
+      <h4>Available Doctors</h4>
+      <ul class="collection">
+        <!-- Add more doctors as needed -->
+      </ul>
+    </div>
+
+    <div id="chatContainer" class="container" style="display: none">
+      <h4>Chat</h4>
+      <div id="chatMessages" class="chat-messages">
+        <!-- Chat messages will be displayed here -->
+      </div>
+      <div class="input-field">
+        <input id="messageInput" type="text" class="validate" />
+        <label for="messageInput">Type a message...</label>
+        <button
+          id="sendMessageButton"
+          class="btn waves-effect waves-light"
+          type="submit"
+        >
+          Send
+        </button>
+        <button
+          id="closeChatButton"
+          class="btn waves-effect waves-light red"
+          type="button"
+        >
+          Close Chat
+        </button>
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      let socket = io();
+      let username = "";
+      let chatWith = "";
+
+      fetch("/getSessionData")
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.loggedin) {
+            username = data.username;
+            socket.emit("setUsername", username);
+          } else {
+          }
+        })
+        .catch((error) => console.error("Error fetching session data:", error));
+
+      socket.on("updateappointments", (patientName) => {
+        console.log(
+          `Received updateappointments event for patient ${patientName}`
+        );
+
+        fetch("/addAppointment", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ patientName: patientName }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data.message);
+
+            showNotification("You have new appointments");
+            setTimeout(function () {
+              if (
+                document.getElementById("appointmentContainer").style
+                  .display !== "none"
+              ) {
+                location.reload();
+              }
+            }, 2100);
+          })
+          .catch((error) => {
+            console.error("Error adding appointment:", error);
+          });
+
+        // Update the doctor's request.session.appointments here
+      });
+
+      socket.on("chatwithdoctor", ({ doctor }) => {
+        if (chatWith === "") {
+          // Set chatWith variable to the doctor's name
+          chatWith = doctor;
+
+          // Log that the user is chatting with the doctor
+          console.log("Chatting with:", chatWith);
+
+          // Notify the user
+          showNotification("You will be redirected to chat");
+
+          // Using setTimeout to create a delay of 2000 milliseconds (2 seconds)
+          setTimeout(function () {
+            // Hide the available doctors container
+            $("#availableDoctorsContainer").css("display", "none");
+
+            // Show the chat container
+            $("#chatContainer").css("display", "flex");
+            // Code to be executed after 2 seconds
+            console.log("Two seconds have passed!");
+          }, 2100);
+        } else {
+          // Emit a socket event to notify the server that the patient is busy
+          socket.emit("patientbusy", { doctor: doctor });
+        }
+      });
+
+      socket.on("patientinappointment", () => {
+        showNotification(
+          "Unfortunately, Patient is in the middle of another appointment. Appointment Removed. Going back"
+        );
+        setTimeout(() => {
+          location.reload();
+        }, 2100);
+      });
+
+      socket.on("sendclicked", ({ sender, recipient, message }) => {
+        const recipientSocketId = users[recipient]?.id;
+        if (recipientSocketId) {
+          io.to(recipientSocketId).emit("receivemsg", { message: message });
+        } else {
+          const senderSocketId = users[sender]?.id;
+          if (senderSocketId) {
+            io.to(senderSocketId).emit(
+              "disconnected",
+              "User disconnected. Going back"
+            );
+            setTimeout(() => {
+              io.to(senderSocketId).emit("reload");
+            }, 2000); // Emit reload event after 2 seconds
+          }
+        }
+      });
+
+      socket.on("receivemsg", ({ message }) => {
+        displayReceivedMsg(message);
+      });
+
+      socket.on("disconnected", (message) => {
+        chatWith = "";
+        showNotification(message);
+      });
+
+      socket.on("notify", (message) => {
+        showNotification(message);
+      });
+
+      socket.on("reload", () => {
+        setTimeout(function () {
+          showNotification("Reloading");
+        }, 2000);
+        setTimeout(function () {
+          location.reload();
+        }, 2000);
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Fetch session data from /getSessionData endpoint
+        fetch("/getSessionData")
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.type === "doctor") {
+              // Show appointment container
+              document.getElementById("appointmentContainer").style.display =
+                "block";
+            } else if (data.type === "patient") {
+              // Show available doctors container
+              document.getElementById(
+                "availableDoctorsContainer"
+              ).style.display = "block";
+            }
+          });
+      });
+
+      // Display Notification
+      function showNotification(message) {
+        const notificationBox = document.getElementById("notificationBox");
+        const notificationText = document.getElementById("notificationText");
+        notificationText.textContent = message;
+        notificationBox.style.display = "block";
+        setTimeout(() => {
+          notificationBox.style.display = "none";
+        }, 5000); // Hide after 5 seconds
+      }
+
+      function displaySentMsg(message) {
+        const chatMessages = document.getElementById("chatMessages");
+        const sentMsgDiv = document.createElement("div");
+        sentMsgDiv.textContent = message;
+        sentMsgDiv.classList.add("sent-message");
+        chatMessages.appendChild(sentMsgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function displayReceivedMsg(message) {
+        const chatMessages = document.getElementById("chatMessages");
+        const receivedMsgDiv = document.createElement("div");
+        receivedMsgDiv.textContent = message;
+        receivedMsgDiv.classList.add("received-message");
+        chatMessages.appendChild(receivedMsgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+    </script>
+    <script src="/scripts/consultdoctors.js"></script>
+    <script src="/scripts/appointments.js"></script>
+    <script src="/scripts/acceptappointment-script.js"></script>
+    <script src="/scripts/rejectappointment-script.js"></script>
+    <script src="/scripts/sendmsg.js"></script>
+  </body>
+</html>
