@@ -34,13 +34,13 @@ document.addEventListener("DOMContentLoaded", function () {
               "btn",
               "rejectappointment"
             );
-            rejectButton.textContent = "Reject";
+            rejectButton.textContent = " Reject";
 
             // Add patient username
             const patientText = document.createTextNode(patient);
             listItem.appendChild(patientText);
-            listItem.appendChild(acceptButton);
             listItem.appendChild(rejectButton);
+            listItem.appendChild(acceptButton);
 
             // Add list item to the collection
             document
