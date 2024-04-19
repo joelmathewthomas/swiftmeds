@@ -208,24 +208,38 @@
       });
 
       socket.on("chatwithdoctor", ({ doctor }) => {
-        // Set chatWith variable to the doctor's name
-        chatWith = doctor;
+        if (chatWith === "") {
+          // Set chatWith variable to the doctor's name
+          chatWith = doctor;
 
-        // Log that the user is chatting with the doctor
-        console.log("Chatting with:", chatWith);
+          // Log that the user is chatting with the doctor
+          console.log("Chatting with:", chatWith);
 
-        // Notify the user
-        showNotification("You will be redirected to chat");
+          // Notify the user
+          showNotification("You will be redirected to chat");
 
-        // Using setTimeout to create a delay of 2000 milliseconds (2 seconds)
-        setTimeout(function () {
-          // Hide the available doctors container
-          $("#availableDoctorsContainer").css("display", "none");
+          // Using setTimeout to create a delay of 2000 milliseconds (2 seconds)
+          setTimeout(function () {
+            // Hide the available doctors container
+            $("#availableDoctorsContainer").css("display", "none");
 
-          // Show the chat container
-          $("#chatContainer").css("display", "flex");
-          // Code to be executed after 2 seconds
-          console.log("Two seconds have passed!");
+            // Show the chat container
+            $("#chatContainer").css("display", "flex");
+            // Code to be executed after 2 seconds
+            console.log("Two seconds have passed!");
+          }, 2100);
+        } else {
+          // Emit a socket event to notify the server that the patient is busy
+          socket.emit("patientbusy", { doctor: doctor });
+        }
+      });
+
+      socket.on("patientinappointment", () => {
+        showNotification(
+          "Unfortunately, Patient is in the middle of another appointment. Appointment Removed. Going back"
+        );
+        setTimeout(() => {
+          location.reload();
         }, 2100);
       });
 
