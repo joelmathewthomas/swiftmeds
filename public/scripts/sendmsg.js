@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
   const sendMessageButton = document.getElementById("sendMessageButton");
   const messageInput = document.getElementById("messageInput");
+  const closeButton = document.getElementById("closeChatButton");
 
   sendMessageButton.addEventListener("click", function () {
     const message = messageInput.value;
-    const chatName = "Alice"; // Replace with the chatName or retrieve it from your application logic
 
     if (message !== "") {
       socket.emit("sendclicked", {
@@ -18,5 +18,10 @@ document.addEventListener("DOMContentLoaded", function () {
       // Clear the input field after sending the message
       messageInput.value = "";
     }
+  });
+
+  closeButton.addEventListener("click", function () {
+    socket.emit("closedchat", { recipient: chatWith });
+    location.reload();
   });
 });
