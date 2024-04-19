@@ -118,28 +118,6 @@ io.on("connection", (socket) => {
     });
   });
 
-  // old
-  // privateMessage
-  socket.on("privateMessage", ({ recipient, message }) => {
-    // Check if the recipient is connected
-    if (users[recipient]) {
-      // Retrieve the recipient's socket ID
-      const recipientSocketId = users[recipient].id; // Assuming users[recipient] contains the socket instance
-      // Send the message only to the recipient's socket
-      io.to(recipientSocketId).emit("privateMessage", { message });
-      console.log("delivering to ", recipient, "message: ", message);
-    } else {
-      // Handle case when recipient is not connected
-      socket.emit("errorMessage", "Recipient is not connected");
-    }
-  });
-  // Handling sendmsg
-  socket.on("sendmsg", (message) => {
-    console.log("message: " + message);
-    // Broadcast the message to all connected clients
-    io.emit("displaymessage", message);
-  });
-
   // Handle user disconnection
   socket.on("disconnect", () => {
     // Find the username associated with the disconnected socket
@@ -686,8 +664,8 @@ app.post("/searchmedicines", function (request, response) {
   }
 });
 
-// http://localhost:3000/chat
-app.get("/chat", function (request, response) {
+// http://localhost:3000/consult
+app.get("/consult", function (request, response) {
   if (request.session.loggedin) {
     response.sendFile(path.join(__dirname + "/consult.html"));
   } else {
