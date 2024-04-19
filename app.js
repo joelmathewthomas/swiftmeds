@@ -107,6 +107,17 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("closedchat", ({ recipient }) => {
+    recipientSocketId = users[recipient]?.id;
+    io.to(recipientSocketId).emit(
+      "disconnected",
+      "User disconnected. Going back"
+    );
+    setTimeout(() => {
+      io.to(recipientSocketId).emit("reload");
+    });
+  });
+
   // old
   // privateMessage
   socket.on("privateMessage", ({ recipient, message }) => {
