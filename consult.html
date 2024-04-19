@@ -38,9 +38,31 @@
         font-size: 14px;
       }
 
+      #chatContainer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #chatContainer h4 {
+        margin-top: 20px;
+      }
+
       .chat-messages {
-        overflow-y: scroll; /* Enable vertical scrolling */
-        max-height: 300px; /* Limit the height of the chat container */
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      .input-field {
+        margin-top: auto;
+        padding: 20px;
       }
 
       .sent-message {
@@ -178,7 +200,7 @@
           $("#availableDoctorsContainer").css("display", "none");
 
           // Show the chat container
-          $("#chatContainer").css("display", "block");
+          $("#chatContainer").css("display", "flex");
           // Code to be executed after 2 seconds
           console.log("Two seconds have passed!");
         }, 2100);
