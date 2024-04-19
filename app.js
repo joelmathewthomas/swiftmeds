@@ -4,6 +4,12 @@ const mysql = require("mysql");
 // Import the 'express' module to create a web server
 const express = require("express");
 
+// Import http module
+const http = require("http");
+
+// Import socket.io
+const { Server } = require("socket.io");
+
 // Import the 'express-session' module to manage user sessions
 const session = require("express-session");
 
@@ -27,6 +33,111 @@ const connection = mysql.createPool({
 
 //Initialize express
 const app = express();
+
+const server = http.createServer(app);
+const io = new Server(server);
+const port = 3000;
+const users = {};
+
+// Handle Socket.IO events
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  // set user socket
+  socket.on("setUsername", (username) => {
+    users[username] = socket;
+    console.log(
+      "handling setUsername , username is ",
+      username,
+      ": ",
+      users[username].id
+    );
+  });
+
+  // consultdoctor
+  socket.on("consultdoctor", ({ doctor, patient }) => {
+    console.log(`Received Appointment: Doctor: ${doctor}, Patient: ${patient}`);
+
+    // Split the doctor variable by whitespace and take the first part as the name
+    const doctorNameParts = doctor.split(" ");
+    const doctorName = doctorNameParts[0].trim();
+    const patientSocket = users[patient].id;
+    // Check if the doctor is connected
+    if (users.hasOwnProperty(doctorName)) {
+      // Find the doctor's socket instance and emit event to update appointments
+      const doctorSocket = users[doctorName].id;
+      io.to(doctorSocket).emit("updateappointments", patient);
+      io.to(patientSocket).emit(
+        "notify",
+        `Appointment Successful. You will be redirected to chatbox when the ${doctorName} is ready to chat`
+      );
+      console.log(`Emitted "updateappointments" to ${doctorName}`);
+    } else {
+      // If the doctor is not connected, emit a notification to the patient
+      io.to(patientSocket).emit("notify", `${doctorName} is not online`);
+      console.log(
+        `Emitted notification to ${patient} that ${doctorName} is not online`
+      );
+    }
+  });
+
+  socket.on("sendclicked", ({ sender, recipient, message }) => {
+    console.log("recieved event sentclicked from ", sender);
+    const recipientSocketId = users[recipient]?.id;
+    if (recipientSocketId) {
+      io.to(recipientSocketId).emit("receivemsg", { message: message });
+      console.log(
+        "successfulylly send event receivemsg to ",
+        recipient,
+        recipientSocketId,
+        " message: ",
+        message
+      );
+    } else {
+      const senderSocketId = users[sender]?.id;
+      if (senderSocketId) {
+        io.to(senderSocketId).emit(
+          "disconnected",
+          "User disconnected. Going back"
+        );
+        setTimeout(() => {
+          io.to(senderSocketId).emit("reload");
+        }, 2000); // Emit reload event after 2 seconds
+      }
+    }
+  });
+
+  socket.on("closedchat", ({ recipient }) => {
+    recipientSocketId = users[recipient]?.id;
+    io.to(recipientSocketId).emit(
+      "disconnected",
+      "User disconnected. Going back"
+    );
+    setTimeout(() => {
+      io.to(recipientSocketId).emit("reload");
+    });
+  });
+
+  socket.on("patientbusy", ({ doctor }) => {
+    doctorSocketId = users[doctor]?.id;
+    io.to(doctorSocketId).emit("patientinappointment");
+  });
+
+  // Handle user disconnection
+  socket.on("disconnect", () => {
+    // Find the username associated with the disconnected socket
+    const disconnectedUser = Object.keys(users).find(
+      (key) => users[key].id === socket.id
+    );
+
+    // If a matching username is found, remove it from the users object
+    if (disconnectedUser) {
+      delete users[disconnectedUser];
+      console.log(`User ${disconnectedUser} disconnected`);
+    }
+  });
+});
+
 app.use(
   session({
     secret: "a248afd4e47050851c870a4223d27146eebc5fc2d07da83c9d741af0ff641ae7",
@@ -37,7 +148,11 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
-//app.use(express.static("public"));
+
+// Start the server
+server.listen(port, "192.168.1.254", () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 // http://localhost:3000/
 app.get("/", function (request, response) {
@@ -101,6 +216,7 @@ app.post("/auth", function (request, response) {
                       const user = results[0];
                       request.session.type = user.type;
                       request.session.cart = [];
+                      request.session.appointments = [];
                       response.json({ success: true });
                     }
                     return;
@@ -188,16 +304,12 @@ app.get("/getSessionData", function (request, response) {
       username: request.session.username,
       type: request.session.type,
       cart: request.session.cart,
+      appointments: request.session.appointments,
     });
+    console.log(request.session.username, "requested session data");
   } else {
     response.json({ success: false, loggedin: request.session.loggedin });
   }
-});
-
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
 });
 
 // http://localhost:3000/login
@@ -261,7 +373,7 @@ app.get("/logout", function (request, response) {
 // http://localhost:3000/getDoctors
 app.get("/getDoctors", function (request, response) {
   if (request.session.loggedin) {
-    if (request.session.type == "admin") {
+    if (request.session.type) {
       connection.query(
         "SELECT username from accounts where type=?",
         ["doctor"],
@@ -554,5 +666,123 @@ app.post("/searchmedicines", function (request, response) {
   } else {
     // send error message
     response.sendFile(path.join(__dirname + "/notauthorized.html"));
+  }
+});
+
+// http://localhost:3000/consult
+app.get("/consult", function (request, response) {
+  if (request.session.loggedin) {
+    response.sendFile(path.join(__dirname + "/consult.html"));
+  } else {
+    // send error message
+    response.sendFile(path.join(__dirname + "/notauthorized.html"));
+  }
+});
+
+// http://localhost:3000/addAppointment
+app.post("/addAppointment", (request, response) => {
+  const patientName = request.body.patientName;
+  console.log("Received request to add appointment for patient:", patientName);
+
+  // Check if patientName already exists in appointments array
+  if (!request.session.appointments.includes(patientName)) {
+    // Patient name doesn't exist, push it to the array
+    request.session.appointments.push(patientName);
+    console.log(`Added appointment for patient: ${patientName}`);
+    response.json({
+      success: true,
+      message: `Appointment added for patient: ${patientName}`,
+    });
+  } else {
+    // Patient name already exists, log and send response
+    console.log(`Appointment for patient ${patientName} already exists`);
+    response.json({
+      success: false,
+      message: `Appointment for patient ${patientName} already exists`,
+    });
+  }
+});
+
+// http://localhost:3000/removeAppointment
+app.post("/removeAppointment", function (request, response) {
+  console.log("reached /removeAppointment");
+  const doctorName = request.body.doctorName;
+  const patientName = request.body.patientName;
+  const mode = request.body.mode;
+
+  if (mode === "accept") {
+    console.log("mode is accept");
+    // Check if the appointment exists
+    const index = request.session.appointments.indexOf(patientName);
+    console.log(
+      "'doctor is ",
+      doctorName,
+      "patient is ",
+      patientName,
+      "mode is",
+      mode
+    );
+    if (index !== -1) {
+      // Remove the appointment
+      request.session.appointments.splice(index, 1);
+      console.log("removed appointment");
+      var patientSocketId = undefined;
+      // Notify the patient
+      if (users[patientName]) {
+        patientSocketId = users[patientName].id;
+      }
+      if (patientSocketId) {
+        io.to(patientSocketId).emit("chatwithdoctor", { doctor: doctorName });
+        console.log("successfully emitted chatwithdoctor");
+      } else {
+        console.error("Patient socket not found");
+        response.json({ success: false, message: "Patient not online" });
+        io.to(users[doctorName]?.id).emit(
+          "notify",
+          `${patientName} is not online`
+        );
+      }
+
+      // Send success response
+      response.json({ success: true });
+    } else {
+      // Appointment not found
+      io.to(users[doctorName]?.id).emit(
+        "notify",
+        `${patientName} is not online`
+      );
+      io.to(users[doctorName]?.id).emit("reload");
+      response.json({ success: false, message: "Appointment not found" });
+    }
+  } else if (mode === "reject") {
+    // Reject mode
+    // Check if appointment exists
+    const index = request.session.appointments.indexOf(patientName);
+    console.log(
+      "'doctor is ",
+      doctorName,
+      "patient is ",
+      patientName,
+      "mode is",
+      mode
+    );
+    if (index !== -1) {
+      // Remove the appointment
+      request.session.appointments.splice(index, 1);
+      console.log("removed appointment");
+      io.to(users[patientName]?.id).emit(
+        "notify",
+        "Your appointment was rejected"
+      );
+      response.json({ success: true });
+    } else {
+      // Appointment not found
+
+      io.to(users[doctorName]?.id).emit("notify", "Appointment not found");
+      setTimeout(() => {
+        io.to(users[doctorName]?.id).emit("reload");
+      }, 2100);
+      response.json({ success: false, message: "Appointment not found" });
+    }
   }
 });
