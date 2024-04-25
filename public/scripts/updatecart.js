@@ -26,12 +26,14 @@ document.addEventListener("DOMContentLoaded", function () {
               quantityLabel.textContent = " 10 "; // Placeholder for quantity, replace with actual quantity
 
               const decreaseButton = document.createElement("button");
+              decreaseButton.className = "decrease";
               decreaseButton.textContent = "-";
               decreaseButton.addEventListener("click", () =>
                 decreaseQuantity(item.name)
               );
 
               const increaseButton = document.createElement("button");
+              increaseButton.className = "increase";
               increaseButton.textContent = "+";
               increaseButton.addEventListener("click", () =>
                 increaseQuantity(item.name)
@@ -96,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function decreaseQuantity(itemName) {
     // Send a POST request to the server to decrease the quantity of an item in the cart
-    fetch("/decreaseQuantity", {
+    /*fetch("/decreaseQuantity", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -114,12 +116,13 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch((error) => {
         console.error("Error:", error);
-      });
+      });*/
+    console.log(itemName);
   }
 
   function increaseQuantity(itemName) {
     // Send a POST request to the server to increase the quantity of an item in the cart
-    fetch("/increaseQuantity", {
+    /*fetch("/increaseQuantity", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -137,7 +140,15 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch((error) => {
         console.error("Error:", error);
-      });
+      });*/
+    const index = cartquantity.findIndex((item) => item.medicine === itemName);
+    if (index !== -1) {
+      cartquantity[index].quantity = cartquantity[index].quantity - 1;
+    } else {
+      console.log(`Medicine "${medicineNameToUpdate}" not found in the cart.`);
+    }
+    console.log(itemName);
+    console.log(cartquantity);
   }
 
   function removeFromCart(itemName) {
