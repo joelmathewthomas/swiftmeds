@@ -40,7 +40,6 @@ function addToCart(medicineName) {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        console.log("Hello");
         return false;
       } else if (!data.success) {
         console.error("Failed to add medicine to cart");
