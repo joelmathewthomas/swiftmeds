@@ -1,3 +1,4 @@
+cartquantity = [];
 document.addEventListener("DOMContentLoaded", function () {
   fetch("/getMedicines")
     .then((response) => response.json())
@@ -65,8 +66,14 @@ document.addEventListener("DOMContentLoaded", function () {
             box.appendChild(addtocartbtn);
 
             medicineContainer.appendChild(box);
+            cartquantity.push({
+              medicine: medicine.name,
+              quantity: medicine.quantity,
+            });
           }
         });
+
+        console.log(cartquantity);
       } else {
         console.log("/getMedicine response failed");
       }
