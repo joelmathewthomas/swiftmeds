@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("cart-btn").addEventListener("click", function () {
-    fetch("updatecart")
+    fetch("/updatecart")
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           data.cart.forEach((item) => {
             if (item.name !== "Empty") {
+              console.log(`Price of ${item.name} is ${item.price}`);
               const box = document.createElement("div");
               box.className = "box";
 

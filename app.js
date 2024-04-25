@@ -555,7 +555,7 @@ app.post("/addtocart", function (request, response) {
     const { name } = request.body;
 
     // Check if the item already exists in the cart
-    if (request.session.cart.includes(name)) {
+    if (request.session.cart.some((item) => item.medicine === name)) {
       return response.json({
         success: false,
       });
@@ -581,7 +581,7 @@ app.get("/updatecart", function (request, response) {
         (item, callback) => {
           connection.query(
             "SELECT img,price FROM medicine WHERE name = ?",
-            [item],
+            [item.medicine],
             (error, results) => {
               if (error) {
                 console.error(
@@ -592,7 +592,7 @@ app.get("/updatecart", function (request, response) {
               }
               if (results.length > 0) {
                 cartData.push({
-                  name: item,
+                  name: item.medicine,
                   img: results[0].img,
                   price: results[0].price,
                 });
