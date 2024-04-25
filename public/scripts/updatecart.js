@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.success) {
           const shoppingCart = document.getElementById("shopping-cart");
           const cart = document.querySelector(".shopping-cart");
-          cart.innerHTML = " ";
+          cart.innerHTML = "";
 
           data.cart.forEach((item) => {
             if (item.name !== "Empty") {
@@ -22,9 +22,20 @@ document.addEventListener("DOMContentLoaded", function () {
               const name = document.createElement("h3");
               name.textContent = item.name;
 
-              const price = document.createElement("span");
-              price.className = "price";
-              price.textContent = `Rs${item.price}`;
+              const quantityLabel = document.createElement("span");
+              quantityLabel.textContent = " 10 "; // Placeholder for quantity, replace with actual quantity
+
+              const decreaseButton = document.createElement("button");
+              decreaseButton.textContent = "-";
+              decreaseButton.addEventListener("click", () =>
+                decreaseQuantity(item.name)
+              );
+
+              const increaseButton = document.createElement("button");
+              increaseButton.textContent = "+";
+              increaseButton.addEventListener("click", () =>
+                increaseQuantity(item.name)
+              );
 
               const removeLink = document.createElement("a");
               removeLink.textContent = "Remove";
@@ -32,7 +43,11 @@ document.addEventListener("DOMContentLoaded", function () {
               removeLink.href = "#";
 
               content.appendChild(name);
-              content.appendChild(price);
+
+              content.appendChild(decreaseButton);
+              content.appendChild(quantityLabel);
+              content.appendChild(increaseButton);
+
               content.appendChild(removeLink);
               box.appendChild(img);
               box.appendChild(content);
@@ -45,17 +60,12 @@ document.addEventListener("DOMContentLoaded", function () {
               img.src = `/static/medicines/${item.img}`;
 
               const content = document.createElement("div");
-              content.className = document.createElement("span");
+              content.className = "content";
 
               const name = document.createElement("h3");
               name.textContent = item.name;
 
-              const price = document.createElement("span");
-              price.className = "price";
-              price.textContent = ``;
-
               content.appendChild(name);
-              content.appendChild(price);
               box.appendChild(img);
               box.appendChild(content);
               shoppingCart.appendChild(box);
@@ -83,6 +93,52 @@ document.addEventListener("DOMContentLoaded", function () {
       event.target.closest(".box").remove();
     }
   });
+
+  function decreaseQuantity(itemName) {
+    // Send a POST request to the server to decrease the quantity of an item in the cart
+    fetch("/decreaseQuantity", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: itemName }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          // Update the cart UI after decreasing quantity
+          document.getElementById("cart-btn").click(); // Refresh the cart
+        } else {
+          console.error("Failed to decrease quantity");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function increaseQuantity(itemName) {
+    // Send a POST request to the server to increase the quantity of an item in the cart
+    fetch("/increaseQuantity", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: itemName }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          // Update the cart UI after increasing quantity
+          document.getElementById("cart-btn").click(); // Refresh the cart
+        } else {
+          console.error("Failed to increase quantity");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 
   function removeFromCart(itemName) {
     // Send a POST request to the server to remove the item from the cart
