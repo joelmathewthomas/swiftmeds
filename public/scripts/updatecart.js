@@ -29,16 +29,28 @@ document.addEventListener("DOMContentLoaded", function () {
               const decreaseButton = document.createElement("button");
               decreaseButton.className = "decrease";
               decreaseButton.textContent = "-";
-              decreaseButton.addEventListener("click", (event) =>
-                decreaseQuantity(item.name)
-              );
+              decreaseButton.addEventListener("click", (event) => {
+                statusvar = decreaseQuantity(item.name);
+                console.log("returned ", statusvar);
+              });
 
               const increaseButton = document.createElement("button");
               increaseButton.className = "increase";
               increaseButton.textContent = "+";
-              increaseButton.addEventListener("click", () =>
-                increaseQuantity(item.name)
-              );
+              increaseButton.addEventListener("click", (event) => {
+                increaseQuantity(item.name).then((statusvar) => {
+                  if (statusvar) {
+                    const quantitySpan = event.target
+                      .closest(".content")
+                      .querySelector("span");
+                    let currentValue = parseInt(
+                      quantitySpan.textContent.trim(),
+                      10
+                    );
+                    quantitySpan.textContent = currentValue + 1;
+                  }
+                });
+              });
 
               const removeLink = document.createElement("a");
               removeLink.textContent = "Remove";
@@ -100,6 +112,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function decreaseQuantity(itemName) {
     let stock = "";
+    let flag = undefined;
+    let item = undefined;
     cartquantity.forEach((item) => {
       if (item.medicine === itemName) {
         stock = item.quantity;
@@ -107,30 +121,41 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     console.log("i am asking for sessiondata for increasing quantity");
-    fetch("/getSessionData")
+    return fetch("/getSessionData")
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
           data.cart.forEach((cartItem) => {
             if (cartItem.medicine === itemName) {
               if (cartItem.quantity - 1 >= 0) {
-                fetch("/manipulateQuantity", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    medicine: itemName,
-                    mode: "decrease",
-                  }),
-                })
-                  .then((response) => response.json())
-                  .then((data) => {
-                    if (!data.success) {
-                      console.log("Failed to decrease quantity for ", itemName);
-                    }
-                  });
+                item = cartItem;
+                flag = true;
               }
             }
           });
+          if (flag) {
+            return fetch(
+              "/manipulateQuantity",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  medicine: itemName,
+                  mode: "decrease",
+                }),
+              }
+                .then((response) => response.json())
+                .then((data) => {
+                  if (!data.success) {
+                    console.log("Failed to decrease quantity for ", itemName);
+                    return false;
+                  } else if (data.success) {
+                    console.log("returning true");
+                    return true;
+                  }
+                })
+            );
+          }
         }
       })
       .catch((error) => {
@@ -138,22 +163,28 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  function increaseQuantity(itemName) {
+  function increaseQuantity(itemName, event) {
     let stock = "";
+    let increasePromises = [];
+
     cartquantity.forEach((item) => {
       if (item.medicine === itemName) {
         stock = item.quantity;
       }
     });
 
-    console.log("i am asking for sessiondata for increasing quantity");
-    fetch("/getSessionData")
+    console.log("Requesting session data for increasing quantity");
+
+    return fetch("/getSessionData")
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
           data.cart.forEach((cartItem) => {
-            if (cartItem.medicine === itemName) {
-              if (cartItem.quantity + 1 <= stock) {
+            if (
+              cartItem.medicine === itemName &&
+              cartItem.quantity + 1 <= stock
+            ) {
+              increasePromises.push(
                 fetch("/manipulateQuantity", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
@@ -167,14 +198,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (!data.success) {
                       console.log("Failed to increase quantity for ", itemName);
                     }
-                  });
-              }
+                    return data.success;
+                  })
+              );
             }
           });
         }
+        return Promise.all(increasePromises);
       })
       .catch((error) => {
         console.error("Error fetching session data:", error);
+        return false; // Return false if there's an error
       });
   }
 
