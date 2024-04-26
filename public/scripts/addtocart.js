@@ -6,9 +6,12 @@ document.addEventListener("click", function (event) {
     event.preventDefault();
     const medicineName =
       event.target.parentElement.querySelector(".type a").textContent;
+    const priceText =
+      event.target.parentElement.querySelector(".price").textContent;
+    const price = parseFloat(priceText.replace(/[^\d.]/g, ""));
 
     // Call addToCart and handle the Promise
-    addToCart(medicineName)
+    addToCart(medicineName, price)
       .then((isExist) => {
         if (!isExist) {
           // Change text content to "Added"
@@ -28,14 +31,14 @@ document.addEventListener("click", function (event) {
   }
 });
 
-function addToCart(medicineName) {
+function addToCart(medicineName, price) {
   // Send a POST request to the server
   return fetch("/addtocart", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name: medicineName }),
+    body: JSON.stringify({ name: medicineName, price: price }),
   })
     .then((response) => response.json())
     .then((data) => {
