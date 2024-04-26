@@ -595,6 +595,7 @@ app.get("/updatecart", function (request, response) {
                   name: item.medicine,
                   img: results[0].img,
                   price: results[0].price,
+                  quantity: item.quantity,
                 });
               }
               callback();
@@ -631,7 +632,7 @@ app.post("/deletefromcart", function (request, response) {
     const itemName = request.body.name;
 
     const cartItems = request.session.cart;
-    const index = cartItems.indexOf(itemName);
+    const index = cartItems.findIndex((item) => item.medicine === itemName); // Find the index of the item with matching medicine
     if (index !== -1) {
       cartItems.splice(index, 1);
       // Update the session cart with the modified cartItems array

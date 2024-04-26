@@ -24,12 +24,12 @@ document.addEventListener("DOMContentLoaded", function () {
               name.textContent = item.name;
 
               const quantityLabel = document.createElement("span");
-              quantityLabel.textContent = " 10 "; // Placeholder for quantity, replace with actual quantity
+              quantityLabel.textContent = ` ${item.quantity} `; // Placeholder for quantity, replace with actual quantity
 
               const decreaseButton = document.createElement("button");
               decreaseButton.className = "decrease";
               decreaseButton.textContent = "-";
-              decreaseButton.addEventListener("click", () =>
+              decreaseButton.addEventListener("click", (event) =>
                 decreaseQuantity(item.name)
               );
 
@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .querySelector("h3")
         .textContent.trim();
 
+      console.log(itemName);
       removeFromCart(itemName);
 
       // Remove the box from the UI
