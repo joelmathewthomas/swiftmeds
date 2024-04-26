@@ -38,16 +38,9 @@ document.addEventListener("DOMContentLoaded", function () {
               increaseButton.className = "increase";
               increaseButton.textContent = "+";
               increaseButton.addEventListener("click", (event) => {
-                increaseQuantity(item.name).then((statusvar) => {
+                increaseQuantity(item.name, event).then((statusvar) => {
                   if (statusvar) {
-                    const quantitySpan = event.target
-                      .closest(".content")
-                      .querySelector("span");
-                    let currentValue = parseInt(
-                      quantitySpan.textContent.trim(),
-                      10
-                    );
-                    quantitySpan.textContent = currentValue + 1;
+                    console.log("Statusvar is", statusvar);
                   }
                 });
               });
@@ -195,9 +188,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                   .then((response) => response.json())
                   .then((data) => {
-                    if (!data.success) {
+                    if (data.success) {
+                      const quantitySpan = event.target
+                        .closest(".content")
+                        .querySelector("span");
+                      let currentValue = parseInt(
+                        quantitySpan.textContent.trim(),
+                        10
+                      );
+                      quantitySpan.textContent = currentValue + 1;
+                    } else if (!data.success) {
                       console.log("Failed to increase quantity for ", itemName);
                     }
+                    console.log("event is ", event);
                     return data.success;
                   })
               );
