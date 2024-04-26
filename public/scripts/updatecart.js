@@ -38,11 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
               increaseButton.className = "increase";
               increaseButton.textContent = "+";
               increaseButton.addEventListener("click", (event) => {
-                increaseQuantity(item.name, event).then((statusvar) => {
-                  if (statusvar) {
-                    console.log("Statusvar is", statusvar);
-                  }
-                });
+                increaseQuantity(item.name, event);
               });
 
               const removeLink = document.createElement("a");
@@ -158,7 +154,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function increaseQuantity(itemName, event) {
     let stock = "";
-    let increasePromises = [];
 
     cartquantity.forEach((item) => {
       if (item.medicine === itemName) {
@@ -177,37 +172,34 @@ document.addEventListener("DOMContentLoaded", function () {
               cartItem.medicine === itemName &&
               cartItem.quantity + 1 <= stock
             ) {
-              increasePromises.push(
-                fetch("/manipulateQuantity", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    medicine: itemName,
-                    mode: "increase",
-                  }),
-                })
-                  .then((response) => response.json())
-                  .then((data) => {
-                    if (data.success) {
-                      const quantitySpan = event.target
-                        .closest(".content")
-                        .querySelector("span");
-                      let currentValue = parseInt(
-                        quantitySpan.textContent.trim(),
-                        10
-                      );
-                      quantitySpan.textContent = currentValue + 1;
-                    } else if (!data.success) {
-                      console.log("Failed to increase quantity for ", itemName);
-                    }
-                    console.log("event is ", event);
-                    return data.success;
-                  })
-              );
+              fetch("/manipulateQuantity", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  medicine: itemName,
+                  mode: "increase",
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data.success) {
+                    const quantitySpan = event.target
+                      .closest(".content")
+                      .querySelector("span");
+                    let currentValue = parseInt(
+                      quantitySpan.textContent.trim(),
+                      10
+                    );
+                    quantitySpan.textContent = currentValue + 1;
+                  } else if (!data.success) {
+                    console.log("Failed to increase quantity for ", itemName);
+                  }
+                  console.log("event is ", event);
+                  return data.success;
+                });
             }
           });
         }
-        return Promise.all(increasePromises);
       })
       .catch((error) => {
         console.error("Error fetching session data:", error);
