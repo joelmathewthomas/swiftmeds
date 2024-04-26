@@ -98,83 +98,91 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function decreaseQuantity(itemName) {
+    console.log("decreaseQuantity was called");
+    let stock = "";
     if (cartquantity.some((item) => item.medicine === itemName)) {
       cartquantity.forEach((item) => {
         if (item.medicine === itemName) {
-          const stock = item.quantity;
+          stock = item.quantity;
+        }
 
-          fetch("/getSessionData")
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.success) {
-                data.cart.forEach((cartItem) => {
-                  if (cartItem.medicine === itemName) {
-                    console.log("Quantity is , ", cartItem.quantity);
+        fetch("/getSessionData")
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              data.cart.forEach((cartItem) => {
+                if (cartItem.medicine === itemName) {
+                  if (cartItem.quantity - 1 > 0) {
+                    fetch("/manipulateQuantity", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        medicine: itemName,
+                        mode: "decrease",
+                      }),
+                    })
+                      .then((response) => response.json())
+                      .then((data) => {
+                        if (!data.success) {
+                          console.log(
+                            "Failed to increase quantity for ",
+                            itemName
+                          );
+                        }
+                      });
                   }
-                });
-              }
-            })
-            .catch((error) => {
-              console.error("Error fetching session data:", error);
-            });
+                }
+              });
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching session data:", error);
+          });
+      });
+    }
+  }
+
+  function increaseQuantity(itemName) {
+    console.log("increaseQuantity was called");
+    let stock = "";
+    if (cartquantity.some((item) => item.medicine === itemName)) {
+      cartquantity.forEach((item) => {
+        if (item.medicine === itemName) {
+          stock = item.quantity;
         }
       });
     }
 
-    // Send a POST request to the server to decrease the quantity of an item in the cart
-    /*
-    fetch("/decreaseQuantity", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: itemName }),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-        if (data.success) {
-            // Update the cart UI after decreasing quantity
-            document.getElementById("cart-btn").click(); // Refresh the cart
-        } else {
-            console.error("Failed to decrease quantity");
-        }
-    })
-    .catch((error) => {
-        console.error("Error:", error);
-    });
-    */
-    console.log(itemName);
-  }
-
-  function increaseQuantity(itemName) {
-    // Send a POST request to the server to increase the quantity of an item in the cart
-    /*fetch("/increaseQuantity", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name: itemName }),
-    })
+    console.log("i am asking for sessiondata for increasing quantity");
+    fetch("/getSessionData")
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          // Update the cart UI after increasing quantity
-          document.getElementById("cart-btn").click(); // Refresh the cart
-        } else {
-          console.error("Failed to increase quantity");
+          data.cart.forEach((cartItem) => {
+            if (cartItem.medicine === itemName) {
+              if (cartItem.quantity + 1 < stock) {
+                fetch("/manipulateQuantity", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    medicine: itemName,
+                    mode: "increase",
+                  }),
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    if (!data.success) {
+                      console.log("Failed to increase quantity for ", itemName);
+                    }
+                  });
+              }
+            }
+          });
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
-      });*/
-    const index = cartquantity.findIndex((item) => item.medicine === itemName);
-    if (index !== -1) {
-      //cartquantity[index].quantity = cartquantity[index].quantity + 1;
-    } else {
-      console.log(`Medicine "${medicineNameToUpdate}" not found in the cart.`);
-    }
-    console.log(itemName);
-    console.log(cartquantity);
+        console.error("Error fetching session data:", error);
+      });
   }
 
   function removeFromCart(itemName) {
