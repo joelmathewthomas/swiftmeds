@@ -98,48 +98,43 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function decreaseQuantity(itemName) {
-    console.log("decreaseQuantity was called");
     let stock = "";
-    if (cartquantity.some((item) => item.medicine === itemName)) {
-      cartquantity.forEach((item) => {
-        if (item.medicine === itemName) {
-          stock = item.quantity;
-        }
+    cartquantity.forEach((item) => {
+      if (item.medicine === itemName) {
+        stock = item.quantity;
+      }
+    });
 
-        fetch("/getSessionData")
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.success) {
-              data.cart.forEach((cartItem) => {
-                if (cartItem.medicine === itemName) {
-                  if (cartItem.quantity - 1 > 0) {
-                    fetch("/manipulateQuantity", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({
-                        medicine: itemName,
-                        mode: "decrease",
-                      }),
-                    })
-                      .then((response) => response.json())
-                      .then((data) => {
-                        if (!data.success) {
-                          console.log(
-                            "Failed to increase quantity for ",
-                            itemName
-                          );
-                        }
-                      });
-                  }
-                }
-              });
+    console.log("i am asking for sessiondata for increasing quantity");
+    fetch("/getSessionData")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          data.cart.forEach((cartItem) => {
+            if (cartItem.medicine === itemName) {
+              if (cartItem.quantity - 1 >= 0) {
+                fetch("/manipulateQuantity", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    medicine: itemName,
+                    mode: "decrease",
+                  }),
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    if (!data.success) {
+                      console.log("Failed to decrease quantity for ", itemName);
+                    }
+                  });
+              }
             }
-          })
-          .catch((error) => {
-            console.error("Error fetching session data:", error);
           });
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching session data:", error);
       });
-    }
   }
 
   function increaseQuantity(itemName) {
