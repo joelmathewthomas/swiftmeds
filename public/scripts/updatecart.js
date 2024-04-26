@@ -143,15 +143,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function increaseQuantity(itemName) {
-    console.log("increaseQuantity was called");
     let stock = "";
-    if (cartquantity.some((item) => item.medicine === itemName)) {
-      cartquantity.forEach((item) => {
-        if (item.medicine === itemName) {
-          stock = item.quantity;
-        }
-      });
-    }
+    cartquantity.forEach((item) => {
+      if (item.medicine === itemName) {
+        stock = item.quantity;
+      }
+    });
 
     console.log("i am asking for sessiondata for increasing quantity");
     fetch("/getSessionData")
@@ -160,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.success) {
           data.cart.forEach((cartItem) => {
             if (cartItem.medicine === itemName) {
-              if (cartItem.quantity + 1 < stock) {
+              if (cartItem.quantity + 1 <= stock) {
                 fetch("/manipulateQuantity", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
