@@ -786,3 +786,28 @@ app.post("/removeAppointment", function (request, response) {
     }
   }
 });
+
+// http://localhost:3000/manipulateQuantity
+app.post("/manipulateQuantity", function (request, response) {
+  console.log(" manipulateQuantity got a request");
+  if (request.session.loggedin) {
+    medicine = request.body.medicine;
+    mode = request.body.mode;
+
+    request.session.cart.forEach((item) => {
+      if (item.medicine === medicine) {
+        if (mode === "increase") {
+          console.log(item.quantity, item.quantity + 1);
+          item.quantity = item.quantity + 1;
+          console.log("type is ", typeof item.quantity);
+          response.json({ success: true });
+        } else if (mode === "decrease") {
+          item.quantity = item.quantity - 1;
+          response.json({ success: true });
+        } else {
+          response.json({ success: false });
+        }
+      }
+    });
+  }
+});
