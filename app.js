@@ -553,6 +553,7 @@ app.get("/getMedicines", function (request, response) {
 app.post("/addtocart", function (request, response) {
   if (request.session.loggedin) {
     const { name } = request.body;
+    const { price } = request.body;
 
     // Check if the item already exists in the cart
     if (request.session.cart.some((item) => item.medicine === name)) {
@@ -562,7 +563,7 @@ app.post("/addtocart", function (request, response) {
     }
 
     // Add the item to the cart
-    request.session.cart.push({ medicine: name, quantity: 0 });
+    request.session.cart.push({ medicine: name, quantity: 0, price: price });
 
     return response.json({ success: true });
   } else {
