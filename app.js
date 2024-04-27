@@ -820,3 +820,11 @@ app.get("/payment", function (request, response) {
     response.sendFile(path.join(__dirname + "/payment.html"));
   }
 });
+
+// http://localhost:3000/addOrder
+app.post("/addOrder", function (request, response) {
+  if (request.session.loggedin) {
+    formData = request.body;
+    console.log(formData);
+  }
+});
