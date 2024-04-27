@@ -563,7 +563,7 @@ app.post("/addtocart", function (request, response) {
     }
 
     // Add the item to the cart
-    request.session.cart.push({ medicine: name, quantity: 0, price: price });
+    request.session.cart.push({ medicine: name, quantity: 1, price: price });
 
     return response.json({ success: true });
   } else {
