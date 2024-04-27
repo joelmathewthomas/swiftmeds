@@ -553,16 +553,17 @@ app.get("/getMedicines", function (request, response) {
 app.post("/addtocart", function (request, response) {
   if (request.session.loggedin) {
     const { name } = request.body;
+    const { price } = request.body;
 
     // Check if the item already exists in the cart
-    if (request.session.cart.includes(name)) {
+    if (request.session.cart.some((item) => item.medicine === name)) {
       return response.json({
         success: false,
       });
     }
 
     // Add the item to the cart
-    request.session.cart.push(name);
+    request.session.cart.push({ medicine: name, quantity: 1, price: price });
 
     return response.json({ success: true });
   } else {
@@ -581,7 +582,7 @@ app.get("/updatecart", function (request, response) {
         (item, callback) => {
           connection.query(
             "SELECT img,price FROM medicine WHERE name = ?",
-            [item],
+            [item.medicine],
             (error, results) => {
               if (error) {
                 console.error(
@@ -592,9 +593,10 @@ app.get("/updatecart", function (request, response) {
               }
               if (results.length > 0) {
                 cartData.push({
-                  name: item,
+                  name: item.medicine,
                   img: results[0].img,
                   price: results[0].price,
+                  quantity: item.quantity,
                 });
               }
               callback();
@@ -631,7 +633,7 @@ app.post("/deletefromcart", function (request, response) {
     const itemName = request.body.name;
 
     const cartItems = request.session.cart;
-    const index = cartItems.indexOf(itemName);
+    const index = cartItems.findIndex((item) => item.medicine === itemName); // Find the index of the item with matching medicine
     if (index !== -1) {
       cartItems.splice(index, 1);
       // Update the session cart with the modified cartItems array
@@ -784,5 +786,107 @@ app.post("/removeAppointment", function (request, response) {
       }, 2100);
       response.json({ success: false, message: "Appointment not found" });
     }
+  }
+});
+
+// http://localhost:3000/manipulateQuantity
+app.post("/manipulateQuantity", function (request, response) {
+  console.log(" manipulateQuantity got a request");
+  if (request.session.loggedin) {
+    medicine = request.body.medicine;
+    mode = request.body.mode;
+
+    request.session.cart.forEach((item) => {
+      if (item.medicine === medicine) {
+        if (mode === "increase") {
+          console.log(item.quantity, item.quantity + 1);
+          item.quantity = item.quantity + 1;
+          console.log("type is ", typeof item.quantity);
+          response.json({ success: true });
+        } else if (mode === "decrease") {
+          item.quantity = item.quantity - 1;
+          response.json({ success: true });
+        } else {
+          response.json({ success: false });
+        }
+      }
+    });
+  }
+});
+
+// http://localhost:3000/payments
+app.get("/payment", function (request, response) {
+  if (request.session.loggedin) {
+    response.sendFile(path.join(__dirname + "/payment.html"));
+  }
+});
+
+// http://localhost:3000/addOrder
+app.post("/addOrder", function (request, response) {
+  var cost = 0;
+  const medicines = [];
+  const decrementArray = [];
+  if (request.session.loggedin) {
+    formData = request.body;
+    console.log(formData);
+
+    // Calculate total cost
+    request.session.cart.forEach((item) => {
+      price = item.quantity * item.price;
+      cost += price;
+      medicines.push(item.medicine);
+      decrementArray.push(item.quantity);
+    });
+    cost = cost.toFixed(2);
+  }
+
+  // Corresponding decrement factors
+
+  // Constructing the SQL query
+  let sqlQuery = "UPDATE medicine SET quantity = CASE ";
+
+  medicines.forEach((medicine, index) => {
+    sqlQuery += `WHEN name = '${medicine}' THEN quantity - ${decrementArray[index]} `;
+  });
+
+  sqlQuery += `ELSE quantity + 0 END`;
+
+  // Executing the SQL query
+  if (medicines.length > 0) {
+    connection.query(sqlQuery, (error, results, fields) => {
+      if (error) {
+        console.log("Error updating quantities:", error);
+        response.json({ success: false });
+      } else {
+        console.log("Quantities updated successfully!");
+        connection.query(
+          "INSERT INTO orders (username,full_name, email, address, city, state, pin_code, card_name, card_number, exp_month, exp_year, cvv, total_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          [
+            request.session.username,
+            formData.fullName,
+            formData.email,
+            formData.address,
+            formData.city,
+            formData.state,
+            formData.pinCode,
+            formData.cardName,
+            formData.cardNumber,
+            formData.expMonth,
+            formData.expYear,
+            formData.cvv,
+            cost,
+          ],
+          (error, results, fields) => {
+            if (error) {
+              console.log(error);
+              response.json({ success: false });
+            } else {
+              request.session.cart = [];
+              response.json({ success: true });
+            }
+          }
+        );
+      }
+    });
   }
 });

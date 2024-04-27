@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("cart-btn").addEventListener("click", function () {
-    fetch("updatecart")
+    fetch("/updatecart")
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
           const shoppingCart = document.getElementById("shopping-cart");
           const cart = document.querySelector(".shopping-cart");
-          cart.innerHTML = " ";
+          cart.innerHTML = "";
 
           data.cart.forEach((item) => {
             if (item.name !== "Empty") {
@@ -22,9 +22,22 @@ document.addEventListener("DOMContentLoaded", function () {
               const name = document.createElement("h3");
               name.textContent = item.name;
 
-              const price = document.createElement("span");
-              price.className = "price";
-              price.textContent = `Rs${item.price}`;
+              const quantityLabel = document.createElement("span");
+              quantityLabel.textContent = ` ${item.quantity} `; // Placeholder for quantity, replace with actual quantity
+
+              const decreaseButton = document.createElement("button");
+              decreaseButton.className = "decrease";
+              decreaseButton.textContent = "-";
+              decreaseButton.addEventListener("click", (event) => {
+                decreaseQuantity(item.name, event);
+              });
+
+              const increaseButton = document.createElement("button");
+              increaseButton.className = "increase";
+              increaseButton.textContent = "+";
+              increaseButton.addEventListener("click", (event) => {
+                increaseQuantity(item.name, event);
+              });
 
               const removeLink = document.createElement("a");
               removeLink.textContent = "Remove";
@@ -32,11 +45,37 @@ document.addEventListener("DOMContentLoaded", function () {
               removeLink.href = "#";
 
               content.appendChild(name);
-              content.appendChild(price);
+
+              content.appendChild(decreaseButton);
+              content.appendChild(quantityLabel);
+              content.appendChild(increaseButton);
+
               content.appendChild(removeLink);
               box.appendChild(img);
               box.appendChild(content);
               shoppingCart.appendChild(box);
+              const placeOrderLink = document.createElement("a");
+              placeOrderLink.className = "place-order-link";
+              placeOrderLink.setAttribute("href", "#");
+              placeOrderLink.textContent = "Place Order";
+              placeOrderLink.id = "place-order";
+              placeOrderLink.addEventListener("click", (event) => {
+                event.preventDefault();
+                fetch("/getSessionData")
+                  .then((response) => response.json())
+                  .then((data) => {
+                    if (data.loggedin) {
+                      if (data.cart.length > 0) {
+                        window.location.href = "/payment";
+                      } else {
+                        placeOrderLink.textContent = "Cart Empty";
+                      }
+                    }
+                  });
+              });
+
+              // Append the link to the shopping cart container
+              shoppingCart.appendChild(placeOrderLink);
             } else {
               const box = document.createElement("div");
               box.className = "box";
@@ -45,17 +84,12 @@ document.addEventListener("DOMContentLoaded", function () {
               img.src = `/static/medicines/${item.img}`;
 
               const content = document.createElement("div");
-              content.className = document.createElement("span");
+              content.className = "content";
 
               const name = document.createElement("h3");
               name.textContent = item.name;
 
-              const price = document.createElement("span");
-              price.className = "price";
-              price.textContent = ``;
-
               content.appendChild(name);
-              content.appendChild(price);
               box.appendChild(img);
               box.appendChild(content);
               shoppingCart.appendChild(box);
@@ -83,6 +117,107 @@ document.addEventListener("DOMContentLoaded", function () {
       event.target.closest(".box").remove();
     }
   });
+
+  function decreaseQuantity(itemName, event) {
+    let stock = "";
+
+    cartquantity.forEach((item) => {
+      if (item.medicine === itemName) {
+        stock = item.quantity;
+      }
+    });
+
+    return fetch("/getSessionData")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          data.cart.forEach((cartItem) => {
+            if (cartItem.medicine === itemName && cartItem.quantity - 1 >= 1) {
+              fetch("/manipulateQuantity", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  medicine: itemName,
+                  mode: "decrease",
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data.success) {
+                    const quantitySpan = event.target
+                      .closest(".content")
+                      .querySelector("span");
+                    let currentValue = parseInt(
+                      quantitySpan.textContent.trim(),
+                      10
+                    );
+                    quantitySpan.textContent = currentValue - 1;
+                  } else if (!data.success) {
+                    console.log("Failed to decrease quantity for ", itemName);
+                  }
+                  return data.success;
+                });
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching session data:", error);
+        return false; // Return false if there's an error
+      });
+  }
+
+  function increaseQuantity(itemName, event) {
+    let stock = "";
+
+    cartquantity.forEach((item) => {
+      if (item.medicine === itemName) {
+        stock = item.quantity;
+      }
+    });
+
+    return fetch("/getSessionData")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          data.cart.forEach((cartItem) => {
+            if (
+              cartItem.medicine === itemName &&
+              cartItem.quantity + 1 <= stock
+            ) {
+              fetch("/manipulateQuantity", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  medicine: itemName,
+                  mode: "increase",
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data.success) {
+                    const quantitySpan = event.target
+                      .closest(".content")
+                      .querySelector("span");
+                    let currentValue = parseInt(
+                      quantitySpan.textContent.trim(),
+                      10
+                    );
+                    quantitySpan.textContent = currentValue + 1;
+                  } else if (!data.success) {
+                    console.log("Failed to increase quantity for ", itemName);
+                  }
+                  return data.success;
+                });
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching session data:", error);
+        return false; // Return false if there's an error
+      });
+  }
 
   function removeFromCart(itemName) {
     // Send a POST request to the server to remove the item from the cart
