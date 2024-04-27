@@ -484,3 +484,8 @@ body {
   font-size: 14px; /* Adjust the font size as needed */
   margin-left: 50px;
 }
+
+.place-order-link {
+  font-size: small;
+  margin: 39%;
+}
