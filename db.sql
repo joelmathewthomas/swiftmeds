@@ -122,7 +122,8 @@ CREATE TABLE `medicine` (
   `price` decimal(10,2) NOT NULL,
   `img` varchar(255) DEFAULT NULL,
   `desc` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  CONSTRAINT `chk_quantity_non_negative` CHECK (`quantity` >= 0)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -133,22 +134,22 @@ CREATE TABLE `medicine` (
 LOCK TABLES `medicine` WRITE;
 /*!40000 ALTER TABLE `medicine` DISABLE KEYS */;
 INSERT INTO `medicine` VALUES
-(1,'Hand Sanitizer 500ml',10,100.00,'handsanitizer500ml.png','It is one of its kin hygiene product that kills 99.99% germs. It also keeps your hands soft and moisturised.'),
-(2,'Shampoo & Conditioner 180ml',11,200.00,'shampoo&conditioner180ml.png','Advanced formula facilitates deep cleansing to help make your scalp fight dandruff and itchiness.'),
-(3,'Moisturizing Cream 100gm',5,150.00,'moisturizingcream100gm.png','Keratolytic qualities of moisturex cream can smoothe rough, scaly skin. It makes the skin healthy, fully protected, and shiny.'),
-(4,'Anti Bacterial Soap',7,25.00,'antibacterialsoap.png','Provide protection against germs. It has triclosan that helps to keep your body clean and protected.'),
+(1,'Hand Sanitizer 500ml',88,100.00,'handsanitizer500ml.png','It is one of its kin hygiene product that kills 99.99% germs. It also keeps your hands soft and moisturised.'),
+(2,'Shampoo & Conditioner 180ml',86,200.00,'shampoo&conditioner180ml.png','Advanced formula facilitates deep cleansing to help make your scalp fight dandruff and itchiness.'),
+(3,'Moisturizing Cream 100gm',100,150.00,'moisturizingcream100gm.png','Keratolytic qualities of moisturex cream can smoothe rough, scaly skin. It makes the skin healthy, fully protected, and shiny.'),
+(4,'Anti Bacterial Soap',4,25.00,'antibacterialsoap.png','Provide protection against germs. It has triclosan that helps to keep your body clean and protected.'),
 (5,'Paracetamol',1,50.00,'antibacterialsoap.png','Helps to get rid of fever from body.'),
 (6,'Medicine 1',100,10.99,'antibacterialsoap.png','Helps to relieve pain and reduce inflammation.'),
 (7,'Medicine 2',150,15.99,'antibacterialsoap.png','Provides fast relief from cold and flu symptoms.'),
 (8,'Medicine 3',80,8.49,'antibacterialsoap.png','Effective in treating allergies and hay fever.'),
 (9,'Medicine 4',120,12.79,'antibacterialsoap.png','Relieves symptoms of indigestion and heartburn.'),
-(10,'Medicine 5',200,18.99,'antibacterialsoap.png','Helps to lower cholesterol levels and improve heart health.'),
-(11,'Medicine 6',90,9.99,'antibacterialsoap.png','Aids in weight loss and boosts metabolism.'),
+(10,'Medicine 5',195,18.99,'antibacterialsoap.png','Helps to lower cholesterol levels and improve heart health.'),
+(11,'Medicine 6',85,9.99,'antibacterialsoap.png','Aids in weight loss and boosts metabolism.'),
 (12,'Medicine 7',110,11.29,'antibacterialsoap.png','Promotes relaxation and relieves stress and anxiety.'),
 (13,'Medicine 8',70,7.99,'antibacterialsoap.png','Improves memory and cognitive function.'),
-(14,'Medicine 9',130,14.49,'antibacterialsoap.png','Strengthens the immune system and helps fight infections.'),
-(15,'Medicine 10',160,16.99,'antibacterialsoap.png','Supports healthy digestion and relieves constipation.'),
-(16,'Medicine 11',95,10.79,'antibacterialsoap.png','Promotes healthy skin and reduces acne.'),
+(14,'Medicine 9',125,14.49,'antibacterialsoap.png','Strengthens the immune system and helps fight infections.'),
+(15,'Medicine 10',155,16.99,'antibacterialsoap.png','Supports healthy digestion and relieves constipation.'),
+(16,'Medicine 11',94,10.79,'antibacterialsoap.png','Promotes healthy skin and reduces acne.'),
 (17,'Medicine 12',105,11.99,'antibacterialsoap.png','Relieves menstrual cramps and symptoms of PMS.'),
 (18,'Medicine 13',180,17.49,'antibacterialsoap.png','Provides essential nutrients and vitamins.'),
 (19,'Medicine 14',0,9.49,'antibacterialsoap.png','Improves sleep quality and regulates sleep patterns.');
@@ -181,7 +182,7 @@ CREATE TABLE `orders` (
   PRIMARY KEY (`order_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `accounts` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -224,4 +225,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-27 12:21:07
+-- Dump completed on 2024-04-27 15:47:00
