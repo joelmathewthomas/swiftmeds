@@ -813,3 +813,10 @@ app.post("/manipulateQuantity", function (request, response) {
     });
   }
 });
+
+// http://localhost:3000/payments
+app.get("/payment", function (request, response) {
+  if (request.session.loggedin) {
+    response.sendFile(path.join(__dirname + "/payment.html"));
+  }
+});
