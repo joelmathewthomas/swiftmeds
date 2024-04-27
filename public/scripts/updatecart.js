@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         if (data.success) {
           data.cart.forEach((cartItem) => {
-            if (cartItem.medicine === itemName && cartItem.quantity - 1 >= 0) {
+            if (cartItem.medicine === itemName && cartItem.quantity - 1 >= 1) {
               fetch("/manipulateQuantity", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
