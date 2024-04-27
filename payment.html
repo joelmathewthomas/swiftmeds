@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Payment</title>
+    <link rel="icon" type="image/png" href="/static/logo.png" />
+    <link rel="stylesheet" href="/css/payment.css" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <form id="paymentForm">
+        <div class="row">
+          <div class="column">
+            <h3 class="title">Billing Address</h3>
+            <div class="input-box">
+              <span>Full Name :</span>
+              <input
+                id="fullName"
+                type="text"
+                placeholder="Joe Joseph"
+                required
+                autofocus
+              />
+            </div>
+            <div class="input-box">
+              <span>Email :</span>
+              <input
+                id="email"
+                type="email"
+                placeholder="example@example.com"
+                required
+              />
+            </div>
+            <div class="input-box">
+              <span>Address :</span>
+              <input
+                id="address"
+                type="text"
+                placeholder="Room -Street - Locality"
+                required
+              />
+            </div>
+            <div class="input-box">
+              <span>City :</span>
+              <input id="city" type="text" placeholder="Kottayam" required />
+            </div>
+            <div class="flex">
+              <div class="input-box">
+                <span>State :</span>
+                <input id="state" type="text" placeholder="Kerala" required />
+              </div>
+              <div class="input-box">
+                <span>Pin Code :</span>
+                <input
+                  id="pinCode"
+                  type="number"
+                  placeholder="123456"
+                  pattern="[0-9]{6}"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <h3 class="title">Payment</h3>
+            <div class="input-box">
+              <span>Cards Accepted :</span>
+              <img src="/static/imgcards.png" alt="" />
+            </div>
+            <div class="input-box">
+              <span>Name on card :</span>
+              <input
+                id="cardName"
+                type="text"
+                placeholder="Mr. Joe Joseph"
+                required
+              />
+            </div>
+            <div class="input-box">
+              <span>Credit Card Number :</span>
+              <input
+                id="cardNumber"
+                type="number"
+                placeholder="1111222233334444"
+                pattern="[0-9]{16}"
+                required
+              />
+            </div>
+            <div class="input-box">
+              <span>Exp. Month :</span>
+              <input
+                id="expMonth"
+                type="text"
+                placeholder="December"
+                required
+              />
+            </div>
+            <div class="flex">
+              <div class="input-box">
+                <span>Exp. Year :</span>
+                <input id="expYear" type="number" placeholder="2024" required />
+              </div>
+              <div class="input-box">
+                <span>CVV:</span>
+                <input
+                  id="cvv"
+                  type="number"
+                  placeholder="123"
+                  pattern="[0-9]{3}"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button id="submitbtn" type="submit" class="btn">Submit</button>
+      </form>
+    </div>
+
+    <script>
+      let username = undefined;
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("/getSessionData")
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.loggedin) {
+              username = data.username;
+            }
+          })
+          .catch((error) => {
+            console.error("Failed to get username for payment page");
+          });
+      });
+    </script>
+    <script>
+      document
+        .getElementById("paymentForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent the default form submission
+
+          // Collect data from form fields
+          var formData = {
+            fullName: document.getElementById("fullName").value,
+            email: document.getElementById("email").value,
+            address: document.getElementById("address").value,
+            city: document.getElementById("city").value,
+            state: document.getElementById("state").value,
+            pinCode: document.getElementById("pinCode").value,
+            cardName: document.getElementById("cardName").value,
+            cardNumber: document.getElementById("cardNumber").value,
+            expMonth: document.getElementById("expMonth").value,
+            expYear: document.getElementById("expYear").value,
+            cvv: document.getElementById("cvv").value,
+          };
+
+          // Send data as JSON to /addOrder endpoint
+          fetch("/addOrder", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              // Handle response data if needed
+              if (data.success) {
+                document.getElementById("submitbtn").textContent =
+                  "Order Successful. Thank You";
+                setTimeout(function () {
+                  window.location.href = "/";
+                }, 2000);
+              } else {
+                document.getElementById("submitbtn").textContent =
+                  "Order Failed. No Stocks";
+                setTimeout(function () {
+                  window.location.href = "/";
+                }, 2000);
+              }
+            })
+            .catch((error) => {
+              // Handle errors
+              console.error("Error:", error);
+            });
+        });
+    </script>
+  </body>
+</html>

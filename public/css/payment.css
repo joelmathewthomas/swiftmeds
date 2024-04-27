@@ -1,0 +1,90 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "poppins", sans-serif;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #1f242d;
+  padding: 25px;
+}
+.container form {
+  width: 700px;
+  padding: 40px;
+  background: #fff;
+  border-radius: 10px;
+}
+
+form .row {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.row .column {
+  flex: 1 1 250px;
+}
+
+.column .title {
+  font-size: 20px;
+  color: #333;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.column .input-box {
+  margin: 15px 0;
+}
+
+.input-box span {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.column .flex {
+  display: flex;
+  gap: 15px;
+}
+
+.flex .input-box {
+  margin-top: 5px;
+}
+
+.input-box img {
+  height: 34px;
+  margin-top: 5px;
+  filter: drop-shadow(0 0 1px #000);
+}
+
+form .btn {
+  width: 100%;
+  padding: 12px;
+  background: #8175d3;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  font-size: 17px;
+  color: #fff;
+  margin-top: 5px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+form .btn:hover {
+  background: #6a5acd;
+}
