@@ -127,6 +127,21 @@
     </div>
 
     <script>
+      let username = undefined;
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("/getSessionData")
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.loggedin) {
+              username = data.username;
+            }
+          })
+          .catch((error) => {
+            console.error("Failed to get username for payment page");
+          });
+      });
+    </script>
+    <script>
       document
         .getElementById("paymentForm")
         .addEventListener("submit", function (event) {
