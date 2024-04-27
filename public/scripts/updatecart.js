@@ -56,8 +56,23 @@ document.addEventListener("DOMContentLoaded", function () {
               shoppingCart.appendChild(box);
               const placeOrderLink = document.createElement("a");
               placeOrderLink.className = "place-order-link";
-              placeOrderLink.setAttribute("href", "/payment");
+              placeOrderLink.setAttribute("href", "#");
               placeOrderLink.textContent = "Place Order";
+              placeOrderLink.id = "place-order";
+              placeOrderLink.addEventListener("click", (event) => {
+                event.preventDefault();
+                fetch("/getSessionData")
+                  .then((response) => response.json())
+                  .then((data) => {
+                    if (data.loggedin) {
+                      if (data.cart.length > 0) {
+                        window.location.href = "/payment";
+                      } else {
+                        placeOrderLink.textContent = "Cart Empty";
+                      }
+                    }
+                  });
+              });
 
               // Append the link to the shopping cart container
               shoppingCart.appendChild(placeOrderLink);
