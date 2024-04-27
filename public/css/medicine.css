@@ -393,7 +393,7 @@ body {
 }
 
 .my-button {
-  display: inline-block;
+  display: flex;
   margin: 5px;
   background: var(--dark-blue);
   color: #333;
@@ -402,10 +402,9 @@ body {
   font-style: italic;
   border-radius: 50px;
   padding: 8px 16px;
-  -moz-transition: all 0.2s;
-  -webkit-transition: all 0.2s;
   transition: all 0.2s;
-  margin-left: 10%;
+  flex-direction: column;
+  align-items: center;
 }
 
 .my-button:hover {
