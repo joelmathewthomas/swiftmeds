@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Payment</title>
+    <link rel="icon" type="image/png" href="/static/logo.png" />
+    <link rel="stylesheet" href="/css/payment.css" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <form action="">
+        <div class="row">
+          <div class="column">
+            <h3 class="title">Billing Address</h3>
+            <div class="input-box">
+              <span>Full Name :</span>
+              <input type="text" placeholder="Joe Joseph" required autofocus />
+            </div>
+            <div class="input-box">
+              <span>Email :</span>
+              <input type="email" placeholder="example@example.com" required />
+            </div>
+            <div class="input-box">
+              <span>Address :</span>
+              <input
+                type="text"
+                placeholder="Room -Street - Locality"
+                required
+              />
+            </div>
+            <div class="input-box">
+              <span>City :</span>
+              <input type="text" placeholder="Kottayam" required />
+            </div>
+            <div class="flex">
+              <div class="input-box">
+                <span>State :</span>
+                <input type="text" placeholder="Kerala" required />
+              </div>
+              <div class="input-box">
+                <span>Pin Code :</span>
+                <input
+                  type="Number"
+                  placeholder="123 456"
+                  pattern="[0-9]{6}"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <h3 class="title">Payment</h3>
+            <div class="input-box">
+              <span>Cards Accepted :</span>
+              <img src="/static/imgcards.png" alt="" />
+            </div>
+            <div class="input-box">
+              <span>Name on card :</span>
+              <input type="text" placeholder="Mr. Joe Joseph" required />
+            </div>
+            <div class="input-box">
+              <span>Credit Card Number :</span>
+              <input
+                type="number"
+                placeholder="1111 2222 3333 4444"
+                pattern="[0-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}"
+                required
+              />
+            </div>
+            <div class="input-box">
+              <span>Exp. Month :</span>
+              <input type="text" placeholder="December" required />
+            </div>
+            <div class="flex">
+              <div class="input-box">
+                <span>Exp. Year :</span>
+                <input type="Number" placeholder="2024" required />
+              </div>
+              <div class="input-box">
+                <span>CVV:</span>
+                <input
+                  type="Number"
+                  placeholder="123"
+                  pattern="[0-9]{3}"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>
