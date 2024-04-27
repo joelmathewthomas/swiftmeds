@@ -122,7 +122,7 @@
           </div>
         </div>
 
-        <button type="submit" class="btn">Submit</button>
+        <button id="submitbtn" type="submit" class="btn">Submit</button>
       </form>
     </div>
 
@@ -178,7 +178,19 @@
             })
             .then((data) => {
               // Handle response data if needed
-              console.log("Success:", data);
+              if (data.success) {
+                document.getElementById("submitbtn").textContent =
+                  "Order Successful. Thank You";
+                setTimeout(function () {
+                  window.location.href = "/";
+                }, 2000);
+              } else {
+                document.getElementById("submitbtn").textContent =
+                  "Order Failed. No Stocks";
+                setTimeout(function () {
+                  window.location.href = "/";
+                }, 2000);
+              }
             })
             .catch((error) => {
               // Handle errors
