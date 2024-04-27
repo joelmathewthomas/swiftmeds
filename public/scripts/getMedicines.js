@@ -72,8 +72,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
           }
         });
-
-        console.log(cartquantity);
       } else {
         console.log("/getMedicine response failed");
       }
