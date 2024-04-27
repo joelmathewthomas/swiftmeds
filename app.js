@@ -849,14 +849,43 @@ app.post("/addOrder", function (request, response) {
     sqlQuery += `WHEN name = '${medicine}' THEN quantity - ${decrementArray[index]} `;
   });
 
-  sqlQuery += "ELSE quantity END ";
+  sqlQuery += `ELSE quantity + 0 END`;
 
   // Executing the SQL query
-  connection.query(sqlQuery, (error, results, fields) => {
-    if (error) {
-      console.error("Error updating quantities:", error);
-      throw error;
-    }
-    console.log("Quantities updated successfully!");
-  });
+  if (medicines.length > 0) {
+    connection.query(sqlQuery, (error, results, fields) => {
+      if (error) {
+        console.error("Error updating quantities:", error);
+        throw error;
+      }
+      console.log("Quantities updated successfully!");
+      connection.query(
+        "INSERT INTO orders (username,full_name, email, address, city, state, pin_code, card_name, card_number, exp_month, exp_year, cvv, total_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        [
+          request.session.username,
+          formData.fullName,
+          formData.email,
+          formData.address,
+          formData.city,
+          formData.state,
+          formData.pinCode,
+          formData.cardName,
+          formData.cardNumber,
+          formData.expMonth,
+          formData.expYear,
+          formData.cvv,
+          cost,
+        ],
+        (error, results, fields) => {
+          if (error) {
+            console.log(error);
+            response.json({ success: false });
+          } else {
+            request.session.cart = [];
+            response.json({ success: true });
+          }
+        }
+      );
+    });
+  }
 });
