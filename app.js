@@ -823,8 +823,40 @@ app.get("/payment", function (request, response) {
 
 // http://localhost:3000/addOrder
 app.post("/addOrder", function (request, response) {
+  var cost = 0;
+  const medicines = [];
+  const decrementArray = [];
   if (request.session.loggedin) {
     formData = request.body;
     console.log(formData);
+
+    // Calculate total cost
+    request.session.cart.forEach((item) => {
+      price = item.quantity * item.price;
+      cost += price;
+      medicines.push(item.medicine);
+      decrementArray.push(item.quantity);
+    });
+    cost = cost.toFixed(2);
   }
+
+  // Corresponding decrement factors
+
+  // Constructing the SQL query
+  let sqlQuery = "UPDATE medicine SET quantity = CASE ";
+
+  medicines.forEach((medicine, index) => {
+    sqlQuery += `WHEN name = '${medicine}' THEN quantity - ${decrementArray[index]} `;
+  });
+
+  sqlQuery += "ELSE quantity END ";
+
+  // Executing the SQL query
+  connection.query(sqlQuery, (error, results, fields) => {
+    if (error) {
+      console.error("Error updating quantities:", error);
+      throw error;
+    }
+    console.log("Quantities updated successfully!");
+  });
 });
