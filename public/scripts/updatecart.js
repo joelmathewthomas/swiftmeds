@@ -54,6 +54,13 @@ document.addEventListener("DOMContentLoaded", function () {
               box.appendChild(img);
               box.appendChild(content);
               shoppingCart.appendChild(box);
+              const placeOrderLink = document.createElement("a");
+              placeOrderLink.className = "place-order-link";
+              placeOrderLink.setAttribute("href", "/payment");
+              placeOrderLink.textContent = "Place Order";
+
+              // Append the link to the shopping cart container
+              shoppingCart.appendChild(placeOrderLink);
             } else {
               const box = document.createElement("div");
               box.className = "box";
