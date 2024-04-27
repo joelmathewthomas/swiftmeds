@@ -855,8 +855,8 @@ app.post("/addOrder", function (request, response) {
   if (medicines.length > 0) {
     connection.query(sqlQuery, (error, results, fields) => {
       if (error) {
-        console.error("Error updating quantities:", error);
-        throw error;
+        console.log("Error updating quantities:", error);
+        response.json({ success: false });
       }
       console.log("Quantities updated successfully!");
       connection.query(
