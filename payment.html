@@ -16,21 +16,33 @@
 
   <body>
     <div class="container">
-      <form action="">
+      <form id="paymentForm">
         <div class="row">
           <div class="column">
             <h3 class="title">Billing Address</h3>
             <div class="input-box">
               <span>Full Name :</span>
-              <input type="text" placeholder="Joe Joseph" required autofocus />
+              <input
+                id="fullName"
+                type="text"
+                placeholder="Joe Joseph"
+                required
+                autofocus
+              />
             </div>
             <div class="input-box">
               <span>Email :</span>
-              <input type="email" placeholder="example@example.com" required />
+              <input
+                id="email"
+                type="email"
+                placeholder="example@example.com"
+                required
+              />
             </div>
             <div class="input-box">
               <span>Address :</span>
               <input
+                id="address"
                 type="text"
                 placeholder="Room -Street - Locality"
                 required
@@ -38,18 +50,19 @@
             </div>
             <div class="input-box">
               <span>City :</span>
-              <input type="text" placeholder="Kottayam" required />
+              <input id="city" type="text" placeholder="Kottayam" required />
             </div>
             <div class="flex">
               <div class="input-box">
                 <span>State :</span>
-                <input type="text" placeholder="Kerala" required />
+                <input id="state" type="text" placeholder="Kerala" required />
               </div>
               <div class="input-box">
                 <span>Pin Code :</span>
                 <input
-                  type="Number"
-                  placeholder="123 456"
+                  id="pinCode"
+                  type="number"
+                  placeholder="123456"
                   pattern="[0-9]{6}"
                   required
                 />
@@ -64,30 +77,42 @@
             </div>
             <div class="input-box">
               <span>Name on card :</span>
-              <input type="text" placeholder="Mr. Joe Joseph" required />
+              <input
+                id="cardName"
+                type="text"
+                placeholder="Mr. Joe Joseph"
+                required
+              />
             </div>
             <div class="input-box">
               <span>Credit Card Number :</span>
               <input
+                id="cardNumber"
                 type="number"
-                placeholder="1111 2222 3333 4444"
-                pattern="[0-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}"
+                placeholder="1111222233334444"
+                pattern="[0-9]{16}"
                 required
               />
             </div>
             <div class="input-box">
               <span>Exp. Month :</span>
-              <input type="text" placeholder="December" required />
+              <input
+                id="expMonth"
+                type="text"
+                placeholder="December"
+                required
+              />
             </div>
             <div class="flex">
               <div class="input-box">
                 <span>Exp. Year :</span>
-                <input type="Number" placeholder="2024" required />
+                <input id="expYear" type="number" placeholder="2024" required />
               </div>
               <div class="input-box">
                 <span>CVV:</span>
                 <input
-                  type="Number"
+                  id="cvv"
+                  type="number"
                   placeholder="123"
                   pattern="[0-9]{3}"
                   required
@@ -100,5 +125,51 @@
         <button type="submit" class="btn">Submit</button>
       </form>
     </div>
+
+    <script>
+      document
+        .getElementById("paymentForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent the default form submission
+
+          // Collect data from form fields
+          var formData = {
+            fullName: document.getElementById("fullName").value,
+            email: document.getElementById("email").value,
+            address: document.getElementById("address").value,
+            city: document.getElementById("city").value,
+            state: document.getElementById("state").value,
+            pinCode: document.getElementById("pinCode").value,
+            cardName: document.getElementById("cardName").value,
+            cardNumber: document.getElementById("cardNumber").value,
+            expMonth: document.getElementById("expMonth").value,
+            expYear: document.getElementById("expYear").value,
+            cvv: document.getElementById("cvv").value,
+          };
+
+          // Send data as JSON to /addOrder endpoint
+          fetch("/addOrder", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              // Handle response data if needed
+              console.log("Success:", data);
+            })
+            .catch((error) => {
+              // Handle errors
+              console.error("Error:", error);
+            });
+        });
+    </script>
   </body>
 </html>
