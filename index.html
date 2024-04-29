@@ -62,7 +62,14 @@
         <h1>We Are The Best Pharmacy</h1>
         <p>We are here for your care 24/7.Any worries just let us know</p>
 
-        <button>Make An appointments</button>
+        <button id="appointment-btn">Make An appointments</button>
+        <script>
+          document.getElementById("appointment-btn").addEventListener("click", function (event) {
+                event.preventDefault();
+                window.location.href = "/consult";
+          });
+
+        </script>
       </div>
       <div class="right">
         <img src="/static/wall.png" alt="" />
