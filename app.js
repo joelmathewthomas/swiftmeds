@@ -150,7 +150,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Start the server
-server.listen(port, "192.168.1.254", () => {
+server.listen(port, "192.168.1.7", () => {
   console.log(`Server is running on port ${port}`);
 });
 
