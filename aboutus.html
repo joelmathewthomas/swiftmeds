@@ -54,8 +54,8 @@
 
       <!--nav bar-->
 
-      <div class="menubtn">
-        <button>Helpline</button>
+      <div id="consult-link" class="menubtn">
+        <button>Consult</button>
       </div>
     </header>
 
@@ -84,7 +84,14 @@
         </div>
       </div>
     </section>
-
+    <script>
+      document
+        .getElementById("consult-link")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          window.location.href = "/consult";
+        });
+    </script>
     <script src="/scripts/nav-redirect.js"></script>
     <script src="/scripts/get-username.js"></script>
     <!--about-->
