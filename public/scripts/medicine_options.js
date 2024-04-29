@@ -31,12 +31,6 @@ defaultBtn.addEventListener("change", function () {
   }
 });
 
-document.querySelector("#up-btn").onclick = () => {
-  uploadForm.classList.toggle("active");
-  searchForm.classList.remove("active");
-  shoppingCart.classList.remove("active");
-};
-
 window.onscroll = () => {
   searchForm.classList.remove("active");
   shoppingCart.classList.remove("active");

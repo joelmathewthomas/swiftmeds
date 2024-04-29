@@ -151,18 +151,12 @@ document
               box.appendChild(slideImg);
               box.appendChild(detailBox);
 
-              ordernowbtn = document.createElement("a");
               addtocartbtn = document.createElement("a");
-              ordernowbtn.className = "my-button";
               addtocartbtn.className = "my-button";
-              ordernowbtn.href = "#";
-              ordernowbtn.title = "Order Now";
-              ordernowbtn.textContent = "Order Now";
               addtocartbtn.title = "Add to Cart";
               addtocartbtn.textContent = "Add to Cart";
               addtocartbtn.href = "#";
 
-              box.appendChild(ordernowbtn);
               box.appendChild(addtocartbtn);
 
               medicineContainer.appendChild(box);
