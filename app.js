@@ -325,7 +325,14 @@ app.get("/contact", function (request, response) {
 // http://localhost:3000/medicine
 app.get("/medicine", function (request, response) {
   if (request.session.loggedin) {
-    response.sendFile(path.join(__dirname + "/medicine.html"));
+    if (
+      request.session.type === "patient" ||
+      request.session.type === "admin"
+    ) {
+      response.sendFile(path.join(__dirname + "/medicine.html"));
+    } else {
+      response.sendFile(path.join(__dirname + "/notauthorized.html"));
+    }
   } else {
     response.sendFile(path.join(__dirname + "/plslogin.html"));
   }
