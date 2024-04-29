@@ -48,8 +48,8 @@
           </div>
         </div>
       </nav>
-      <div class="menubtn">
-        <button>Helpline</button>
+      <div id="consult-link" class="menubtn">
+        <button>Consult</button>
       </div>
     </header>
     <section class="top" id="top">
@@ -160,5 +160,13 @@
     </section>
     <script src="/scripts/nav-redirect.js"></script>
     <script src="/scripts/get-username.js"></script>
+    <script>
+      document
+        .getElementById("consult-link")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          window.location.href = "/consult";
+        });
+    </script>
   </body>
 </html>
