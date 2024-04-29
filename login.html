@@ -55,8 +55,8 @@
       </nav>
 
       <!--nav bar-->
-      <div class="menubtn">
-        <button>helpline</button>
+      <div id="consult-link" class="menubtn">
+        <button>Consult</button>
       </div>
     </header>
     <!--header-->
@@ -151,6 +151,14 @@
       signInButton.addEventListener("click", () => {
         container.classList.remove("right-panel-active");
       });
+    </script>
+    <script>
+      document
+        .getElementById("consult-link")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          window.location.href = "/consult";
+        });
     </script>
     <script src="/scripts/nav-redirect.js"></script>
     <script src="/scripts/loginerrordisplay.js"></script>
