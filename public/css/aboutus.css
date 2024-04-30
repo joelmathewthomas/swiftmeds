@@ -105,8 +105,8 @@ section::before {
 
 .container {
   position: relative;
-  min-width: 1100px;
-  min-height: 550px;
+  min-width: 1769px;
+  min-height: 652px;
   display: flex;
   z-index: 1000;
 }
