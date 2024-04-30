@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Contact</title>
+        <link rel="icon" type="image/png" href="/static/logo.png" />
+
+    <!--link for css file-->
+    <link rel="stylesheet" href="/css/doctors.css" type="text/css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <!--library-->
+        <!--library-->
+        <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      />
+      <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        rel="stylesheet"
+      />
+      <!--library-->
+    <!--library-->
+  </head>
+
+  <body>
+    <header class="header">
+      <a href="#" class="logo">
+        <img src="/static/logo.png  " />
+      </a>
+      <!--nav bar-->
+
+      <nav class="headbar">
+        <a id="home-link">Home</a>
+        <a id="aboutus-link">About Us</a>
+        <a id="doctors-link">Doctors</a>
+        <a id="medicine-link">Medicine</a>
+        <a id="services-link">Services</a>
+        <div class="dropdown">
+          <a id="login-link" class="dropbtn"
+            >Login <i class="fa fa-caret-down"></i
+          ></a>
+          <div class="dropdown-content">
+            <a id="dashboard-link">Dashboard</a>
+            <a id="logout-link">Logout</a>
+          </div>
+        </div>
+      </nav>
+      <div id="consult-link" class="menubtn">
+        <button>Consult</button>
+      </div>
+    </header>
+    <section class="top" id="top">
+        <div class="con">
+          <h1 class="heading">Our Experts</h1>
+          <hr />
+        </div>
+        <div class="wrapper">
+          <div class="container">
+            <div class="img-wrapper">
+              <img src="/static/i4.png" />
+            </div>
+            <div class="details">
+              <h3>Carolina</h3>
+              <h5>Internal Medicine | 5 years exp</h5>
+  
+              <div class="social-icons">
+                <i class="fa fa-facebook"></i>
+                <i class="fa fa-twitter"></i>
+                <i class="fa fa-instagram"></i>
+              </div>
+            </div>
+          </div>
+          <div class="container">
+            <div class="img-wrapper">
+              <img src="/static/i3.png" />
+            </div>
+            <div class="details">
+              <h3>Rosiee</h3>
+              <h5>Dermatology | 10 years exp</h5>
+  
+              <div class="social-icons">
+                <i class="fa fa-facebook"></i>
+                <i class="fa fa-twitter"></i>
+                <i class="fa fa-instagram"></i>
+              </div>
+            </div>
+          </div>
+          <div class="container">
+            <div class="img-wrapper">
+              <img src="/static/i2.png" />
+            </div>
+            <div class="details">
+              <h3>Smith</h3>
+              <h5>Cardiology | 19 years exp</h5>
+  
+              <div class="social-icons">
+                <i class="fa fa-facebook"></i>
+                <i class="fa fa-twitter"></i>
+                <i class="fa fa-instagram"></i>
+              </div>
+            </div>
+          </div>
+          <div class="container">
+            <div class="img-wrapper">
+              <img src="/static/i1.png" />
+            </div>
+            <div class="details">
+              <h3>John</h3>
+              <h5>ENT | 25 years exp</h5>
+  
+              <div class="social-icons">
+                <i class="fa fa-facebook"></i>
+                <i class="fa fa-twitter"></i>
+                <i class="fa fa-instagram"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+   
+      <!--contact section-->
+  
+      <!--location-->
+      
+      <section class="bottom" id="bottom">
+        <div class="con">
+          <h1 class="heading">LOCATION</h1>
+          <hr />
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31472.05569438172!2d76.49999310991703!3d9.59466750690258!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b062ba16c6b435f%3A0xbe2b02f68f8dd06e!2sKottayam%2C%20Kerala!5e0!3m2!1sen!2sin!4v1712767728943!5m2!1sen!2sin"
+            width="600"
+            height="450"
+            style="border: 0"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </section>
+      
+      <!--location-->
+      <script src="/scripts/nav-redirect.js"></script>
+      <script src="/scripts/get-username.js"></script>
+      <script>
+        document
+          .getElementById("consult-link")
+          .addEventListener("click", function (event) {
+            event.preventDefault();
+            window.location.href = "/consult";
+          });
+      </script>
+    
+    </body>
+  </html>
+  
+  </body>
+</html>

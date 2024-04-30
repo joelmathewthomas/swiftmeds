@@ -35,6 +35,13 @@ document
     window.location.href = "/medicine";
   });
 
+  document
+  .getElementById("doctors-link")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+    window.location.href = "/doctors";
+  });
+
 document
   .getElementById("dashboard-link")
   .addEventListener("click", function (event) {

@@ -150,7 +150,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Start the server
-server.listen(port, "192.168.1.8", () => {
+server.listen(port, "192.168.1.11", () => {
   console.log(`Server is running on port ${port}`);
 });
 
@@ -346,6 +346,11 @@ app.get("/aboutus", function (request, response) {
 // http://localhost:3000/services
 app.get("/services", function (request, response) {
   response.sendFile(path.join(__dirname + "/services.html"));
+});
+
+// http://localhost:3000/doctors
+app.get("/doctors", function (request, response) {
+  response.sendFile(path.join(__dirname + "/doctors.html"));
 });
 
 // http://localhost:3000/dashboard
