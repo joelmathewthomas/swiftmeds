@@ -220,3 +220,8 @@ section::before {
   color: #fff;
   background: linear-gradient(120deg, #1668e4 40%, #663399);
 }
+
+.about-form {
+  position: absolute;
+  left: 15%;
+}
