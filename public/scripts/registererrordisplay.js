@@ -6,6 +6,7 @@ document
     var username = document.getElementById("register-username").value;
     var email = document.getElementById("register-email").value;
     var password = document.getElementById("register-password").value;
+    var type = document.getElementById("accountType").value;
 
     fetch("/register", {
       method: "POST",
@@ -16,6 +17,7 @@ document
         username: username,
         email: email,
         password: password,
+        type: type,
       }),
     })
       .then((response) => response.json())

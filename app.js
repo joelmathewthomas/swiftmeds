@@ -258,6 +258,7 @@ app.post("/register", function (request, response) {
   let username = request.body.username;
   let email = request.body.email;
   let password = request.body.password;
+  let type = request.body.type;
 
   if (username && password) {
     connection.query(
@@ -273,8 +274,8 @@ app.post("/register", function (request, response) {
         } else {
           //code for insertion
           connection.query(
-            "INSERT INTO accounts (username, password, email) VALUES (?, ?, ?)",
-            [username, password, email],
+            "INSERT INTO accounts (username, password, email,type) VALUES (?, ?, ?, ?)",
+            [username, password, email, type],
             function (error, results, fields) {
               if (error) {
                 response.status(500).json({
