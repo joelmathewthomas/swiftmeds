@@ -330,6 +330,9 @@ app.post("/register", function (request, response) {
   let email = request.body.email;
   let password = request.body.password;
   let type = request.body.type;
+  if (type === 'doctor'){
+    username = 'Dr.'+username
+  }
 
   if (username && password) {
     connection.query(
