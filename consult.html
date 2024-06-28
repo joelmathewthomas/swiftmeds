@@ -113,6 +113,7 @@
     </style>
   </head>
   <body>
+    <input type="file" id="fileInput" style="display: none;" accept="image/*">
     <div id="notificationBox" class="notification-box" style="display: none">
       <span id="notificationText" class="notification-text"
         >I am a notification</span
@@ -308,6 +309,39 @@
             }
           });
       });
+
+      document.getElementById('upload').addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+
+        document.getElementById('fileInput').addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                console.log('File selected:', file.name);
+                // You can now upload the file using AJAX or other methods
+                uploadFile(file);
+            }
+        });
+
+        function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/upload', {  // Change '/upload' to your server's upload endpoint
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('File uploaded successfully:', data);
+                console.log("File uploaded as ", data.file)
+            })
+            .catch(error => {
+                console.error('Error uploading file:', error);
+            });
+        }
+
+
 
       // Display Notification
       function showNotification(message) {

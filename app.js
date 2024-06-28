@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
   destination: path.join(__dirname,'public','uploads'),
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-    cb(null, req.username + '-' + uniqueSuffix)
+    cb(null, req.session.username + '-' + uniqueSuffix)
   }
 })
 
@@ -915,5 +915,13 @@ app.post("/addOrder", function (request, response) {
         );
       }
     });
+  }
+});
+
+app.post('/upload', upload.single('file'), (req, res) => {
+  console.log("POST /upload");
+  console.log(req.file); // 'file' is the name attribute of the file input in the form
+  if(req.file){
+    res.json({file: req.file.filename})
   }
 });
