@@ -3,6 +3,7 @@ const mysql = require("mysql");
 
 // Import the 'path' module to handle file paths
 const path = require("path");
+const fs = require('fs');
 
 // Import the 'express' module to create a web server
 const express = require("express");
@@ -168,10 +169,45 @@ io.on("connection", (socket) => {
     // If a matching username is found, remove it from the users object
     if (disconnectedUser) {
       delete users[disconnectedUser];
+      removeUserFiles(disconnectedUser);;
       console.log(`User ${disconnectedUser} disconnected`);
     }
   });
 });
+
+function removeUserFiles(username) {
+    // Assuming `username` is the username to disconnect
+    
+    // Directory where uploads are stored
+    const uploadDir = path.join(__dirname,'public', 'uploads');
+
+    // Read the contents of the directory
+    fs.readdir(uploadDir, (err, files) => {
+        if (err) {
+            console.error('Error reading directory:', err);
+            return;
+        }
+
+        // Iterate through the files in the directory
+        files.forEach(file => {
+            // Check if the file starts with the username
+            if (file.startsWith(username)) {
+                // Construct the full path to the file
+                const filePath = path.join(uploadDir, file);
+
+                // Delete the file
+                fs.unlink(filePath, err => {
+                    if (err) {
+                        console.error(`Error deleting file ${filePath}:`, err);
+                        return;
+                    }
+                    console.log(`Deleted file: ${filePath}`);
+                });
+            }
+        });
+    });
+}
+
 
 app.use(
   session({
