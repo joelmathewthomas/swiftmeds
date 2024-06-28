@@ -1,10 +1,13 @@
 // Import the 'mysql' module to enable communication with the MySQL database
 const mysql = require("mysql");
 
+// Import the 'path' module to handle file paths
+const path = require("path");
+
 // Import the 'express' module to create a web server
 const express = require("express");
 
-const multer = require(multer);
+const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: path.join(__dirname,'public','uploads'),
@@ -25,8 +28,7 @@ const { Server } = require("socket.io");
 // Import the 'express-session' module to manage user sessions
 const session = require("express-session");
 
-// Import the 'path' module to handle file paths
-const path = require("path");
+
 
 const async = require("async");
 
