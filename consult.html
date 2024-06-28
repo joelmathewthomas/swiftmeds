@@ -251,24 +251,6 @@
         }, 2100);
       });
 
-      socket.on("sendclicked", ({ sender, recipient, message }) => {
-        const recipientSocketId = users[recipient]?.id;
-        if (recipientSocketId) {
-          io.to(recipientSocketId).emit("receivemsg", { message: message });
-        } else {
-          const senderSocketId = users[sender]?.id;
-          if (senderSocketId) {
-            io.to(senderSocketId).emit(
-              "disconnected",
-              "User disconnected. Going back"
-            );
-            setTimeout(() => {
-              io.to(senderSocketId).emit("reload");
-            }, 2000); // Emit reload event after 2 seconds
-          }
-        }
-      });
-
       socket.on("receivemsg", ({ message }) => {
         displayReceivedMsg(message);
       });
@@ -322,7 +304,6 @@
                 uploadFile(file);
             }
         });
-
         function uploadFile(file) {
             const formData = new FormData();
             formData.append('file', file);
@@ -335,11 +316,19 @@
             .then(data => {
                 console.log('File uploaded successfully:', data);
                 console.log("File uploaded as ", data.file)
+                socket.emit("sendIMG",{sender: username, recipient: chatWith, file: data.file})
+                displaySentIMG(data.file);
             })
             .catch(error => {
                 console.error('Error uploading file:', error);
             });
         }
+
+        socket.on("displayRecievedIMG", ({ file }) => {
+          displayReceivedIMG(file);
+        });
+
+
 
 
 
@@ -362,6 +351,51 @@
         chatMessages.appendChild(sentMsgDiv);
         chatMessages.scrollTop = chatMessages.scrollHeight;
       }
+
+      function displaySentIMG(file) {
+        const chatMessages = document.getElementById("chatMessages");
+        const sentMsgDiv = document.createElement("div");
+        sentMsgDiv.classList.add("sent-message");
+
+        // Create the image element
+        const imgElement = document.createElement("img");
+        imgElement.classList.add("chatIMG");
+        imgElement.src = `/uploads/${file}`;
+        imgElement.alt = "Description of the image";
+
+        // Append the image element to the div
+        sentMsgDiv.appendChild(imgElement);
+
+        // Append the div to the chat messages container
+        chatMessages.appendChild(sentMsgDiv);
+
+        // Scroll to the bottom of the chat messages
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+
+    function displayReceivedIMG(file) {
+    const chatMessages = document.getElementById("chatMessages");
+    const receivedMsgDiv = document.createElement("div");
+    receivedMsgDiv.classList.add("received-message");
+
+    // Create the image element
+    const imgElement = document.createElement("img");
+    imgElement.classList.add("chatIMG");
+    imgElement.src = `/uploads/${file}`;
+    imgElement.alt = "Description of the image";
+
+    // Append the image element to the div
+    receivedMsgDiv.appendChild(imgElement);
+
+    // Append the div to the chat messages container
+    chatMessages.appendChild(receivedMsgDiv);
+
+    // Scroll to the bottom of the chat messages
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+
 
       function displayReceivedMsg(message) {
         const chatMessages = document.getElementById("chatMessages");

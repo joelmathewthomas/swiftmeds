@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
   destination: path.join(__dirname,'public','uploads'),
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-    cb(null, req.session.username + '-' + uniqueSuffix)
+    cb(null, req.session.username + '-' + uniqueSuffix+ path.extname(file.originalname))
   }
 })
 
@@ -120,6 +120,27 @@ io.on("connection", (socket) => {
       }
     }
   });
+
+  socket.on("sendIMG",({sender, recipient, file}) =>{
+    console.log("SOCKET : ON sendIMG : ", sender, recipient, file);
+    const recipientSocketId = users[recipient]?.id
+    if(recipientSocketId){
+      io.to(recipientSocketId).emit("displayRecievedIMG", {file: file});
+      console.log("IO : TO : " ,recipientSocketId,"-", recipient, " ",file);
+    }
+    else{
+      const senderSocketId = users[sender]?.id;
+      if(senderSocketId){
+        io.to(senderSocketId).emit(
+          "disconnected",
+          "User disconnected. Going back"
+        );
+        setTimeout(() => {
+          io.to(senderSocketId).emit("reload");
+        }, 2000); // Emit reload event after 2 seconds
+      }
+    }
+  })
 
   socket.on("closedchat", ({ recipient }) => {
     recipientSocketId = users[recipient]?.id;
