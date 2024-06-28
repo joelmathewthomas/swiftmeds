@@ -4,6 +4,18 @@ const mysql = require("mysql");
 // Import the 'express' module to create a web server
 const express = require("express");
 
+const multer = require(multer);
+
+const storage = multer.diskStorage({
+  destination: path.join(__dirname,'public','uploads'),
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    cb(null, req.username + '-' + uniqueSuffix)
+  }
+})
+
+const upload = multer({ storage: storage })
+
 // Import http module
 const http = require("http");
 
