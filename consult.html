@@ -115,14 +115,49 @@
           max-width: 200px; /* Ensure the image does not exceed the container width */
           max-height: 200px; /* Limit the maximum height of the image */
           display: block; /* Ensures the image behaves as a block element */
-          transition: max-width 0.3s ease-out, max-height 0.3s ease-out;
+          transition: max-width 0.3s ease-out, max-height 0.3s ease-out; /* Add transitions */
+          cursor: pointer; /* Set cursor to pointer */
       }
-
 
       .chatIMG:hover {
+          max-width: 80%;
+          max-height: 80%;
+      }
+
+      .sent-message {
+        background-color: #2196f3; /* Blue background for sent messages */
+        color: #fff; /* White text color for sent messages */
+        padding: 8px 12px; /* Padding for sent messages */
+        margin-bottom: 8px; /* Margin bottom for sent messages */
+        border-radius: 15px 15px 0 15px; /* Rounded corners, top-right, bottom-left, and bottom-right for sent messages */
+        float: right; /* Align sent messages to the right */
+        clear: both; /* Clear floating elements */
+        position: relative; /* Ensure positioning context */
+        animation: slideInFromRight 0.3s ease-out;
+    }
+
+    .sent-message .chatIMG {
+        max-width: 200px; /* Ensure the image does not exceed the container width */
+        max-height: 200px; /* Limit the maximum height of the image */
+        display: block; /* Ensures the image behaves as a block element */
+        transition: max-width 0.3s ease-out, max-height 0.3s ease-out; /* Add transitions */
+        cursor: pointer; /* Set cursor to pointer */
+    }
+
+    .sent-message:hover .chatIMG {
         max-width: 80%;
         max-height: 80%;
-      }
+    }
+
+    @keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
 
     </style>
   </head>
@@ -306,41 +341,90 @@
           });
       });
 
-      document.getElementById('upload').addEventListener('click', function() {
+      document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('upload').addEventListener('click', function() {
             document.getElementById('fileInput').click();
         });
+      });
 
-        document.getElementById('fileInput').addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                console.log('File selected:', file.name);
-                // You can now upload the file using AJAX or other methods
-                uploadFile(file);
-            }
+
+      // Function to upload file
+    function uploadFile(file) {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        fetch('/upload', {  
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('File uploaded successfully:', data);
+            socket.emit("sendIMG",{sender: username, recipient: chatWith, file: data.file});
+            displaySentIMG(data.file); // Call function to display sent image
+        })
+        .catch(error => {
+            console.error('Error uploading file:', error);
         });
-        function uploadFile(file) {
-            const formData = new FormData();
-            formData.append('file', file);
-
-            fetch('/upload', {  // Change '/upload' to your server's upload endpoint
-                method: 'POST',
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('File uploaded successfully:', data);
-                console.log("File uploaded as ", data.file)
-                socket.emit("sendIMG",{sender: username, recipient: chatWith, file: data.file})
-                displaySentIMG(data.file);
-            })
-            .catch(error => {
-                console.error('Error uploading file:', error);
-            });
+    }
+      
+      document.getElementById('fileInput').addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            console.log('File selected:', file.name);
+            uploadFile(file);
         }
+    });
+       
+    // Function to display sent image
+    function displaySentIMG(file) {
+        const chatMessages = document.getElementById("chatMessages");
+        const sentMsgDiv = document.createElement("div");
+        sentMsgDiv.classList.add("sent-message");
 
-        socket.on("displayRecievedIMG", ({ file }) => {
-          displayReceivedIMG(file);
-        });
+        // Create the image element
+        const imgElement = document.createElement("img");
+        imgElement.classList.add("chatIMG");
+        imgElement.src = `/uploads/${file}`;
+        imgElement.alt = "Description of the image";
+
+        // Append the image element to the div
+        sentMsgDiv.appendChild(imgElement);
+
+        // Append the div to the chat messages container
+        chatMessages.appendChild(sentMsgDiv);
+
+        // Scroll to the bottom of the chat messages
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Function to display received image
+    function displayReceivedIMG(file) {
+        const chatMessages = document.getElementById("chatMessages");
+        const receivedMsgDiv = document.createElement("div");
+        receivedMsgDiv.classList.add("received-message");
+
+        // Create the image element
+        const imgElement = document.createElement("img");
+        imgElement.classList.add("chatIMG");
+        imgElement.src = `/uploads/${file}`;
+        imgElement.alt = "Description of the image";
+
+        // Append the image element to the div
+        receivedMsgDiv.appendChild(imgElement);
+
+        // Append the div to the chat messages container
+        chatMessages.appendChild(receivedMsgDiv);
+
+        // Scroll to the bottom of the chat messages
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Socket event listener to display received image
+    socket.on("displayRecievedIMG", ({ file }) => {
+        displayReceivedIMG(file);
+    });
+
 
 
 
@@ -389,25 +473,25 @@
 
 
     function displayReceivedIMG(file) {
-    const chatMessages = document.getElementById("chatMessages");
-    const receivedMsgDiv = document.createElement("div");
-    receivedMsgDiv.classList.add("received-message");
+      const chatMessages = document.getElementById("chatMessages");
+      const receivedMsgDiv = document.createElement("div");
+      receivedMsgDiv.classList.add("received-message");
 
-    // Create the image element
-    const imgElement = document.createElement("img");
-    imgElement.classList.add("chatIMG");
-    imgElement.src = `/uploads/${file}`;
-    imgElement.alt = "Description of the image";
+      // Create the image element
+      const imgElement = document.createElement("img");
+      imgElement.classList.add("chatIMG");
+      imgElement.src = `/uploads/${file}`;
+      imgElement.alt = "Description of the image";
 
-    // Append the image element to the div
-    receivedMsgDiv.appendChild(imgElement);
+      // Append the image element to the div
+      receivedMsgDiv.appendChild(imgElement);
 
-    // Append the div to the chat messages container
-    chatMessages.appendChild(receivedMsgDiv);
+      // Append the div to the chat messages container
+      chatMessages.appendChild(receivedMsgDiv);
 
-    // Scroll to the bottom of the chat messages
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
+      // Scroll to the bottom of the chat messages
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
 
 
 
