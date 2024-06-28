@@ -110,6 +110,20 @@
         margin-top: 2;
         top: 22px;
       }
+
+      .chatIMG {
+          max-width: 200px; /* Ensure the image does not exceed the container width */
+          max-height: 200px; /* Limit the maximum height of the image */
+          display: block; /* Ensures the image behaves as a block element */
+          transition: max-width 0.3s ease-out, max-height 0.3s ease-out;
+      }
+
+
+      .chatIMG:hover {
+        max-width: 80%;
+        max-height: 80%;
+      }
+
     </style>
   </head>
   <body>
