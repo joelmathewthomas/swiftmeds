@@ -117,6 +117,7 @@
           display: block; /* Ensures the image behaves as a block element */
           transition: max-width 0.3s ease-out, max-height 0.3s ease-out; /* Add transitions */
           cursor: pointer; /* Set cursor to pointer */
+          border-radius: 15px 15px 15px 0;
       }
 
       .chatIMG:hover {
@@ -323,6 +324,21 @@
       });
     </script>
     <script>
+
+      document.addEventListener('DOMContentLoaded', function () {
+        // Function to handle click event on images
+        function openImageInNewTab(event) {
+          // Check if the clicked element is an image with class chatIMG
+          if (event.target.tagName === 'IMG' && event.target.classList.contains('chatIMG')) {
+            // Open the image in a new tab
+            window.open(event.target.src, '_blank');
+          }
+        }
+
+        // Attach click event listener to the document
+        document.addEventListener('click', openImageInNewTab);
+      });
+
       document.addEventListener("DOMContentLoaded", function () {
         // Fetch session data from /getSessionData endpoint
         fetch("/getSessionData")
