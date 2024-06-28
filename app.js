@@ -1,8 +1,24 @@
 // Import the 'mysql' module to enable communication with the MySQL database
 const mysql = require("mysql");
 
+// Import the 'path' module to handle file paths
+const path = require("path");
+const fs = require('fs');
+
 // Import the 'express' module to create a web server
 const express = require("express");
+
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: path.join(__dirname,'public','uploads'),
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    cb(null, req.session.username + '-' + uniqueSuffix+ path.extname(file.originalname))
+  }
+})
+
+const upload = multer({ storage: storage })
 
 // Import http module
 const http = require("http");
@@ -13,8 +29,7 @@ const { Server } = require("socket.io");
 // Import the 'express-session' module to manage user sessions
 const session = require("express-session");
 
-// Import the 'path' module to handle file paths
-const path = require("path");
+
 
 const async = require("async");
 
@@ -107,6 +122,27 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("sendIMG",({sender, recipient, file}) =>{
+    console.log("SOCKET : ON sendIMG : ", sender, recipient, file);
+    const recipientSocketId = users[recipient]?.id
+    if(recipientSocketId){
+      io.to(recipientSocketId).emit("displayRecievedIMG", {file: file});
+      console.log("IO : TO : " ,recipientSocketId,"-", recipient, " ",file);
+    }
+    else{
+      const senderSocketId = users[sender]?.id;
+      if(senderSocketId){
+        io.to(senderSocketId).emit(
+          "disconnected",
+          "User disconnected. Going back"
+        );
+        setTimeout(() => {
+          io.to(senderSocketId).emit("reload");
+        }, 2000); // Emit reload event after 2 seconds
+      }
+    }
+  })
+
   socket.on("closedchat", ({ recipient }) => {
     recipientSocketId = users[recipient]?.id;
     io.to(recipientSocketId).emit(
@@ -133,10 +169,45 @@ io.on("connection", (socket) => {
     // If a matching username is found, remove it from the users object
     if (disconnectedUser) {
       delete users[disconnectedUser];
+      removeUserFiles(disconnectedUser);;
       console.log(`User ${disconnectedUser} disconnected`);
     }
   });
 });
+
+function removeUserFiles(username) {
+    // Assuming `username` is the username to disconnect
+    
+    // Directory where uploads are stored
+    const uploadDir = path.join(__dirname,'public', 'uploads');
+
+    // Read the contents of the directory
+    fs.readdir(uploadDir, (err, files) => {
+        if (err) {
+            console.error('Error reading directory:', err);
+            return;
+        }
+
+        // Iterate through the files in the directory
+        files.forEach(file => {
+            // Check if the file starts with the username
+            if (file.startsWith(username)) {
+                // Construct the full path to the file
+                const filePath = path.join(uploadDir, file);
+
+                // Delete the file
+                fs.unlink(filePath, err => {
+                    if (err) {
+                        console.error(`Error deleting file ${filePath}:`, err);
+                        return;
+                    }
+                    console.log(`Deleted file: ${filePath}`);
+                });
+            }
+        });
+    });
+}
+
 
 app.use(
   session({
@@ -259,6 +330,9 @@ app.post("/register", function (request, response) {
   let email = request.body.email;
   let password = request.body.password;
   let type = request.body.type;
+  if (type === 'doctor'){
+    username = 'Dr.'+username
+  }
 
   if (username && password) {
     connection.query(
@@ -901,5 +975,13 @@ app.post("/addOrder", function (request, response) {
         );
       }
     });
+  }
+});
+
+app.post('/upload', upload.single('file'), (req, res) => {
+  console.log("POST /upload");
+  console.log(req.file); // 'file' is the name attribute of the file input in the form
+  if(req.file){
+    res.json({file: req.file.filename})
   }
 });
