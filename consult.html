@@ -84,6 +84,7 @@
         border-radius: 15px 15px 15px 0; /* Rounded corners, top-right, top-left, and bottom-left for received messages */
         float: left; /* Align received messages to the left */
         clear: both; /* Clear floating elements */
+        animation: slideInFromLeft 0.3s ease-out;
       }
 
       .input-field {
@@ -157,7 +158,17 @@
     to {
         transform: translateX(0);
     }
+  }
+
+    @keyframes slideInFromLeft {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
 }
+
 
 
     </style>
