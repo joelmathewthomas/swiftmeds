@@ -1,2 +1,2 @@
 # Swiftmeds
-Swiftmeds Online Medical Shop Web developement project. 
+Swiftmeds Online Medical Shop Web developement project.  
